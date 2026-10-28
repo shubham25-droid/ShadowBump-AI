@@ -26,7 +26,7 @@ export default function Navbar() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-[#07090e]/85 backdrop-blur-xl">
+    <header className="sticky top-0 z-50 border-b border-border/80 bg-[#101115]/90 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Brand Lockup */}
         <Link href="/" className="flex items-center group">
@@ -44,11 +44,11 @@ export default function Navbar() {
                 href={item.href}
                 className={`flex items-center space-x-2 px-3.5 py-1.5 rounded-lg text-sm font-medium transition-all ${
                   isActive
-                    ? 'bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/30 text-cyan-300 font-semibold'
-                    : 'text-ink-secondary hover:text-white hover:bg-panel'
+                    ? 'bg-zinc-800 border border-zinc-600 text-white font-semibold shadow-sm'
+                    : 'text-zinc-400 hover:text-white hover:bg-zinc-850'
                 }`}
               >
-                <Icon className="h-4 w-4" />
+                <Icon className="h-4 w-4 text-zinc-400" />
                 <span>{item.label}</span>
               </Link>
             );
@@ -57,24 +57,24 @@ export default function Navbar() {
 
         {/* Status Pill & Action */}
         <div className="flex items-center space-x-3">
-          <div className="hidden lg:flex items-center space-x-2 text-xs text-ink-secondary px-3 py-1.5 rounded-full border border-border bg-panel shadow-sm">
-            <Cpu className="h-3.5 w-3.5 text-cyan-400" />
+          <div className="hidden lg:flex items-center space-x-2 text-xs text-zinc-400 px-3 py-1.5 rounded-full border border-zinc-750 bg-zinc-850 shadow-sm">
+            <Cpu className="h-3.5 w-3.5 text-zinc-300" />
             <span>NVIDIA Nemotron:</span>
             <span
               className={`inline-block h-2 w-2 rounded-full ${
                 hasNebiusKey === true
                   ? 'bg-emerald-400 shadow-[0_0_8px_#34d399]'
-                  : 'bg-amber-400'
+                  : 'bg-zinc-400'
               }`}
             />
-            <span className="font-mono text-white text-[11px]">
+            <span className="font-mono text-zinc-200 text-[11px]">
               {hasNebiusKey === true ? 'Nebius Active' : 'Deterministic Mode'}
             </span>
           </div>
 
           <Link
             href="/workspace"
-            className="inline-flex items-center space-x-2 px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 hover:from-cyan-400 hover:via-blue-500 hover:to-indigo-500 text-white text-xs font-bold transition-all shadow-glow hover:shadow-[0_0_30px_rgba(56,189,248,0.4)]"
+            className="inline-flex items-center space-x-2 px-4 py-2 rounded-xl bg-zinc-100 hover:bg-white text-zinc-950 text-xs font-bold transition-all shadow-sm hover:shadow-glowGrey"
           >
             <Play className="h-3.5 w-3.5 fill-current" />
             <span>Launch Analysis</span>

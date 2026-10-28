@@ -38,9 +38,9 @@ const STAGES: StageTelemetry[] = [
     subtitle: 'Identical Stdin Stream',
     tag: 'Test Vector Source',
     coords: [-7.5, 0, 0],
-    color: 0x00f2fe, // Cyan
-    hex: '#00f2fe',
-    glowColor: 'rgba(0, 242, 254, 0.4)',
+    color: 0xe2e8f0, // Platinum Silver
+    hex: '#e2e8f0',
+    glowColor: 'rgba(226, 232, 240, 0.4)',
     description: 'Generates edge cases (missing required fields, NaN, coercion edge cases) and feeds identical payloads simultaneously.',
     mechanism: 'Synchronized JSON serialization piped to both child processes.',
     verdictRole: 'Guarantees any output divergence is 100% caused by dependency code.'
@@ -66,9 +66,9 @@ const STAGES: StageTelemetry[] = [
     subtitle: 'zod@4.6.7 Environment',
     tag: 'Candidate Node.js Subprocess',
     coords: [-2.5, -3.2, 1],
-    color: 0x8b5cf6, // Violet
-    hex: '#8b5cf6',
-    glowColor: 'rgba(139, 92, 246, 0.4)',
+    color: 0xf43f5e, // Rose / Regression
+    hex: '#f43f5e',
+    glowColor: 'rgba(244, 63, 94, 0.4)',
     description: 'Executes the exact same inputs in a parallel isolated Node.js child process running Zod v4.6.7.',
     mechanism: 'Captures candidate output structures, removed properties, and altered error issue arrays.',
     verdictRole: 'Surfaces silent regressions and breaking changes.'
@@ -94,9 +94,9 @@ const STAGES: StageTelemetry[] = [
     subtitle: 'Nebius Token Factory',
     tag: 'AI Root-Cause Synthesis',
     coords: [7.5, 0, 0],
-    color: 0x06b6d4, // Bright Neon Teal / NVIDIA Green
-    hex: '#06b6d4',
-    glowColor: 'rgba(6, 182, 212, 0.4)',
+    color: 0x94a3b8, // Titanium Slate
+    hex: '#94a3b8',
+    glowColor: 'rgba(148, 163, 184, 0.4)',
     description: 'Sends the raw empirical diff to NVIDIA Llama-3.1-Nemotron-70B on Nebius Token Factory at temp=0.1.',
     mechanism: 'Grounded model inference: synthesizes root cause, blast radius, and Before/After migration diff.',
     verdictRole: 'Provides actionable developer remediation code.'
@@ -116,12 +116,12 @@ export default function InsaneTopology3D() {
     const width = container.clientWidth;
     const height = 480;
 
-    // 1. Scene, Camera, WebGL Renderer
+    // 1. Scene, Camera, WebGL Renderer (Grey Theme: #101115)
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x060913); // Deep cosmic slate
+    scene.background = new THREE.Color(0x101115);
 
-    // Add subtle background fog for depth
-    scene.fog = new THREE.FogExp2(0x060913, 0.035);
+    // Subtle background fog for depth
+    scene.fog = new THREE.FogExp2(0x101115, 0.035);
 
     const camera = new THREE.PerspectiveCamera(42, width / height, 0.1, 1000);
     camera.position.set(0, 4, 18);
@@ -132,24 +132,24 @@ export default function InsaneTopology3D() {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     container.appendChild(renderer.domElement);
 
-    // 2. High-Tech Lights
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+    // 2. High-End Studio Lighting (Neutral Crisp White & Titanium Fill)
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
     scene.add(ambientLight);
 
-    const dirLight = new THREE.DirectionalLight(0x00f2fe, 1.8);
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1.6);
     dirLight.position.set(15, 20, 15);
     scene.add(dirLight);
 
-    const purpleLight = new THREE.PointLight(0x8b5cf6, 3, 30);
-    purpleLight.position.set(-5, -5, 5);
-    scene.add(purpleLight);
+    const sideLight1 = new THREE.PointLight(0x94a3b8, 2, 30);
+    sideLight1.position.set(-6, -5, 5);
+    scene.add(sideLight1);
 
-    const greenLight = new THREE.PointLight(0x10b981, 3, 30);
-    greenLight.position.set(-5, 5, -5);
-    scene.add(greenLight);
+    const sideLight2 = new THREE.PointLight(0xe2e8f0, 2, 30);
+    sideLight2.position.set(-5, 5, -5);
+    scene.add(sideLight2);
 
-    // 3. Futuristic Grid Floor
-    const grid = new THREE.GridHelper(36, 36, 0x1e293b, 0x0f172a);
+    // 3. Slate Grey Grid Floor
+    const grid = new THREE.GridHelper(36, 36, 0x383e4e, 0x1d202a);
     grid.position.y = -4.5;
     scene.add(grid);
 
@@ -178,14 +178,14 @@ export default function InsaneTopology3D() {
       const outerMesh = new THREE.Mesh(outerGeo, outerMat);
       group.add(outerMesh);
 
-      // Inner glowing core (Sphere or Crystal)
+      // Inner glowing core (Icosahedron Crystal)
       const coreGeo = new THREE.IcosahedronGeometry(0.7, 2);
       const coreMat = new THREE.MeshStandardMaterial({
         color: stage.color,
-        roughness: 0.1,
-        metalness: 0.8,
+        roughness: 0.15,
+        metalness: 0.75,
         emissive: stage.color,
-        emissiveIntensity: 0.7
+        emissiveIntensity: 0.65
       });
       const coreMesh = new THREE.Mesh(coreGeo, coreMat);
       group.add(coreMesh);
@@ -195,7 +195,7 @@ export default function InsaneTopology3D() {
       const ringMat = new THREE.MeshBasicMaterial({
         color: stage.color,
         transparent: true,
-        opacity: 0.8
+        opacity: 0.75
       });
       const ring = new THREE.Mesh(ringGeo, ringMat);
       ring.rotation.x = Math.PI / 2;
@@ -216,7 +216,7 @@ export default function InsaneTopology3D() {
 
     const photonPackets: { mesh: THREE.Mesh; curve: THREE.CatmullRomCurve3; offset: number; speed: number }[] = [];
     const photonGeo = new THREE.SphereGeometry(0.18, 12, 12);
-    const photonMat = new THREE.MeshBasicMaterial({ color: 0x00f2fe });
+    const photonMat = new THREE.MeshBasicMaterial({ color: 0xffffff }); // Pure Silver-White Photons
 
     connections.forEach(([fromId, toId]) => {
       const p1 = stagePosMap.get(fromId);
@@ -224,17 +224,16 @@ export default function InsaneTopology3D() {
       if (!p1 || !p2) return;
 
       const mid = new THREE.Vector3().addVectors(p1, p2).multiplyScalar(0.5);
-      // Lift the arc for a dynamic 3D pipeline curve
       mid.y += (p1.z !== p2.z) ? 0.7 : 0.3;
 
       const curve = new THREE.CatmullRomCurve3([p1, mid, p2]);
       const tubeGeo = new THREE.TubeGeometry(curve, 32, 0.06, 8, false);
       const tubeMat = new THREE.MeshStandardMaterial({
-        color: 0x1e293b,
-        emissive: 0x00f2fe,
-        emissiveIntensity: 0.25,
+        color: 0x252833,
+        emissive: 0xd1d5db,
+        emissiveIntensity: 0.3,
         transparent: true,
-        opacity: 0.7
+        opacity: 0.75
       });
       const tube = new THREE.Mesh(tubeGeo, tubeMat);
       scene.add(tube);
@@ -252,7 +251,7 @@ export default function InsaneTopology3D() {
       }
     });
 
-    // 6. Floating Cosmic Dust Particles
+    // 6. Floating Silver Dust Particles
     const dustCount = 80;
     const dustGeo = new THREE.BufferGeometry();
     const dustPositions = new Float32Array(dustCount * 3);
@@ -262,7 +261,7 @@ export default function InsaneTopology3D() {
       dustPositions[i + 2] = (Math.random() - 0.5) * 20;
     }
     dustGeo.setAttribute('position', new THREE.BufferAttribute(dustPositions, 3));
-    const dustMat = new THREE.PointsMaterial({ color: 0x38bdf8, size: 0.1, transparent: true, opacity: 0.5 });
+    const dustMat = new THREE.PointsMaterial({ color: 0x9ca3af, size: 0.1, transparent: true, opacity: 0.5 });
     const dustParticles = new THREE.Points(dustGeo, dustMat);
     scene.add(dustParticles);
 
@@ -319,14 +318,14 @@ export default function InsaneTopology3D() {
           const isSelected = activeStage.id === stage.id;
           if (isSelected) {
             group.scale.setScalar(1.2 + Math.sin(time * 3) * 0.04);
-            (coreMesh.material as THREE.MeshStandardMaterial).emissiveIntensity = 1.2;
+            (coreMesh.material as THREE.MeshStandardMaterial).emissiveIntensity = 1.1;
           } else {
             group.scale.setScalar(1.0);
-            (coreMesh.material as THREE.MeshStandardMaterial).emissiveIntensity = 0.6;
+            (coreMesh.material as THREE.MeshStandardMaterial).emissiveIntensity = 0.55;
           }
         });
 
-        // Gentle cosmic dust drift
+        // Subtle dust drift
         dustParticles.rotation.y = time * 0.02;
 
         // Smooth cinematic camera orbit
@@ -364,22 +363,22 @@ export default function InsaneTopology3D() {
   }, [isPaused, activeStage.id, cameraMode]);
 
   return (
-    <div className="w-full rounded-2xl border border-border/80 bg-panel/90 shadow-glow backdrop-blur-xl overflow-hidden">
+    <div className="w-full rounded-2xl border border-zinc-750 bg-[#161821]/95 shadow-card backdrop-blur-xl overflow-hidden">
       {/* 3D Header & Controls */}
-      <div className="flex flex-wrap items-center justify-between border-b border-border/80 px-5 py-3.5 bg-canvas/80">
+      <div className="flex flex-wrap items-center justify-between border-b border-zinc-750 px-5 py-3.5 bg-[#121319]">
         <div className="flex items-center space-x-2.5">
-          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-cyan-500/10 border border-cyan-500/30 text-cyan-400">
+          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-zinc-800 border border-zinc-700 text-zinc-300">
             <Sparkles className="h-4 w-4" />
           </div>
           <div>
             <h3 className="text-sm font-bold text-white tracking-wide flex items-center gap-2">
               <span>Interactive Differential Twin Pipeline</span>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 uppercase">
-                3D Holographic WebGL
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-zinc-800 text-zinc-300 border border-zinc-700 uppercase">
+                3D WebGL Engine
               </span>
             </h3>
-            <p className="text-xs text-ink-secondary">
-              Real-time interactive data flow: Inputs ➔ Twin Sandboxes ➔ AST Comparator ➔ NVIDIA Nemotron
+            <p className="text-xs text-zinc-400">
+              Interactive 5-stage pipeline: Inputs ➔ Twin Sandboxes ➔ AST Comparator ➔ NVIDIA Nemotron
             </p>
           </div>
         </div>
@@ -387,14 +386,14 @@ export default function InsaneTopology3D() {
         <div className="flex items-center space-x-2 mt-2 sm:mt-0">
           <button
             onClick={() => setIsPaused(!isPaused)}
-            className="flex items-center space-x-1 px-3 py-1.5 rounded-lg text-xs font-mono border border-border bg-panel hover:bg-panelHover text-ink-primary transition-all"
+            className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-mono border border-zinc-700 bg-zinc-800 hover:bg-zinc-750 text-zinc-200 transition-all"
           >
-            {isPaused ? <Play className="h-3 w-3 text-emerald-400" /> : <Pause className="h-3 w-3 text-cyan-400" />}
+            {isPaused ? <Play className="h-3 w-3 text-emerald-400" /> : <Pause className="h-3 w-3 text-zinc-300" />}
             <span>{isPaused ? 'Resume 3D' : 'Pause'}</span>
           </button>
           <button
             onClick={() => setActiveStage(STAGES[0])}
-            className="flex items-center space-x-1 px-3 py-1.5 rounded-lg text-xs font-mono border border-border bg-panel hover:bg-panelHover text-ink-primary transition-all"
+            className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-mono border border-zinc-700 bg-zinc-800 hover:bg-zinc-750 text-zinc-200 transition-all"
           >
             <RotateCcw className="h-3 w-3" />
             <span>Reset View</span>
@@ -403,24 +402,24 @@ export default function InsaneTopology3D() {
       </div>
 
       {/* 3D WebGL Canvas */}
-      <div className="relative w-full h-[480px] bg-[#060913] cursor-grab active:cursor-grabbing">
+      <div className="relative w-full h-[480px] bg-[#101115] cursor-grab active:cursor-grabbing">
         <div ref={mountRef} className="w-full h-full" />
 
         {/* Floating Holographic Labels on top of 3D Canvas */}
         <div className="absolute top-4 left-4 pointer-events-none space-y-1">
-          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-panel/90 border border-cyan-500/30 text-xs text-cyan-300 font-mono backdrop-blur-md shadow-glow">
-            <Cpu className="h-3.5 w-3.5 text-cyan-400 animate-pulse" />
-            Click any 3D node to inspect its telemetry & isolation role
+          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900/90 border border-zinc-700 text-xs text-zinc-300 font-mono backdrop-blur-md shadow-card">
+            <Cpu className="h-3.5 w-3.5 text-zinc-400 animate-pulse" />
+            Click any 3D stage node to inspect its telemetry & isolation role
           </span>
         </div>
 
         {/* Floating Telemetry HUD Card for Active Stage */}
         <div className="absolute bottom-4 left-4 right-4 sm:right-auto sm:max-w-lg pointer-events-auto">
-          <div className="p-4 rounded-xl border border-cyan-500/40 bg-panel/95 backdrop-blur-xl shadow-card text-xs space-y-2">
+          <div className="p-4 rounded-xl border border-zinc-650 bg-[#151720]/95 backdrop-blur-xl shadow-card text-xs space-y-2.5">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
                 <span 
-                  className="inline-flex items-center justify-center px-2 py-0.5 rounded text-[10px] font-mono font-bold text-white shadow-sm"
+                  className="inline-flex items-center justify-center px-2 py-0.5 rounded text-[10px] font-mono font-bold text-zinc-950 shadow-sm"
                   style={{ backgroundColor: activeStage.hex }}
                 >
                   STEP {activeStage.step}
@@ -429,23 +428,23 @@ export default function InsaneTopology3D() {
                   {activeStage.title}
                 </span>
               </div>
-              <span className="text-[10px] font-mono text-cyan-400 uppercase tracking-wider px-2 py-0.5 rounded bg-cyan-950/40 border border-cyan-500/30">
+              <span className="text-[10px] font-mono text-zinc-300 uppercase tracking-wider px-2 py-0.5 rounded bg-zinc-800 border border-zinc-700">
                 {activeStage.tag}
               </span>
             </div>
 
-            <p className="text-slate-300 text-xs leading-relaxed">
+            <p className="text-zinc-300 text-xs leading-relaxed">
               {activeStage.description}
             </p>
 
-            <div className="grid grid-cols-2 gap-2 pt-2 border-t border-border/80 text-[11px] font-mono">
+            <div className="grid grid-cols-2 gap-2 pt-2 border-t border-zinc-750 text-[11px] font-mono">
               <div>
-                <span className="text-ink-secondary block">Mechanism:</span>
+                <span className="text-zinc-400 block">Mechanism:</span>
                 <span className="text-white truncate block">{activeStage.mechanism}</span>
               </div>
               <div>
-                <span className="text-cyan-400 block">Why It Matters:</span>
-                <span className="text-cyan-200 truncate block">{activeStage.verdictRole}</span>
+                <span className="text-zinc-300 block">Why It Matters:</span>
+                <span className="text-zinc-200 truncate block">{activeStage.verdictRole}</span>
               </div>
             </div>
           </div>
@@ -453,7 +452,7 @@ export default function InsaneTopology3D() {
       </div>
 
       {/* 5-Step Clear Interactive Stage Bar */}
-      <div className="border-t border-border/80 bg-canvas p-3 sm:p-4">
+      <div className="border-t border-zinc-750 bg-[#121319] p-3 sm:p-4">
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
           {STAGES.map((s) => {
             const isSelected = activeStage.id === s.id;
@@ -463,12 +462,12 @@ export default function InsaneTopology3D() {
                 onClick={() => setActiveStage(s)}
                 className={`text-left p-3 rounded-xl border transition-all ${
                   isSelected
-                    ? 'bg-panel border-cyan-400 shadow-glow ring-1 ring-cyan-400/50'
-                    : 'bg-panel/40 border-border hover:bg-panel text-ink-secondary hover:text-white'
+                    ? 'bg-zinc-800 border-zinc-400 shadow-glowSubtle ring-1 ring-zinc-400/50'
+                    : 'bg-zinc-850/60 border-zinc-750 hover:bg-zinc-800 text-zinc-400 hover:text-white'
                 }`}
               >
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-[10px] font-mono font-bold text-cyan-400">
+                  <span className="text-[10px] font-mono font-bold text-zinc-300">
                     STEP {s.step}
                   </span>
                   <span
@@ -476,10 +475,10 @@ export default function InsaneTopology3D() {
                     style={{ backgroundColor: s.hex }}
                   />
                 </div>
-                <div className={`text-xs font-bold leading-tight ${isSelected ? 'text-white' : 'text-slate-300'}`}>
+                <div className={`text-xs font-bold leading-tight ${isSelected ? 'text-white' : 'text-zinc-300'}`}>
                   {s.title}
                 </div>
-                <div className="text-[11px] text-ink-muted font-mono truncate mt-0.5">
+                <div className="text-[11px] text-zinc-500 font-mono truncate mt-0.5">
                   {s.subtitle}
                 </div>
               </button>

@@ -22,9 +22,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark">
-      <body className="min-h-screen flex flex-col bg-[#07090e] text-[#f8fafc] selection:bg-cyan-500/30 selection:text-cyan-200 relative">
-        {/* Ambient Top Mesh Glow */}
-        <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-hero-gradient pointer-events-none -z-10 blur-3xl opacity-80" />
+      <body className="min-h-screen flex flex-col bg-[#101115] text-[#f9fafb] selection:bg-zinc-700 selection:text-white relative">
+        {/* Ambient Top Subtle Grey Glow */}
+        <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-silver-glow pointer-events-none -z-10 blur-3xl opacity-60" />
         <Navbar />
         <main className="flex-1">
           {children}

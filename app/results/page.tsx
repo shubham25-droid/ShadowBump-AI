@@ -132,11 +132,11 @@ export default function ResultsPage() {
   if (isLoadingDefault) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-24 text-center space-y-4">
-        <RefreshCw className="h-8 w-8 text-cyan-400 animate-spin mx-auto" />
+        <RefreshCw className="h-8 w-8 text-zinc-400 animate-spin mx-auto" />
         <h2 className="text-xl font-bold text-white">
           Executing Differential Comparison...
         </h2>
-        <p className="text-sm text-slate-300">
+        <p className="text-sm text-zinc-400">
           Running twin Node.js subprocesses for <code className="text-emerald-400 font-mono">zod@3.23.8</code> vs <code className="text-rose-400 font-mono">zod@4.6.7</code> in parallel.
         </p>
       </div>
@@ -150,12 +150,12 @@ export default function ResultsPage() {
         <h2 className="text-xl font-bold text-white">
           No Active Analysis Session Found
         </h2>
-        <p className="text-sm text-slate-300">
+        <p className="text-sm text-zinc-400">
           Return to workspace to execute a verified dependency migration scenario.
         </p>
         <Link
           href="/workspace"
-          className="inline-flex items-center space-x-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-sm font-bold shadow-glow"
+          className="inline-flex items-center space-x-2 px-5 py-2.5 rounded-xl bg-zinc-100 hover:bg-white text-zinc-950 text-sm font-bold shadow-sm"
         >
           <span>Open Analysis Workspace</span>
         </Link>
@@ -171,18 +171,18 @@ export default function ResultsPage() {
       return {
         label: 'Inconclusive Execution (Subprocess Crash)',
         description: 'One or more execution environments failed or timed out during the differential run.',
-        border: 'border-border/80',
-        bg: 'bg-canvas',
-        textColor: 'text-slate-200',
-        badgeBg: 'bg-border text-slate-300'
+        border: 'border-zinc-700',
+        bg: 'bg-zinc-850',
+        textColor: 'text-zinc-200',
+        badgeBg: 'bg-zinc-800 text-zinc-300'
       };
     }
     if (summary.potentialRegressions > 0) {
       return {
         label: 'Potential Regression Detected (Silent Contract Break)',
         description: `${summary.potentialRegressions} input vector(s) broke existing behavioral contracts, altered exception interfaces, or dropped custom error messages.`,
-        border: 'border-rose-500/50',
-        bg: 'bg-gradient-to-r from-rose-950/40 via-panel to-panel',
+        border: 'border-rose-500/35',
+        bg: 'bg-gradient-to-r from-rose-950/20 via-zinc-850 to-zinc-900',
         textColor: 'text-rose-300',
         badgeBg: 'bg-rose-500/20 text-rose-300 border border-rose-500/40 animate-pulse'
       };
@@ -191,8 +191,8 @@ export default function ResultsPage() {
       return {
         label: 'Behavioral Difference Detected (Observable Mutation)',
         description: `${summary.behavioralDifferences} input vector(s) produced observable output differences without confirmed regression.`,
-        border: 'border-amber-500/50',
-        bg: 'bg-gradient-to-r from-amber-950/40 via-panel to-panel',
+        border: 'border-amber-500/35',
+        bg: 'bg-gradient-to-r from-amber-950/20 via-zinc-850 to-zinc-900',
         textColor: 'text-amber-300',
         badgeBg: 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
       };
@@ -200,8 +200,8 @@ export default function ResultsPage() {
     return {
       label: 'No Difference Observed in Tested Inputs',
       description: `All ${summary.totalInputs} test inputs produced identical outputs across both versions. Note: Does not prove equivalence on untested inputs.`,
-      border: 'border-emerald-500/50',
-      bg: 'bg-gradient-to-r from-emerald-950/40 via-panel to-panel',
+      border: 'border-emerald-500/35',
+      bg: 'bg-gradient-to-r from-emerald-950/20 via-zinc-850 to-zinc-900',
       textColor: 'text-emerald-300',
       badgeBg: 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
     };
@@ -217,11 +217,11 @@ export default function ResultsPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 space-y-8">
       {/* Navigation & Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between pb-6 border-b border-border/80 gap-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between pb-6 border-b border-zinc-750 gap-4">
         <div>
           <Link
             href="/workspace"
-            className="inline-flex items-center space-x-1.5 text-xs font-mono text-cyan-400 hover:text-cyan-300 mb-2 font-semibold"
+            className="inline-flex items-center space-x-1.5 text-xs font-mono text-zinc-400 hover:text-white mb-2 font-semibold"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
             <span>Return to Workspace</span>
@@ -231,7 +231,7 @@ export default function ResultsPage() {
             {summary.scenarioTitle}
           </h1>
 
-          <div className="flex flex-wrap items-center gap-3 text-xs font-mono text-slate-300 mt-1.5">
+          <div className="flex flex-wrap items-center gap-3 text-xs font-mono text-zinc-300 mt-1.5">
             <span>Dependency: <strong className="text-white font-bold">{summary.dependencyName}</strong></span>
             <span>•</span>
             <span className="text-emerald-400 font-semibold">{summary.oldVersion} (Baseline)</span>
@@ -243,15 +243,15 @@ export default function ResultsPage() {
         <button
           type="button"
           onClick={runDefaultAnalysis}
-          className="inline-flex items-center space-x-2 px-4 py-2 rounded-xl border border-border bg-panel hover:bg-panelHover text-xs font-mono text-slate-200 transition-colors shadow-sm"
+          className="inline-flex items-center space-x-2 px-4 py-2 rounded-xl border border-zinc-700 bg-zinc-800 hover:bg-zinc-750 text-xs font-mono text-zinc-200 transition-colors shadow-sm"
         >
-          <RefreshCw className="h-3.5 w-3.5 text-cyan-400" />
+          <RefreshCw className="h-3.5 w-3.5 text-zinc-400" />
           <span>Re-execute Sandboxes</span>
         </button>
       </div>
 
       {/* A. Overall Result State Banner */}
-      <div className={`p-5 sm:p-6 rounded-2xl border ${overallState.border} ${overallState.bg} shadow-glow`}>
+      <div className={`p-5 sm:p-6 rounded-2xl border ${overallState.border} ${overallState.bg} shadow-card`}>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="space-y-1">
             <div className="flex items-center space-x-2">
@@ -262,11 +262,11 @@ export default function ResultsPage() {
                 {overallState.label}
               </h2>
             </div>
-            <p className="text-sm text-slate-300 leading-relaxed">
+            <p className="text-sm text-zinc-300 leading-relaxed">
               {overallState.description}
             </p>
           </div>
-          <div className="text-xs font-mono text-slate-400 whitespace-nowrap">
+          <div className="text-xs font-mono text-zinc-400 whitespace-nowrap">
             {summary.totalInputs} vectors tested ({summary.totalExecutionTimeMs}ms total)
           </div>
         </div>
@@ -316,8 +316,8 @@ export default function ResultsPage() {
         {/* Left: Evidence (7 cols) */}
         <div className="lg:col-span-7 space-y-4">
           {/* Filter Bar */}
-          <div className="flex flex-wrap items-center justify-between pb-3 border-b border-border/80 gap-2">
-            <span className="text-xs font-mono font-bold text-slate-200 uppercase tracking-wider">
+          <div className="flex flex-wrap items-center justify-between pb-3 border-b border-zinc-750 gap-2">
+            <span className="text-xs font-mono font-bold text-zinc-200 uppercase tracking-wider">
               Empirical Evidence ({filteredDifferences.length})
             </span>
 
@@ -327,8 +327,8 @@ export default function ResultsPage() {
                 onClick={() => setSelectedFilter('ALL')}
                 className={`px-3 py-1 rounded-lg transition-colors ${
                   selectedFilter === 'ALL'
-                    ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 font-bold'
-                    : 'text-slate-400 hover:text-white'
+                    ? 'bg-zinc-800 text-white border border-zinc-650 font-bold'
+                    : 'text-zinc-400 hover:text-white'
                 }`}
               >
                 All ({differences.length})
@@ -338,8 +338,8 @@ export default function ResultsPage() {
                 onClick={() => setSelectedFilter('POTENTIAL_REGRESSION')}
                 className={`px-3 py-1 rounded-lg transition-colors ${
                   selectedFilter === 'POTENTIAL_REGRESSION'
-                    ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40 font-bold'
-                    : 'text-slate-400 hover:text-rose-400'
+                    ? 'bg-rose-500/20 text-rose-300 border border-rose-500/35 font-bold'
+                    : 'text-zinc-400 hover:text-rose-400'
                 }`}
               >
                 Regressions ({summary.potentialRegressions})
@@ -349,8 +349,8 @@ export default function ResultsPage() {
                 onClick={() => setSelectedFilter('MATCH')}
                 className={`px-3 py-1 rounded-lg transition-colors ${
                   selectedFilter === 'MATCH'
-                    ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-bold'
-                    : 'text-slate-400 hover:text-emerald-400'
+                    ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/35 font-bold'
+                    : 'text-zinc-400 hover:text-emerald-400'
                 }`}
               >
                 Matches ({summary.matches})
@@ -376,11 +376,11 @@ export default function ResultsPage() {
                         onClick={() => handleSelectDiffForAi(item)}
                         className={`text-xs font-mono px-3 py-1.5 rounded-lg border transition-all flex items-center space-x-2 ${
                           isSelectedForAi
-                            ? 'bg-cyan-500/20 border-cyan-500 text-cyan-300 font-bold shadow-glow'
-                            : 'border-border bg-panel text-slate-300 hover:text-white hover:border-cyan-500/40'
+                            ? 'bg-zinc-800 border-zinc-400 text-white font-bold shadow-sm'
+                            : 'border-zinc-750 bg-zinc-850 text-zinc-400 hover:text-white hover:border-zinc-600'
                         }`}
                       >
-                        <Cpu className="h-3.5 w-3.5 text-cyan-400" />
+                        <Cpu className="h-3.5 w-3.5 text-zinc-400" />
                         <span>{isSelectedForAi ? 'Analyzed by NVIDIA AI' : 'Explain with NVIDIA Nemotron'}</span>
                       </button>
                     </div>
@@ -401,22 +401,22 @@ export default function ResultsPage() {
             />
 
             {/* Developer Checklist */}
-            <div className="rounded-2xl border border-border/80 bg-panel/90 p-5 shadow-panel space-y-3">
-              <span className="text-xs font-mono font-bold text-slate-200 uppercase tracking-wider flex items-center gap-2">
+            <div className="rounded-2xl border border-zinc-750 bg-[#161821]/95 p-5 shadow-card space-y-3">
+              <span className="text-xs font-mono font-bold text-zinc-200 uppercase tracking-wider flex items-center gap-2">
                 <ShieldCheck className="h-4 w-4 text-emerald-400" />
                 Developer Remediation Checklist
               </span>
-              <ul className="space-y-2 text-xs text-slate-300 leading-relaxed">
+              <ul className="space-y-2 text-xs text-zinc-300 leading-relaxed">
                 <li className="flex items-start space-x-2">
-                  <span className="font-mono text-cyan-400 font-bold">1.</span>
+                  <span className="font-mono text-zinc-400 font-bold">1.</span>
                   <span>Migrate any <code className="text-rose-400 font-mono">error.errors</code> property access to <code className="text-emerald-400 font-mono">error.issues</code> across repository.</span>
                 </li>
                 <li className="flex items-start space-x-2">
-                  <span className="font-mono text-cyan-400 font-bold">2.</span>
+                  <span className="font-mono text-zinc-400 font-bold">2.</span>
                   <span>Replace deprecated <code className="font-mono text-amber-300">{`{ required_error }`}</code> with modern Zod v4 custom error functions.</span>
                 </li>
                 <li className="flex items-start space-x-2">
-                  <span className="font-mono text-cyan-400 font-bold">3.</span>
+                  <span className="font-mono text-zinc-400 font-bold">3.</span>
                   <span>Run reproduction code snippet locally in terminal to verify regression remediation before merging.</span>
                 </li>
               </ul>

@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 :root {
-  --background: #07090e;
-  --foreground: #f8fafc;
+  --background: #101115;
+  --foreground: #f9fafb;
 }
 
 body {
@@ -15,26 +15,26 @@ body {
   overflow-x: hidden;
 }
 
-/* Futuristic Glowing Scrollbar */
+/* Professional Slate / Charcoal Scrollbar */
 ::-webkit-scrollbar {
   width: 7px;
   height: 7px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #07090e;
+  background: #101115;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1c263d;
+  background: #2a2e3a;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #2b395b;
+  background: #3c4252;
 }
 
-/* Gradient Text Shimmer Animation */
+/* Titanium & Silver Text Shimmer Animation */
 @keyframes shimmer {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
@@ -46,16 +46,16 @@ body {
   animation: shimmer 6s ease infinite;
 }
 
-/* Glassmorphism Panel */
+/* Glassmorphism Grey Panel */
 .glass-panel {
-  background: rgba(16, 22, 38, 0.75);
-  backdrop-filter: blur(12px);
+  background: rgba(25, 28, 36, 0.8);
+  backdrop-filter: blur(14px);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .glass-panel-hover:hover {
-  border-color: rgba(56, 189, 248, 0.35);
-  box-shadow: 0 0 25px -5px rgba(56, 189, 248, 0.15);
+  border-color: rgba(209, 213, 219, 0.35);
+  box-shadow: 0 0 25px -5px rgba(209, 213, 219, 0.12);
 }
 
 pre, code {
