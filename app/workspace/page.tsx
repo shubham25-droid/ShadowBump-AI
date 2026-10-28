@@ -11,7 +11,14 @@ import {
   AlertCircle,
   FileCode2,
   CheckCircle2,
-  ArrowRight
+  ArrowRight,
+  Plus,
+  Terminal,
+  Cpu,
+  Layers,
+  Sparkles,
+  Zap,
+  ShieldCheck
 } from 'lucide-react';
 
 export default function WorkspacePage() {
@@ -36,7 +43,7 @@ export default function WorkspacePage() {
   const handleAddCustomTestCase = () => {
     setInputError(null);
     if (!customInputJson.trim()) {
-      setInputError('Please enter a valid JSON object.');
+      setInputError('Please enter a valid JSON payload string.');
       return;
     }
 
@@ -45,7 +52,7 @@ export default function WorkspacePage() {
       const newTestCase: TestCase = {
         id: `custom-${Date.now().toString().slice(-4)}`,
         label: customInputLabel.trim() || `Custom Vector #${testCases.length + 1}`,
-        description: 'User-defined test input',
+        description: 'User-defined test input payload',
         input: parsed,
       };
 
@@ -66,7 +73,7 @@ export default function WorkspacePage() {
     setCurrentStep('Spawning isolated Node.js v3 and v4 sandboxes...');
 
     try {
-      setTimeout(() => setCurrentStep('Streaming test vectors across runtimes...'), 300);
+      setTimeout(() => setCurrentStep('Streaming synchronized test vectors across runtimes...'), 300);
       setTimeout(() => setCurrentStep('Evaluating deterministic AST diffs...'), 650);
 
       const response = await fetch('/api/run-analysis', {
@@ -86,10 +93,10 @@ export default function WorkspacePage() {
       sessionStorage.setItem('shadowbump_latest_result', JSON.stringify(result));
       sessionStorage.setItem('shadowbump_active_scenario', JSON.stringify(activeScenario));
 
-      setCurrentStep('Analysis complete. Redirecting...');
+      setCurrentStep('Analysis complete. Generating differential view...');
       setTimeout(() => {
         router.push('/results');
-      }, 350);
+      }, 400);
     } catch (err: any) {
       alert(`Execution error: ${err.message}`);
       setIsRunning(false);
@@ -97,57 +104,85 @@ export default function WorkspacePage() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10 space-y-6">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 space-y-8">
       {/* Workspace Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-line gap-3">
+      <div className="flex flex-col md:flex-row md:items-center justify-between pb-6 border-b border-border/80 gap-4">
         <div>
-          <h1 className="text-xl font-bold text-ink-primary">
-            Analysis Workspace
+          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-cyan-950/60 border border-cyan-500/30 text-cyan-400 text-xs font-mono font-semibold uppercase tracking-wider mb-2">
+            <Sparkles className="h-3.5 w-3.5" />
+            <span>Isolated Runtime Harness</span>
+          </div>
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+            Differential Test Workspace
           </h1>
-          <p className="text-xs text-ink-secondary mt-0.5">
-            Configure target scenario, inspect schema, and execute twin-environment verification.
+          <p className="text-base text-slate-300 mt-1 max-w-2xl">
+            Select a verified dependency migration scenario, customize test vectors, and execute twin Node.js subprocesses.
           </p>
         </div>
 
-        {/* Dependency Badge */}
-        <div className="flex items-center space-x-2 text-xs font-mono">
-          <span className="px-2.5 py-1 rounded border border-line bg-panel text-ink-primary">
-            Target: <strong>zod</strong>
-          </span>
-          <span className="px-2.5 py-1 rounded border border-status-success/30 bg-status-success-bg text-status-success font-semibold">
-            v3.23.8 (Baseline)
-          </span>
-          <span className="text-ink-secondary">→</span>
-          <span className="px-2.5 py-1 rounded border border-line bg-panel text-accent font-semibold">
-            v4.6.7 (Candidate)
-          </span>
+        {/* Runtime Target Pill */}
+        <div className="flex flex-wrap items-center gap-2.5 text-xs font-mono">
+          <div className="px-3.5 py-1.5 rounded-xl border border-border bg-panel shadow-sm">
+            <span className="text-slate-400">Package:</span> <strong className="text-cyan-400 font-bold">zod</strong>
+          </div>
+          <div className="px-3 py-1.5 rounded-xl border border-emerald-500/40 bg-emerald-950/30 text-emerald-300 font-semibold flex items-center gap-1.5">
+            <span className="h-2 w-2 rounded-full bg-emerald-400" />
+            <span>v3.23.8 (Baseline)</span>
+          </div>
+          <span className="text-slate-500 font-bold">➔</span>
+          <div className="px-3 py-1.5 rounded-xl border border-indigo-500/40 bg-indigo-950/30 text-indigo-300 font-semibold flex items-center gap-1.5">
+            <span className="h-2 w-2 rounded-full bg-indigo-400" />
+            <span>v4.6.7 (Candidate)</span>
+          </div>
         </div>
       </div>
 
-      {/* Scenario Selector Tabs */}
-      <div>
-        <label className="text-[10px] font-bold uppercase tracking-wider text-ink-secondary block mb-2">
-          Step 1: Select Verified Test Scenario
-        </label>
-        <div className="grid grid-cols-1 sm:grid-cols-4 gap-2">
-          {SCENARIOS.map((sc) => {
+      {/* Step 1: Scenario Selector Tabs */}
+      <div className="space-y-3">
+        <div className="flex items-center justify-between">
+          <label className="text-xs font-mono font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-2">
+            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-cyan-500/20 text-cyan-300 text-xs font-mono font-bold">
+              1
+            </span>
+            <span>Select Target Dependency Migration Scenario</span>
+          </label>
+          <span className="text-xs font-mono text-slate-400">4 Scenarios Available</span>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+          {SCENARIOS.map((sc, index) => {
             const isSelected = sc.id === selectedScenarioId;
             return (
               <button
                 key={sc.id}
                 type="button"
                 onClick={() => setSelectedScenarioId(sc.id)}
-                className={`text-left p-3 rounded border text-xs transition-colors ${
+                className={`text-left p-4 rounded-xl border transition-all flex flex-col justify-between ${
                   isSelected
-                    ? 'border-accent bg-panel text-ink-primary shadow-xs ring-1 ring-accent'
-                    : 'border-line bg-panel hover:bg-background text-ink-secondary'
+                    ? 'border-cyan-500 bg-gradient-to-b from-cyan-950/40 via-panel to-panel shadow-glow ring-1 ring-cyan-500/50'
+                    : 'border-border/80 bg-panel/70 hover:bg-panel hover:border-slate-600 text-slate-300'
                 }`}
               >
-                <div className={`font-bold leading-tight ${isSelected ? 'text-accent' : 'text-ink-primary'}`}>
-                  {sc.title}
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className={`text-xs font-mono font-bold px-2 py-0.5 rounded ${
+                      isSelected ? 'bg-cyan-500/20 text-cyan-300' : 'bg-canvas text-slate-400'
+                    }`}>
+                      0{index + 1}
+                    </span>
+                    <span className="text-[11px] font-mono text-slate-400 truncate ml-2">
+                      {sc.testCases.length} inputs
+                    </span>
+                  </div>
+                  <div className={`font-bold text-sm leading-snug ${isSelected ? 'text-white' : 'text-slate-200'}`}>
+                    {sc.title}
+                  </div>
                 </div>
-                <div className="text-[11px] text-ink-secondary font-mono truncate mt-1">
-                  {sc.breakingCategory}
+
+                <div className="mt-3 pt-2.5 border-t border-border/80">
+                  <span className={`text-xs font-mono block truncate ${isSelected ? 'text-cyan-400 font-semibold' : 'text-slate-400'}`}>
+                    {sc.breakingCategory}
+                  </span>
                 </div>
               </button>
             );
@@ -155,131 +190,156 @@ export default function WorkspacePage() {
         </div>
       </div>
 
-      {/* Main Grid: Schema (5 cols) & Inputs (7 cols) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
-        {/* Left: Target Schema */}
-        <div className="lg:col-span-5 rounded border border-line bg-panel p-4 shadow-panel space-y-3">
-          <div className="flex items-center justify-between pb-2 border-b border-line">
-            <span className="text-xs font-bold text-ink-primary uppercase tracking-wider flex items-center gap-1.5">
-              <FileCode2 className="h-3.5 w-3.5 text-accent" />
-              Target Schema Definition
-            </span>
-            <span className="text-[10px] font-mono text-ink-secondary">TypeScript</span>
-          </div>
-
-          <div className="p-3 rounded border border-line bg-background font-mono text-xs text-ink-primary overflow-x-auto max-h-72">
-            <pre>{activeScenario.codeSnippet}</pre>
-          </div>
-
-          <p className="text-xs text-ink-secondary leading-relaxed">
-            {activeScenario.description}
-          </p>
-        </div>
-
-        {/* Right: Test Inputs */}
-        <div className="lg:col-span-7 rounded border border-line bg-panel p-4 shadow-panel space-y-4">
-          <div className="flex items-center justify-between pb-2 border-b border-line">
-            <div>
-              <span className="text-xs font-bold text-ink-primary uppercase tracking-wider">
-                Step 2: Synchronized Test Corpus ({testCases.length})
+      {/* Step 2: Main Grid: Schema Definition (5 cols) & Test Inputs (7 cols) */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        {/* Left: Target Schema Code */}
+        <div className="lg:col-span-5 rounded-2xl border border-border/80 bg-panel/80 p-5 shadow-panel space-y-4 flex flex-col justify-between">
+          <div className="space-y-3">
+            <div className="flex items-center justify-between pb-3 border-b border-border/80">
+              <span className="text-xs font-mono font-bold text-slate-200 uppercase tracking-wider flex items-center gap-2">
+                <FileCode2 className="h-4 w-4 text-cyan-400" />
+                Target Schema Definition
+              </span>
+              <span className="text-xs font-mono text-cyan-400 px-2 py-0.5 rounded bg-cyan-950/50 border border-cyan-500/30">
+                TypeScript / Zod
               </span>
             </div>
-            <button
-              type="button"
-              onClick={() => setTestCases(activeScenario.testCases)}
-              className="text-xs text-accent hover:text-accent-hover font-medium"
-            >
-              Reset Defaults
-            </button>
-          </div>
 
-          {/* Test Case List */}
-          <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
-            {testCases.map((tc, idx) => (
-              <div
-                key={tc.id}
-                className="p-2.5 rounded border border-line bg-background flex items-start justify-between gap-3 text-xs"
-              >
-                <div className="space-y-1 flex-1">
-                  <div className="flex items-center space-x-2">
-                    <span className="font-mono text-accent font-bold text-[11px]">
-                      #{idx + 1}
-                    </span>
-                    <span className="font-semibold text-ink-primary">
-                      {tc.label}
-                    </span>
-                    {tc.expectedOutcome && (
-                      <span className="text-[10px] font-mono px-1.5 rounded border border-line bg-panel text-ink-secondary">
-                        Oracle: {tc.expectedOutcome}
-                      </span>
-                    )}
-                  </div>
-                  <div className="p-1.5 rounded bg-panel border border-line font-mono text-[11px] text-ink-primary overflow-x-auto">
-                    <pre>{JSON.stringify(tc.input)}</pre>
-                  </div>
-                </div>
-
-                {testCases.length > 1 && (
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveTestCase(tc.id)}
-                    className="text-ink-muted hover:text-status-error p-1 transition-colors"
-                    title="Remove vector"
-                  >
-                    <Trash2 className="h-3.5 w-3.5" />
-                  </button>
-                )}
+            {/* Code Window */}
+            <div className="rounded-xl border border-border bg-[#05070c] overflow-hidden shadow-inner">
+              <div className="flex items-center space-x-1.5 px-3 py-2 bg-canvas/90 border-b border-border/80 text-xs font-mono text-slate-400">
+                <span className="h-2.5 w-2.5 rounded-full bg-rose-500/80" />
+                <span className="h-2.5 w-2.5 rounded-full bg-amber-500/80" />
+                <span className="h-2.5 w-2.5 rounded-full bg-emerald-500/80" />
+                <span className="ml-2 text-[11px] text-slate-400">schema.ts</span>
               </div>
-            ))}
+              <pre className="p-4 font-mono text-xs text-cyan-300 overflow-x-auto max-h-80 leading-relaxed">
+                <code>{activeScenario.codeSnippet}</code>
+              </pre>
+            </div>
           </div>
 
-          {/* Add Vector Inline */}
-          <div className="pt-2 border-t border-line space-y-2">
-            <span className="text-[11px] font-bold text-ink-secondary uppercase tracking-wider block">
-              + Add Custom Test Input
+          <div className="p-4 rounded-xl border border-border/80 bg-canvas/70 text-xs text-slate-300 leading-relaxed space-y-1">
+            <span className="font-bold text-white block">Observed Behavioral Context:</span>
+            <p>{activeScenario.description}</p>
+          </div>
+        </div>
+
+        {/* Right: Test Inputs Corpus */}
+        <div className="lg:col-span-7 rounded-2xl border border-border/80 bg-panel/80 p-5 shadow-panel space-y-4 flex flex-col justify-between">
+          <div className="space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-border/80">
+              <span className="text-xs font-mono font-bold text-slate-200 uppercase tracking-wider flex items-center gap-2">
+                <Terminal className="h-4 w-4 text-cyan-400" />
+                <span>Step 2: Synchronized Test Corpus</span>
+                <span className="px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 font-mono text-xs">
+                  {testCases.length} Vectors
+                </span>
+              </span>
+              <button
+                type="button"
+                onClick={() => setTestCases(activeScenario.testCases)}
+                className="text-xs font-mono text-cyan-400 hover:text-cyan-300 transition-colors"
+              >
+                Reset Default Vectors
+              </button>
+            </div>
+
+            {/* Test Case Cards List */}
+            <div className="space-y-2.5 max-h-72 overflow-y-auto pr-1">
+              {testCases.map((tc, idx) => (
+                <div
+                  key={tc.id}
+                  className="p-3.5 rounded-xl border border-border/80 bg-[#05070c] hover:border-cyan-500/40 transition-colors flex items-start justify-between gap-3 text-xs"
+                >
+                  <div className="space-y-1.5 flex-1 min-w-0">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="font-mono text-cyan-400 font-bold px-1.5 py-0.5 rounded bg-cyan-950/60 text-xs">
+                        #{idx + 1}
+                      </span>
+                      <span className="font-bold text-white text-sm">
+                        {tc.label}
+                      </span>
+                      {tc.expectedOutcome && (
+                        <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-canvas border border-border text-slate-300">
+                          Oracle: {tc.expectedOutcome}
+                        </span>
+                      )}
+                    </div>
+                    <div className="p-2 rounded-lg bg-panel border border-border/80 font-mono text-xs text-slate-200 overflow-x-auto">
+                      <code>{JSON.stringify(tc.input)}</code>
+                    </div>
+                  </div>
+
+                  {testCases.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveTestCase(tc.id)}
+                      className="text-slate-400 hover:text-rose-400 p-1.5 rounded-lg hover:bg-rose-950/30 transition-colors"
+                      title="Remove vector"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Add Vector Inline Section */}
+          <div className="pt-3 border-t border-border/80 space-y-2.5">
+            <span className="text-xs font-mono font-bold text-slate-300 uppercase tracking-wider block">
+              + Inject Custom Test Vector
             </span>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
               <input
                 type="text"
-                placeholder="Label"
+                placeholder="Vector Label (e.g. Empty Payload)"
                 value={customInputLabel}
                 onChange={(e) => setCustomInputLabel(e.target.value)}
-                className="px-2.5 py-1.5 rounded border border-line text-xs bg-background text-ink-primary focus:outline-none focus:border-accent"
+                className="px-3 py-2 rounded-xl border border-border bg-[#05070c] text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500"
               />
               <input
                 type="text"
-                placeholder='JSON: {"username": "alex"}'
+                placeholder='JSON: {"email": "user@corp.io"}'
                 value={customInputJson}
                 onChange={(e) => setCustomInputJson(e.target.value)}
-                className="sm:col-span-2 px-2.5 py-1.5 rounded border border-line text-xs font-mono bg-background text-ink-primary focus:outline-none focus:border-accent"
+                className="sm:col-span-2 px-3 py-2 rounded-xl border border-border bg-[#05070c] font-mono text-xs text-cyan-300 placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500"
               />
             </div>
 
             {inputError && (
-              <div className="text-xs text-status-error font-medium">
-                {inputError}
+              <div className="text-xs text-rose-400 font-mono font-medium flex items-center gap-1.5">
+                <AlertCircle className="h-3.5 w-3.5" />
+                <span>{inputError}</span>
               </div>
             )}
 
             <button
               type="button"
               onClick={handleAddCustomTestCase}
-              className="px-3 py-1 rounded border border-line bg-panel hover:bg-background text-xs text-ink-primary font-medium"
+              className="inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg border border-border bg-canvas hover:bg-panel text-xs text-slate-200 font-semibold hover:border-cyan-500/40 transition-colors"
             >
-              Add Input
+              <Plus className="h-3.5 w-3.5" />
+              <span>Add Vector to Test Corpus</span>
             </button>
           </div>
         </div>
       </div>
 
-      {/* Execution Control Action Bar */}
-      <div className="rounded border border-line bg-panel p-4 shadow-panel flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <span className="text-xs font-bold text-ink-primary block">
-            Step 3: Execute Differential Run
-          </span>
-          <p className="text-xs text-ink-secondary">
-            Executes {testCases.length} identical inputs across isolated zod@3.23.8 and zod@4.6.7 runners.
+      {/* Step 3: Execution Control Action Bar */}
+      <div className="rounded-2xl border border-cyan-500/40 bg-gradient-to-r from-panel via-canvas to-panel p-6 shadow-glow flex flex-col sm:flex-row sm:items-center justify-between gap-5">
+        <div className="space-y-1">
+          <div className="flex items-center space-x-2">
+            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-cyan-500/20 text-cyan-300 text-xs font-mono font-bold">
+              3
+            </span>
+            <span className="text-base font-bold text-white">
+              Launch Differential Execution Harness
+            </span>
+          </div>
+          <p className="text-sm text-slate-300">
+            Forks clean Node.js processes for <code className="text-emerald-400 font-mono">zod@3.23.8</code> and <code className="text-indigo-400 font-mono">zod@4.6.7</code>, streams all {testCases.length} inputs, and generates AST diffs.
           </p>
         </div>
 
@@ -287,21 +347,21 @@ export default function WorkspacePage() {
           type="button"
           onClick={handleRunAnalysis}
           disabled={isRunning}
-          className={`inline-flex items-center justify-center space-x-2 px-5 py-2.5 rounded text-xs font-bold transition-colors ${
+          className={`inline-flex items-center justify-center space-x-3 px-8 py-4 rounded-xl text-base font-bold transition-all shadow-glow ${
             isRunning
-              ? 'bg-line text-ink-muted cursor-not-allowed'
-              : 'bg-accent hover:bg-accent-hover text-white'
+              ? 'bg-border text-slate-400 cursor-not-allowed'
+              : 'bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 hover:from-cyan-400 hover:via-blue-500 hover:to-indigo-500 text-white hover:shadow-[0_0_35px_rgba(56,189,248,0.5)] transform hover:-translate-y-0.5'
           }`}
         >
           {isRunning ? (
             <>
-              <RefreshCw className="h-3.5 w-3.5 animate-spin" />
-              <span>{currentStep || 'Executing Sandboxes...'}</span>
+              <RefreshCw className="h-5 w-5 animate-spin text-cyan-300" />
+              <span>{currentStep || 'Executing Twin Sandboxes...'}</span>
             </>
           ) : (
             <>
-              <Play className="h-3.5 w-3.5 fill-current" />
-              <span>Run Differential Analysis ({testCases.length})</span>
+              <Play className="h-5 w-5 fill-current" />
+              <span>Run Analysis ({testCases.length} Vectors)</span>
             </>
           )}
         </button>

@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 :root {
-  --background: #F7F5F0;
-  --foreground: #292824;
+  --background: #07090e;
+  --foreground: #f8fafc;
 }
 
 body {
@@ -12,25 +12,50 @@ body {
   background: var(--background);
   font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
-/* Restrained, Clean Scrollbar */
+/* Futuristic Glowing Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 7px;
+  height: 7px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #F7F5F0;
+  background: #07090e;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #D9D4CB;
-  border-radius: 3px;
+  background: #1c263d;
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #BDB7AB;
+  background: #2b395b;
+}
+
+/* Gradient Text Shimmer Animation */
+@keyframes shimmer {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-shimmer {
+  background-size: 200% auto;
+  animation: shimmer 6s ease infinite;
+}
+
+/* Glassmorphism Panel */
+.glass-panel {
+  background: rgba(16, 22, 38, 0.75);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-panel-hover:hover {
+  border-color: rgba(56, 189, 248, 0.35);
+  box-shadow: 0 0 25px -5px rgba(56, 189, 248, 0.15);
 }
 
 pre, code {

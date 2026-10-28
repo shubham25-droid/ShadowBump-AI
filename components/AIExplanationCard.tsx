@@ -7,7 +7,10 @@ import {
   AlertCircle, 
   FileCode, 
   RefreshCw,
-  CheckCircle2
+  CheckCircle2,
+  Sparkles,
+  ShieldAlert,
+  ArrowRight
 } from 'lucide-react';
 
 interface AIExplanationCardProps {
@@ -20,25 +23,25 @@ export default function AIExplanationCard({ explanation, isLoading, onRefresh }:
   const getRiskBadge = (level: RiskLevel) => {
     switch (level) {
       case 'LOW':
-        return <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-status-success-bg text-status-success border border-status-success/30">LOW RISK</span>;
+        return <span className="px-3 py-0.5 rounded-full text-xs font-mono font-bold bg-emerald-950/60 text-emerald-400 border border-emerald-500/40">LOW RISK</span>;
       case 'MEDIUM':
-        return <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-status-warning-bg text-status-warning border border-status-warning/30">MEDIUM RISK</span>;
+        return <span className="px-3 py-0.5 rounded-full text-xs font-mono font-bold bg-amber-950/60 text-amber-400 border border-amber-500/40">MEDIUM RISK</span>;
       case 'HIGH':
-        return <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-status-error-bg text-status-error border border-status-error/30">HIGH RISK</span>;
+        return <span className="px-3 py-0.5 rounded-full text-xs font-mono font-bold bg-rose-950/60 text-rose-400 border border-rose-500/40 animate-pulse">HIGH RISK</span>;
       case 'CRITICAL':
-        return <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-status-error text-white">CRITICAL RISK</span>;
+        return <span className="px-3 py-0.5 rounded-full text-xs font-mono font-bold bg-rose-600 text-white shadow-[0_0_15px_rgba(244,63,94,0.6)] animate-pulse">CRITICAL RISK</span>;
     }
   };
 
   if (isLoading) {
     return (
-      <div className="rounded border border-line bg-panel p-4 shadow-panel space-y-2.5">
-        <div className="flex items-center space-x-2.5 text-xs text-ink-primary">
-          <RefreshCw className="h-3.5 w-3.5 animate-spin text-accent" />
-          <span className="font-semibold">Querying NVIDIA Nemotron-70B on Nebius...</span>
+      <div className="rounded-2xl border border-cyan-500/40 bg-panel/90 p-6 shadow-glow space-y-3">
+        <div className="flex items-center space-x-3 text-sm text-cyan-300">
+          <RefreshCw className="h-5 w-5 animate-spin text-cyan-400" />
+          <span className="font-bold text-white">Synthesizing Root Cause with NVIDIA Nemotron-70B on Nebius...</span>
         </div>
-        <p className="text-xs text-ink-secondary">
-          Synthesizing root cause from empirical diff evidence.
+        <p className="text-xs text-slate-300">
+          Feeding empirical AST diffs to Nebius Token Factory at temperature=0.1 for deterministic analysis.
         </p>
       </div>
     );
@@ -46,31 +49,34 @@ export default function AIExplanationCard({ explanation, isLoading, onRefresh }:
 
   if (!explanation) {
     return (
-      <div className="rounded border border-line bg-panel p-5 text-center shadow-panel">
-        <Cpu className="h-6 w-6 text-ink-muted mx-auto mb-1.5" />
-        <div className="text-xs font-bold text-ink-primary">
-          AI Explanation
+      <div className="rounded-2xl border border-border/80 bg-panel/70 p-8 text-center shadow-card space-y-2">
+        <Cpu className="h-8 w-8 text-slate-500 mx-auto" />
+        <div className="text-base font-bold text-white">
+          NVIDIA AI Root-Cause Synthesis
         </div>
-        <p className="text-[11px] text-ink-secondary mt-0.5 max-w-xs mx-auto">
-          Select any detected difference to generate an evidence-grounded explanation.
+        <p className="text-xs text-slate-400 max-w-sm mx-auto">
+          Select any detected difference above to synthesize an evidence-grounded root-cause explanation and migration diff.
         </p>
       </div>
     );
   }
 
   return (
-    <div className="rounded border border-line bg-panel shadow-panel overflow-hidden space-y-0 text-xs">
+    <div className="rounded-2xl border border-cyan-500/40 bg-panel/90 shadow-glow overflow-hidden space-y-0 text-sm">
       {/* Header */}
-      <div className="flex items-center justify-between p-3.5 bg-background border-b border-line">
-        <div>
-          <div className="flex items-center space-x-2">
-            <span className="font-bold text-ink-primary text-xs">
-              NVIDIA Nemotron Analysis
+      <div className="flex flex-wrap items-center justify-between p-4 sm:p-5 bg-gradient-to-r from-canvas via-panel to-canvas border-b border-border/80 gap-3">
+        <div className="space-y-1">
+          <div className="flex items-center space-x-3">
+            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-cyan-500/10 border border-cyan-500/30 text-cyan-400">
+              <Sparkles className="h-4 w-4" />
+            </div>
+            <span className="font-bold text-white text-base">
+              NVIDIA Nemotron Root Cause Synthesis
             </span>
             {getRiskBadge(explanation.riskLevel)}
           </div>
-          <div className="text-[10px] text-ink-secondary font-mono mt-0.5">
-            Nebius Token Factory • {explanation.modelUsed}
+          <div className="text-xs text-slate-400 font-mono">
+            Nebius Token Factory • <span className="text-cyan-400 font-semibold">{explanation.modelUsed}</span>
           </div>
         </div>
 
@@ -78,27 +84,27 @@ export default function AIExplanationCard({ explanation, isLoading, onRefresh }:
           <button
             type="button"
             onClick={onRefresh}
-            className="flex items-center space-x-1 px-2 py-1 text-[11px] font-mono rounded border border-line bg-panel hover:bg-background text-ink-secondary hover:text-ink-primary"
+            className="flex items-center space-x-1.5 px-3 py-1.5 text-xs font-mono rounded-lg border border-border bg-canvas hover:bg-panel text-slate-300 hover:text-white transition-colors"
           >
-            <RefreshCw className="h-3 w-3" />
+            <RefreshCw className="h-3.5 w-3.5 text-cyan-400" />
             <span>Re-analyze</span>
           </button>
         )}
       </div>
 
-      <div className="p-4 space-y-4">
+      <div className="p-5 sm:p-6 space-y-6">
         {/* Offline / Unavailable Notice */}
         {explanation.status !== 'SUCCESS' && (
-          <div className="p-3 rounded border border-status-warning/40 bg-status-warning-bg text-status-warning text-xs space-y-1">
-            <div className="flex items-start space-x-1.5">
-              <AlertCircle className="h-3.5 w-3.5 shrink-0 mt-0.5" />
+          <div className="p-4 rounded-xl border border-amber-500/40 bg-amber-950/20 text-amber-300 text-xs sm:text-sm space-y-1.5">
+            <div className="flex items-start space-x-2">
+              <AlertCircle className="h-4 w-4 shrink-0 mt-0.5 text-amber-400" />
               <div>
-                <strong className="block">Deterministic Mode Active</strong>
-                <p className="text-[11px] text-ink-primary leading-relaxed">
+                <strong className="block text-white font-bold">Deterministic Fallback Mode Active</strong>
+                <p className="text-slate-300 leading-relaxed text-xs">
                   {explanation.errorNotice || explanation.rootCause}
                 </p>
-                <div className="mt-1 font-mono text-[10px] text-ink-secondary">
-                  To enable live NVIDIA Nemotron synthesis, configure NEBIUS_API_KEY in .env.local.
+                <div className="mt-2 font-mono text-[11px] text-slate-400">
+                  Tip: Supply <code className="text-cyan-400">NEBIUS_API_KEY</code> in environment variables to enable live Nebius Token Factory inference.
                 </div>
               </div>
             </div>
@@ -106,50 +112,50 @@ export default function AIExplanationCard({ explanation, isLoading, onRefresh }:
         )}
 
         {/* 1. Observed Facts */}
-        <div>
-          <span className="text-[10px] font-bold text-ink-secondary uppercase tracking-wider block mb-1">
-            1. Observed Facts
+        <div className="space-y-2">
+          <span className="text-xs font-mono font-bold text-cyan-400 uppercase tracking-wider block">
+            1. Observed Differential Evidence
           </span>
-          <p className="text-ink-primary leading-relaxed">
+          <p className="text-slate-200 leading-relaxed text-sm bg-[#05070c] p-3.5 rounded-xl border border-border">
             {explanation.summary}
           </p>
         </div>
 
-        {/* 2. Possible Implications */}
-        <div>
-          <span className="text-[10px] font-bold text-ink-secondary uppercase tracking-wider block mb-1">
-            2. Possible Implications & Root Cause
+        {/* 2. Possible Implications & Root Cause */}
+        <div className="space-y-2">
+          <span className="text-xs font-mono font-bold text-cyan-400 uppercase tracking-wider block">
+            2. Root Cause & Architectural Blast Radius
           </span>
-          <p className="text-ink-secondary leading-relaxed mb-2">
+          <p className="text-slate-300 leading-relaxed text-sm">
             {explanation.rootCause}
           </p>
-          <div className="p-2.5 rounded border border-line bg-background text-[11px]">
-            <span className="font-semibold text-ink-primary block mb-0.5">Blast Radius:</span>
-            <span className="text-ink-secondary">{explanation.blastRadius}</span>
+          <div className="p-3.5 rounded-xl border border-border/80 bg-canvas text-xs space-y-1">
+            <span className="font-bold text-white block uppercase tracking-wide">Blast Radius Assessment:</span>
+            <span className="text-slate-300 block">{explanation.blastRadius}</span>
           </div>
         </div>
 
-        {/* 3. Suggested Follow-Up Tests & Migration Fix */}
-        <div>
-          <span className="text-[10px] font-bold text-ink-secondary uppercase tracking-wider block mb-1.5 flex items-center gap-1">
-            <FileCode className="h-3 w-3 text-accent" />
-            3. Migration Fix & Follow-up Tests
+        {/* 3. Migration Fix & Before/After Code Diff */}
+        <div className="space-y-3">
+          <span className="text-xs font-mono font-bold text-cyan-400 uppercase tracking-wider flex items-center gap-1.5">
+            <FileCode className="h-4 w-4 text-cyan-400" />
+            3. Recommended Code Migration Fix
           </span>
 
           {explanation.codeDiff && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 font-mono text-[11px] mb-2">
-              <div className="p-2.5 rounded border border-status-error/30 bg-status-error-bg/30">
-                <span className="text-status-error font-bold block mb-1">// Old Syntax (v3)</span>
-                <pre className="text-ink-primary whitespace-pre-wrap">{explanation.codeDiff.before}</pre>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 font-mono text-xs">
+              <div className="p-3.5 rounded-xl border border-rose-500/30 bg-rose-950/20 space-y-1.5">
+                <span className="text-rose-400 font-bold block">// Deprecated / Non-Compliant (v3 Syntax)</span>
+                <pre className="text-slate-200 whitespace-pre-wrap leading-relaxed">{explanation.codeDiff.before}</pre>
               </div>
-              <div className="p-2.5 rounded border border-status-success/30 bg-status-success-bg/30">
-                <span className="text-status-success font-bold block mb-1">// Compliant Syntax (v4)</span>
-                <pre className="text-ink-primary whitespace-pre-wrap">{explanation.codeDiff.after}</pre>
+              <div className="p-3.5 rounded-xl border border-emerald-500/30 bg-emerald-950/20 space-y-1.5">
+                <span className="text-emerald-400 font-bold block">// Modern Compliant (v4 Syntax)</span>
+                <pre className="text-slate-200 whitespace-pre-wrap leading-relaxed">{explanation.codeDiff.after}</pre>
               </div>
             </div>
           )}
 
-          <p className="text-[11px] text-ink-secondary leading-relaxed">
+          <p className="text-xs text-slate-300 leading-relaxed bg-[#05070c] p-3.5 rounded-xl border border-border">
             {explanation.recommendedFix}
           </p>
         </div>

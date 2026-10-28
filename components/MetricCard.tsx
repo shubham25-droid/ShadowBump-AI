@@ -20,33 +20,43 @@ export default function MetricCard({
     switch (variant) {
       case 'match':
         return {
-          border: 'border-line',
-          text: 'text-status-success',
-          iconBg: 'bg-status-success-bg text-status-success'
+          border: 'border-emerald-500/30 hover:border-emerald-500/50',
+          gradient: 'from-emerald-950/20 via-panel to-panel',
+          text: 'text-emerald-400',
+          iconBg: 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30',
+          glow: 'hover:shadow-[0_0_20px_rgba(16,185,129,0.15)]'
         };
       case 'diff':
         return {
-          border: 'border-line',
-          text: 'text-status-warning',
-          iconBg: 'bg-status-warning-bg text-status-warning'
+          border: 'border-amber-500/30 hover:border-amber-500/50',
+          gradient: 'from-amber-950/20 via-panel to-panel',
+          text: 'text-amber-400',
+          iconBg: 'bg-amber-500/10 text-amber-400 border border-amber-500/30',
+          glow: 'hover:shadow-[0_0_20px_rgba(245,158,11,0.15)]'
         };
       case 'regression':
         return {
-          border: 'border-status-error/40',
-          text: 'text-status-error',
-          iconBg: 'bg-status-error-bg text-status-error'
+          border: 'border-rose-500/40 hover:border-rose-500/60',
+          gradient: 'from-rose-950/20 via-panel to-panel',
+          text: 'text-rose-400',
+          iconBg: 'bg-rose-500/10 text-rose-400 border border-rose-500/30',
+          glow: 'hover:shadow-[0_0_20px_rgba(244,63,94,0.2)]'
         };
       case 'brand':
         return {
-          border: 'border-line',
-          text: 'text-accent',
-          iconBg: 'bg-accent-subtle text-accent'
+          border: 'border-cyan-500/40 hover:border-cyan-500/60',
+          gradient: 'from-cyan-950/20 via-panel to-panel',
+          text: 'text-cyan-400',
+          iconBg: 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/30',
+          glow: 'hover:shadow-[0_0_20px_rgba(0,242,254,0.2)]'
         };
       default:
         return {
-          border: 'border-line',
-          text: 'text-ink-primary',
-          iconBg: 'bg-background text-ink-secondary'
+          border: 'border-border/80 hover:border-slate-600',
+          gradient: 'from-canvas via-panel to-panel',
+          text: 'text-white',
+          iconBg: 'bg-canvas text-slate-400 border border-border',
+          glow: 'hover:shadow-card'
         };
     }
   };
@@ -54,24 +64,22 @@ export default function MetricCard({
   const styles = getVariantStyles();
 
   return (
-    <div className={`p-3.5 rounded border ${styles.border} bg-panel shadow-panel transition-colors`}>
-      <div className="flex items-center justify-between mb-1.5">
-        <span className="text-[10px] font-bold text-ink-secondary uppercase tracking-wider">
+    <div className={`p-4 sm:p-5 rounded-2xl border ${styles.border} bg-gradient-to-b ${styles.gradient} shadow-panel transition-all ${styles.glow}`}>
+      <div className="flex items-center justify-between mb-2">
+        <span className="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider">
           {label}
         </span>
-        <div className={`h-6 w-6 rounded flex items-center justify-center ${styles.iconBg}`}>
-          <Icon className="h-3 w-3" />
+        <div className={`p-2 rounded-xl ${styles.iconBg}`}>
+          <Icon className="h-4 w-4" />
         </div>
       </div>
-      <div className="flex items-baseline space-x-1.5">
-        <span className={`text-xl font-bold font-mono ${styles.text}`}>
-          {value}
-        </span>
+      <div className={`text-3xl sm:text-4xl font-extrabold font-mono tracking-tight ${styles.text}`}>
+        {value}
       </div>
       {subtext && (
-        <span className="text-[11px] text-ink-secondary block mt-0.5 truncate">
+        <div className="text-xs text-slate-300 mt-1.5 font-medium">
           {subtext}
-        </span>
+        </div>
       )}
     </div>
   );

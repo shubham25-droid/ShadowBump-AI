@@ -22,7 +22,9 @@ import {
   ArrowLeft, 
   RefreshCw,
   ShieldAlert,
-  ShieldCheck
+  ShieldCheck,
+  Sparkles,
+  Zap
 } from 'lucide-react';
 
 export default function ResultsPage() {
@@ -129,13 +131,13 @@ export default function ResultsPage() {
 
   if (isLoadingDefault) {
     return (
-      <div className="max-w-4xl mx-auto px-4 py-20 text-center space-y-3">
-        <RefreshCw className="h-6 w-6 text-accent animate-spin mx-auto" />
-        <h2 className="text-sm font-bold text-ink-primary">
+      <div className="max-w-4xl mx-auto px-4 py-24 text-center space-y-4">
+        <RefreshCw className="h-8 w-8 text-cyan-400 animate-spin mx-auto" />
+        <h2 className="text-xl font-bold text-white">
           Executing Differential Comparison...
         </h2>
-        <p className="text-xs text-ink-secondary">
-          Testing zod@3.23.8 vs zod@4.6.7 in parallel sandboxes.
+        <p className="text-sm text-slate-300">
+          Running twin Node.js subprocesses for <code className="text-emerald-400 font-mono">zod@3.23.8</code> vs <code className="text-rose-400 font-mono">zod@4.6.7</code> in parallel.
         </p>
       </div>
     );
@@ -143,16 +145,19 @@ export default function ResultsPage() {
 
   if (!analysisData) {
     return (
-      <div className="max-w-4xl mx-auto px-4 py-20 text-center space-y-3">
-        <AlertTriangle className="h-6 w-6 text-status-warning mx-auto" />
-        <h2 className="text-sm font-bold text-ink-primary">
-          No Active Analysis Session
+      <div className="max-w-4xl mx-auto px-4 py-24 text-center space-y-4">
+        <AlertTriangle className="h-10 w-10 text-amber-400 mx-auto" />
+        <h2 className="text-xl font-bold text-white">
+          No Active Analysis Session Found
         </h2>
+        <p className="text-sm text-slate-300">
+          Return to workspace to execute a verified dependency migration scenario.
+        </p>
         <Link
           href="/workspace"
-          className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded bg-accent hover:bg-accent-hover text-white text-xs font-semibold"
+          className="inline-flex items-center space-x-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-sm font-bold shadow-glow"
         >
-          <span>Open Workspace</span>
+          <span>Open Analysis Workspace</span>
         </Link>
       </div>
     );
@@ -164,29 +169,41 @@ export default function ResultsPage() {
   const getOverallState = () => {
     if (summary.executionErrors > 0) {
       return {
-        label: 'Inconclusive Execution',
-        description: 'One or more execution environments failed or timed out.',
-        style: 'bg-background border-line text-ink-primary'
+        label: 'Inconclusive Execution (Subprocess Crash)',
+        description: 'One or more execution environments failed or timed out during the differential run.',
+        border: 'border-border/80',
+        bg: 'bg-canvas',
+        textColor: 'text-slate-200',
+        badgeBg: 'bg-border text-slate-300'
       };
     }
     if (summary.potentialRegressions > 0) {
       return {
-        label: 'Potential Regression Detected',
-        description: `${summary.potentialRegressions} input vector(s) broke existing behavioral contracts or dropped error interfaces.`,
-        style: 'bg-status-error-bg text-status-error border-status-error/30'
+        label: 'Potential Regression Detected (Silent Contract Break)',
+        description: `${summary.potentialRegressions} input vector(s) broke existing behavioral contracts, altered exception interfaces, or dropped custom error messages.`,
+        border: 'border-rose-500/50',
+        bg: 'bg-gradient-to-r from-rose-950/40 via-panel to-panel',
+        textColor: 'text-rose-300',
+        badgeBg: 'bg-rose-500/20 text-rose-300 border border-rose-500/40 animate-pulse'
       };
     }
     if (summary.behavioralDifferences > 0) {
       return {
-        label: 'Behavioral Difference Detected',
+        label: 'Behavioral Difference Detected (Observable Mutation)',
         description: `${summary.behavioralDifferences} input vector(s) produced observable output differences without confirmed regression.`,
-        style: 'bg-status-warning-bg text-status-warning border-status-warning/30'
+        border: 'border-amber-500/50',
+        bg: 'bg-gradient-to-r from-amber-950/40 via-panel to-panel',
+        textColor: 'text-amber-300',
+        badgeBg: 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
       };
     }
     return {
       label: 'No Difference Observed in Tested Inputs',
-      description: `All ${summary.totalInputs} test inputs produced identical outputs. Note: Does not establish full correctness on untested inputs.`,
-      style: 'bg-status-success-bg text-status-success border-status-success/30'
+      description: `All ${summary.totalInputs} test inputs produced identical outputs across both versions. Note: Does not prove equivalence on untested inputs.`,
+      border: 'border-emerald-500/50',
+      bg: 'bg-gradient-to-r from-emerald-950/40 via-panel to-panel',
+      textColor: 'text-emerald-300',
+      badgeBg: 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
     };
   };
 
@@ -198,81 +215,83 @@ export default function ResultsPage() {
   });
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10 space-y-6">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 space-y-8">
       {/* Navigation & Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-line gap-3">
+      <div className="flex flex-col md:flex-row md:items-center justify-between pb-6 border-b border-border/80 gap-4">
         <div>
           <Link
             href="/workspace"
-            className="inline-flex items-center space-x-1 text-xs text-ink-secondary hover:text-ink-primary mb-1.5 font-medium"
+            className="inline-flex items-center space-x-1.5 text-xs font-mono text-cyan-400 hover:text-cyan-300 mb-2 font-semibold"
           >
-            <ArrowLeft className="h-3 w-3" />
-            <span>Workspace</span>
+            <ArrowLeft className="h-3.5 w-3.5" />
+            <span>Return to Workspace</span>
           </Link>
 
-          <h1 className="text-xl font-bold text-ink-primary">
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
             {summary.scenarioTitle}
           </h1>
 
-          <div className="flex items-center space-x-2 text-xs font-mono text-ink-secondary mt-0.5">
-            <span>Dependency: <strong className="text-ink-primary">{summary.dependencyName}</strong></span>
+          <div className="flex flex-wrap items-center gap-3 text-xs font-mono text-slate-300 mt-1.5">
+            <span>Dependency: <strong className="text-white font-bold">{summary.dependencyName}</strong></span>
             <span>•</span>
-            <span className="text-status-success font-semibold">{summary.oldVersion}</span>
-            <span>→</span>
-            <span className="text-accent font-semibold">{summary.newVersion}</span>
+            <span className="text-emerald-400 font-semibold">{summary.oldVersion} (Baseline)</span>
+            <span>➔</span>
+            <span className="text-rose-400 font-semibold">{summary.newVersion} (Candidate)</span>
           </div>
         </div>
 
         <button
           type="button"
           onClick={runDefaultAnalysis}
-          className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded border border-line bg-panel hover:bg-background text-xs text-ink-primary font-medium shadow-panel"
+          className="inline-flex items-center space-x-2 px-4 py-2 rounded-xl border border-border bg-panel hover:bg-panelHover text-xs font-mono text-slate-200 transition-colors shadow-sm"
         >
-          <RefreshCw className="h-3 w-3" />
-          <span>Re-execute</span>
+          <RefreshCw className="h-3.5 w-3.5 text-cyan-400" />
+          <span>Re-execute Sandboxes</span>
         </button>
       </div>
 
       {/* A. Overall Result State Banner */}
-      <div className={`p-4 rounded border ${overallState.style} shadow-panel`}>
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-          <div>
-            <span className="text-[10px] font-mono font-bold uppercase tracking-wider block">
-              Overall Result State
-            </span>
-            <h2 className="text-base font-bold mt-0.5">
-              {overallState.label}
-            </h2>
-            <p className="text-xs opacity-90 mt-0.5">
+      <div className={`p-5 sm:p-6 rounded-2xl border ${overallState.border} ${overallState.bg} shadow-glow`}>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="space-y-1">
+            <div className="flex items-center space-x-2">
+              <span className={`text-xs font-mono font-bold px-2.5 py-0.5 rounded-full ${overallState.badgeBg}`}>
+                VERDICT
+              </span>
+              <h2 className="text-lg sm:text-xl font-bold text-white">
+                {overallState.label}
+              </h2>
+            </div>
+            <p className="text-sm text-slate-300 leading-relaxed">
               {overallState.description}
             </p>
           </div>
-          <span className="text-[11px] font-mono opacity-75">
-            {summary.totalInputs} total inputs tested ({summary.totalExecutionTimeMs}ms)
-          </span>
+          <div className="text-xs font-mono text-slate-400 whitespace-nowrap">
+            {summary.totalInputs} vectors tested ({summary.totalExecutionTimeMs}ms total)
+          </div>
         </div>
       </div>
 
       {/* Metrics Row */}
-      <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-3.5">
         <MetricCard
           label="Total Inputs"
           value={summary.totalInputs}
-          subtext="Tested concurrently"
+          subtext="Concurrently executed"
           icon={Layers}
           variant="brand"
         />
         <MetricCard
-          label="Matches"
+          label="Identical Matches"
           value={summary.matches}
-          subtext="Identical outcome"
+          subtext="Equivalent output"
           icon={CheckCircle2}
           variant="match"
         />
         <MetricCard
           label="Differences"
           value={summary.behavioralDifferences}
-          subtext="Observable changes"
+          subtext="Observable mutations"
           icon={AlertTriangle}
           variant="diff"
         />
@@ -292,24 +311,24 @@ export default function ResultsPage() {
         />
       </div>
 
-      {/* Main Grid: Evidence Diff List & AI Explanation */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+      {/* Main Grid: Evidence Diff List (7 cols) & AI Explanation (5 cols) */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left: Evidence (7 cols) */}
-        <div className="lg:col-span-7 space-y-3">
+        <div className="lg:col-span-7 space-y-4">
           {/* Filter Bar */}
-          <div className="flex items-center justify-between pb-2 border-b border-line">
-            <span className="text-xs font-bold text-ink-primary uppercase tracking-wider">
+          <div className="flex flex-wrap items-center justify-between pb-3 border-b border-border/80 gap-2">
+            <span className="text-xs font-mono font-bold text-slate-200 uppercase tracking-wider">
               Empirical Evidence ({filteredDifferences.length})
             </span>
 
-            <div className="flex items-center space-x-1 text-xs">
+            <div className="flex items-center space-x-1.5 text-xs font-mono">
               <button
                 type="button"
                 onClick={() => setSelectedFilter('ALL')}
-                className={`px-2 py-0.5 rounded text-[11px] font-medium ${
+                className={`px-3 py-1 rounded-lg transition-colors ${
                   selectedFilter === 'ALL'
-                    ? 'bg-line text-ink-primary font-bold'
-                    : 'text-ink-secondary hover:text-ink-primary'
+                    ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 font-bold'
+                    : 'text-slate-400 hover:text-white'
                 }`}
               >
                 All ({differences.length})
@@ -317,10 +336,10 @@ export default function ResultsPage() {
               <button
                 type="button"
                 onClick={() => setSelectedFilter('POTENTIAL_REGRESSION')}
-                className={`px-2 py-0.5 rounded text-[11px] font-medium ${
+                className={`px-3 py-1 rounded-lg transition-colors ${
                   selectedFilter === 'POTENTIAL_REGRESSION'
-                    ? 'bg-status-error-bg text-status-error font-bold'
-                    : 'text-ink-secondary hover:text-status-error'
+                    ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40 font-bold'
+                    : 'text-slate-400 hover:text-rose-400'
                 }`}
               >
                 Regressions ({summary.potentialRegressions})
@@ -328,10 +347,10 @@ export default function ResultsPage() {
               <button
                 type="button"
                 onClick={() => setSelectedFilter('MATCH')}
-                className={`px-2 py-0.5 rounded text-[11px] font-medium ${
+                className={`px-3 py-1 rounded-lg transition-colors ${
                   selectedFilter === 'MATCH'
-                    ? 'bg-status-success-bg text-status-success font-bold'
-                    : 'text-ink-secondary hover:text-status-success'
+                    ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-bold'
+                    : 'text-slate-400 hover:text-emerald-400'
                 }`}
               >
                 Matches ({summary.matches})
@@ -340,11 +359,11 @@ export default function ResultsPage() {
           </div>
 
           {/* Diff Cards */}
-          <div className="space-y-3">
+          <div className="space-y-4">
             {filteredDifferences.map((item) => {
               const isSelectedForAi = selectedDiffItem?.id === item.id;
               return (
-                <div key={item.id} className="space-y-1">
+                <div key={item.id} className="space-y-2">
                   <DiffViewer
                     item={item}
                     scenarioTitle={summary.scenarioTitle}
@@ -355,14 +374,14 @@ export default function ResultsPage() {
                       <button
                         type="button"
                         onClick={() => handleSelectDiffForAi(item)}
-                        className={`text-[10px] font-mono px-2 py-0.5 rounded border transition-colors flex items-center space-x-1 ${
+                        className={`text-xs font-mono px-3 py-1.5 rounded-lg border transition-all flex items-center space-x-2 ${
                           isSelectedForAi
-                            ? 'bg-accent-subtle border-accent text-accent font-bold'
-                            : 'border-line bg-panel text-ink-secondary hover:text-ink-primary hover:bg-background'
+                            ? 'bg-cyan-500/20 border-cyan-500 text-cyan-300 font-bold shadow-glow'
+                            : 'border-border bg-panel text-slate-300 hover:text-white hover:border-cyan-500/40'
                         }`}
                       >
-                        <Cpu className="h-3 w-3 text-accent" />
-                        <span>{isSelectedForAi ? 'Selected for AI' : 'Explain with NVIDIA Nemotron'}</span>
+                        <Cpu className="h-3.5 w-3.5 text-cyan-400" />
+                        <span>{isSelectedForAi ? 'Analyzed by NVIDIA AI' : 'Explain with NVIDIA Nemotron'}</span>
                       </button>
                     </div>
                   )}
@@ -372,9 +391,9 @@ export default function ResultsPage() {
           </div>
         </div>
 
-        {/* Right: AI Synthesis & Next Steps (5 cols) */}
-        <div className="lg:col-span-5 space-y-4">
-          <div className="sticky top-20 space-y-4">
+        {/* Right: AI Synthesis & Developer Checklist (5 cols) */}
+        <div className="lg:col-span-5 space-y-5">
+          <div className="sticky top-20 space-y-5">
             <AIExplanationCard
               explanation={aiExplanation}
               isLoading={isAiLoading}
@@ -382,23 +401,23 @@ export default function ResultsPage() {
             />
 
             {/* Developer Checklist */}
-            <div className="rounded border border-line bg-panel p-4 shadow-panel space-y-2">
-              <span className="text-xs font-bold text-ink-primary uppercase tracking-wider flex items-center gap-1.5">
-                <ShieldCheck className="h-3.5 w-3.5 text-status-success" />
-                Developer Review Checklist
+            <div className="rounded-2xl border border-border/80 bg-panel/90 p-5 shadow-panel space-y-3">
+              <span className="text-xs font-mono font-bold text-slate-200 uppercase tracking-wider flex items-center gap-2">
+                <ShieldCheck className="h-4 w-4 text-emerald-400" />
+                Developer Remediation Checklist
               </span>
-              <ul className="space-y-1.5 text-xs text-ink-secondary">
-                <li className="flex items-start space-x-1.5">
-                  <span className="font-mono text-accent font-bold">1.</span>
-                  <span>Migrate any <code className="text-status-error font-mono">error.errors</code> property access to <code className="text-status-success font-mono">error.issues</code>.</span>
+              <ul className="space-y-2 text-xs text-slate-300 leading-relaxed">
+                <li className="flex items-start space-x-2">
+                  <span className="font-mono text-cyan-400 font-bold">1.</span>
+                  <span>Migrate any <code className="text-rose-400 font-mono">error.errors</code> property access to <code className="text-emerald-400 font-mono">error.issues</code> across repository.</span>
                 </li>
-                <li className="flex items-start space-x-1.5">
-                  <span className="font-mono text-accent font-bold">2.</span>
-                  <span>Replace <code className="font-mono text-status-warning">required_error</code> with the unified <code className="font-mono text-status-success">error</code> callback.</span>
+                <li className="flex items-start space-x-2">
+                  <span className="font-mono text-cyan-400 font-bold">2.</span>
+                  <span>Replace deprecated <code className="font-mono text-amber-300">{`{ required_error }`}</code> with modern Zod v4 custom error functions.</span>
                 </li>
-                <li className="flex items-start space-x-1.5">
-                  <span className="font-mono text-accent font-bold">3.</span>
-                  <span>Run reproduction code locally in terminal to verify fixes.</span>
+                <li className="flex items-start space-x-2">
+                  <span className="font-mono text-cyan-400 font-bold">3.</span>
+                  <span>Run reproduction code snippet locally in terminal to verify regression remediation before merging.</span>
                 </li>
               </ul>
             </div>
