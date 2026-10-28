@@ -20,38 +20,33 @@ export default function MetricCard({
     switch (variant) {
       case 'match':
         return {
-          border: 'border-emerald-200',
-          bg: 'bg-emerald-50/40',
-          text: 'text-emerald-700',
-          iconBg: 'bg-emerald-100 text-emerald-700'
+          border: 'border-line',
+          text: 'text-status-success',
+          iconBg: 'bg-status-success-bg text-status-success'
         };
       case 'diff':
         return {
-          border: 'border-amber-200',
-          bg: 'bg-amber-50/40',
-          text: 'text-amber-700',
-          iconBg: 'bg-amber-100 text-amber-700'
+          border: 'border-line',
+          text: 'text-status-warning',
+          iconBg: 'bg-status-warning-bg text-status-warning'
         };
       case 'regression':
         return {
-          border: 'border-rose-200',
-          bg: 'bg-rose-50/40',
-          text: 'text-rose-700',
-          iconBg: 'bg-rose-100 text-rose-700'
+          border: 'border-status-error/40',
+          text: 'text-status-error',
+          iconBg: 'bg-status-error-bg text-status-error'
         };
       case 'brand':
         return {
-          border: 'border-sky-200',
-          bg: 'bg-sky-50/40',
-          text: 'text-sky-700',
-          iconBg: 'bg-sky-100 text-sky-700'
+          border: 'border-line',
+          text: 'text-accent',
+          iconBg: 'bg-accent-subtle text-accent'
         };
       default:
         return {
-          border: 'border-slate-200',
-          bg: 'bg-white',
-          text: 'text-slate-900',
-          iconBg: 'bg-slate-100 text-slate-700'
+          border: 'border-line',
+          text: 'text-ink-primary',
+          iconBg: 'bg-background text-ink-secondary'
         };
     }
   };
@@ -59,22 +54,22 @@ export default function MetricCard({
   const styles = getVariantStyles();
 
   return (
-    <div className={`p-4 rounded-xl border ${styles.border} ${styles.bg} shadow-xs transition-all`}>
-      <div className="flex items-center justify-between mb-2">
-        <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+    <div className={`p-3.5 rounded border ${styles.border} bg-panel shadow-panel transition-colors`}>
+      <div className="flex items-center justify-between mb-1.5">
+        <span className="text-[10px] font-bold text-ink-secondary uppercase tracking-wider">
           {label}
         </span>
-        <div className={`h-7 w-7 rounded-lg flex items-center justify-center ${styles.iconBg}`}>
-          <Icon className="h-3.5 w-3.5" />
+        <div className={`h-6 w-6 rounded flex items-center justify-center ${styles.iconBg}`}>
+          <Icon className="h-3 w-3" />
         </div>
       </div>
-      <div className="flex items-baseline space-x-2">
-        <span className={`text-2xl font-extrabold font-mono ${styles.text}`}>
+      <div className="flex items-baseline space-x-1.5">
+        <span className={`text-xl font-bold font-mono ${styles.text}`}>
           {value}
         </span>
       </div>
       {subtext && (
-        <span className="text-[11px] text-slate-500 block mt-0.5 font-medium">
+        <span className="text-[11px] text-ink-secondary block mt-0.5 truncate">
           {subtext}
         </span>
       )}

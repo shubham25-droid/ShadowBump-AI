@@ -12,7 +12,6 @@ import {
 import MetricCard from '@/components/MetricCard';
 import DiffViewer from '@/components/DiffViewer';
 import AIExplanationCard from '@/components/AIExplanationCard';
-import { BrandSymbol } from '@/components/BrandLogo';
 import { 
   Layers, 
   CheckCircle2, 
@@ -21,9 +20,9 @@ import {
   Clock, 
   Cpu, 
   ArrowLeft, 
-  RefreshCw, 
-  ShieldCheck,
-  FileCode2
+  RefreshCw,
+  ShieldAlert,
+  ShieldCheck
 } from 'lucide-react';
 
 export default function ResultsPage() {
@@ -101,7 +100,7 @@ export default function ResultsPage() {
       });
 
       if (!res.ok) {
-        throw new Error(`AI explanation request failed with status ${res.status}`);
+        throw new Error(`AI request error: ${res.status}`);
       }
 
       const explanation: AIExplanationResult = await res.json();
@@ -112,11 +111,11 @@ export default function ResultsPage() {
         modelUsed: 'nvidia/Llama-3.1-Nemotron-70B-Instruct-HF',
         provider: 'Nebius Token Factory',
         timestamp: new Date().toISOString(),
-        summary: 'Failed to contact Nebius Token Factory.',
+        summary: 'Nebius API request was not completed.',
         rootCause: err.message,
         riskLevel: 'MEDIUM',
-        blastRadius: 'Indeterminate',
-        recommendedFix: 'Verify network connection or NEBIUS_API_KEY in .env.local.'
+        blastRadius: 'Unable to evaluate remotely.',
+        recommendedFix: 'Review the deterministic side-by-side diff.'
       });
     } finally {
       setIsAiLoading(false);
@@ -131,11 +130,11 @@ export default function ResultsPage() {
   if (isLoadingDefault) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-20 text-center space-y-3">
-        <BrandSymbol size={40} className="mx-auto animate-pulse" />
-        <h2 className="text-base font-bold text-slate-800">
-          Running Differential Analysis...
+        <RefreshCw className="h-6 w-6 text-accent animate-spin mx-auto" />
+        <h2 className="text-sm font-bold text-ink-primary">
+          Executing Differential Comparison...
         </h2>
-        <p className="text-xs text-slate-500">
+        <p className="text-xs text-ink-secondary">
           Testing zod@3.23.8 vs zod@4.6.7 in parallel sandboxes.
         </p>
       </div>
@@ -145,13 +144,13 @@ export default function ResultsPage() {
   if (!analysisData) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-20 text-center space-y-3">
-        <AlertTriangle className="h-7 w-7 text-amber-500 mx-auto" />
-        <h2 className="text-base font-bold text-slate-800">
-          No Active Session
+        <AlertTriangle className="h-6 w-6 text-status-warning mx-auto" />
+        <h2 className="text-sm font-bold text-ink-primary">
+          No Active Analysis Session
         </h2>
         <Link
           href="/workspace"
-          className="inline-flex items-center space-x-2 px-4 py-2 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs font-semibold"
+          className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded bg-accent hover:bg-accent-hover text-white text-xs font-semibold"
         >
           <span>Open Workspace</span>
         </Link>
@@ -161,45 +160,97 @@ export default function ResultsPage() {
 
   const { summary, differences } = analysisData;
 
+  // Determine Overall Result State (Section 7A)
+  const getOverallState = () => {
+    if (summary.executionErrors > 0) {
+      return {
+        label: 'Inconclusive Execution',
+        description: 'One or more execution environments failed or timed out.',
+        style: 'bg-background border-line text-ink-primary'
+      };
+    }
+    if (summary.potentialRegressions > 0) {
+      return {
+        label: 'Potential Regression Detected',
+        description: `${summary.potentialRegressions} input vector(s) broke existing behavioral contracts or dropped error interfaces.`,
+        style: 'bg-status-error-bg text-status-error border-status-error/30'
+      };
+    }
+    if (summary.behavioralDifferences > 0) {
+      return {
+        label: 'Behavioral Difference Detected',
+        description: `${summary.behavioralDifferences} input vector(s) produced observable output differences without confirmed regression.`,
+        style: 'bg-status-warning-bg text-status-warning border-status-warning/30'
+      };
+    }
+    return {
+      label: 'No Difference Observed in Tested Inputs',
+      description: `All ${summary.totalInputs} test inputs produced identical outputs. Note: Does not establish full correctness on untested inputs.`,
+      style: 'bg-status-success-bg text-status-success border-status-success/30'
+    };
+  };
+
+  const overallState = getOverallState();
+
   const filteredDifferences = differences.filter(d => {
     if (selectedFilter === 'ALL') return true;
     return d.classification === selectedFilter;
   });
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-5">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10 space-y-6">
+      {/* Navigation & Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-line gap-3">
         <div>
           <Link
             href="/workspace"
-            className="inline-flex items-center space-x-1 text-xs text-slate-500 hover:text-slate-800 mb-1.5 font-medium"
+            className="inline-flex items-center space-x-1 text-xs text-ink-secondary hover:text-ink-primary mb-1.5 font-medium"
           >
             <ArrowLeft className="h-3 w-3" />
             <span>Workspace</span>
           </Link>
 
-          <h1 className="text-2xl font-bold text-slate-900">
+          <h1 className="text-xl font-bold text-ink-primary">
             {summary.scenarioTitle}
           </h1>
 
-          <div className="flex items-center space-x-2 text-xs font-mono text-slate-500 mt-1">
-            <span>Target: <strong className="text-slate-700">{summary.dependencyName}</strong></span>
+          <div className="flex items-center space-x-2 text-xs font-mono text-ink-secondary mt-0.5">
+            <span>Dependency: <strong className="text-ink-primary">{summary.dependencyName}</strong></span>
             <span>•</span>
-            <span className="text-emerald-700 font-semibold">{summary.oldVersion}</span>
+            <span className="text-status-success font-semibold">{summary.oldVersion}</span>
             <span>→</span>
-            <span className="text-violet-700 font-semibold">{summary.newVersion}</span>
+            <span className="text-accent font-semibold">{summary.newVersion}</span>
           </div>
         </div>
 
         <button
           type="button"
           onClick={runDefaultAnalysis}
-          className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-xs text-slate-700 font-medium transition-colors shadow-xs"
+          className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded border border-line bg-panel hover:bg-background text-xs text-ink-primary font-medium shadow-panel"
         >
-          <RefreshCw className="h-3.5 w-3.5" />
-          <span>Re-run Analysis</span>
+          <RefreshCw className="h-3 w-3" />
+          <span>Re-execute</span>
         </button>
+      </div>
+
+      {/* A. Overall Result State Banner */}
+      <div className={`p-4 rounded border ${overallState.style} shadow-panel`}>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div>
+            <span className="text-[10px] font-mono font-bold uppercase tracking-wider block">
+              Overall Result State
+            </span>
+            <h2 className="text-base font-bold mt-0.5">
+              {overallState.label}
+            </h2>
+            <p className="text-xs opacity-90 mt-0.5">
+              {overallState.description}
+            </p>
+          </div>
+          <span className="text-[11px] font-mono opacity-75">
+            {summary.totalInputs} total inputs tested ({summary.totalExecutionTimeMs}ms)
+          </span>
+        </div>
       </div>
 
       {/* Metrics Row */}
@@ -207,19 +258,19 @@ export default function ResultsPage() {
         <MetricCard
           label="Total Inputs"
           value={summary.totalInputs}
-          subtext="Executed concurrently"
+          subtext="Tested concurrently"
           icon={Layers}
           variant="brand"
         />
         <MetricCard
           label="Matches"
           value={summary.matches}
-          subtext="Identical behavior"
+          subtext="Identical outcome"
           icon={CheckCircle2}
           variant="match"
         />
         <MetricCard
-          label="Diffs"
+          label="Differences"
           value={summary.behavioralDifferences}
           subtext="Observable changes"
           icon={AlertTriangle}
@@ -241,24 +292,24 @@ export default function ResultsPage() {
         />
       </div>
 
-      {/* Main Results Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Left Column (7 cols): Evidence Diff List */}
-        <div className="lg:col-span-7 space-y-4">
-          {/* Filter Pills */}
-          <div className="flex items-center justify-between border-b border-slate-100 pb-2">
-            <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">
-              Differential Evidence
+      {/* Main Grid: Evidence Diff List & AI Explanation */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        {/* Left: Evidence (7 cols) */}
+        <div className="lg:col-span-7 space-y-3">
+          {/* Filter Bar */}
+          <div className="flex items-center justify-between pb-2 border-b border-line">
+            <span className="text-xs font-bold text-ink-primary uppercase tracking-wider">
+              Empirical Evidence ({filteredDifferences.length})
             </span>
 
             <div className="flex items-center space-x-1 text-xs">
               <button
                 type="button"
                 onClick={() => setSelectedFilter('ALL')}
-                className={`px-2 py-0.5 rounded-md font-medium ${
+                className={`px-2 py-0.5 rounded text-[11px] font-medium ${
                   selectedFilter === 'ALL'
-                    ? 'bg-slate-200 text-slate-900 font-bold'
-                    : 'text-slate-500 hover:text-slate-800'
+                    ? 'bg-line text-ink-primary font-bold'
+                    : 'text-ink-secondary hover:text-ink-primary'
                 }`}
               >
                 All ({differences.length})
@@ -266,10 +317,10 @@ export default function ResultsPage() {
               <button
                 type="button"
                 onClick={() => setSelectedFilter('POTENTIAL_REGRESSION')}
-                className={`px-2 py-0.5 rounded-md font-medium ${
+                className={`px-2 py-0.5 rounded text-[11px] font-medium ${
                   selectedFilter === 'POTENTIAL_REGRESSION'
-                    ? 'bg-rose-100 text-rose-800 font-bold'
-                    : 'text-slate-500 hover:text-rose-700'
+                    ? 'bg-status-error-bg text-status-error font-bold'
+                    : 'text-ink-secondary hover:text-status-error'
                 }`}
               >
                 Regressions ({summary.potentialRegressions})
@@ -277,10 +328,10 @@ export default function ResultsPage() {
               <button
                 type="button"
                 onClick={() => setSelectedFilter('MATCH')}
-                className={`px-2 py-0.5 rounded-md font-medium ${
+                className={`px-2 py-0.5 rounded text-[11px] font-medium ${
                   selectedFilter === 'MATCH'
-                    ? 'bg-emerald-100 text-emerald-800 font-bold'
-                    : 'text-slate-500 hover:text-emerald-700'
+                    ? 'bg-status-success-bg text-status-success font-bold'
+                    : 'text-ink-secondary hover:text-status-success'
                 }`}
               >
                 Matches ({summary.matches})
@@ -288,7 +339,7 @@ export default function ResultsPage() {
             </div>
           </div>
 
-          {/* Cards */}
+          {/* Diff Cards */}
           <div className="space-y-3">
             {filteredDifferences.map((item) => {
               const isSelectedForAi = selectedDiffItem?.id === item.id;
@@ -304,13 +355,13 @@ export default function ResultsPage() {
                       <button
                         type="button"
                         onClick={() => handleSelectDiffForAi(item)}
-                        className={`text-[11px] font-mono px-2 py-0.5 rounded border transition-colors flex items-center space-x-1 ${
+                        className={`text-[10px] font-mono px-2 py-0.5 rounded border transition-colors flex items-center space-x-1 ${
                           isSelectedForAi
-                            ? 'bg-sky-50 border-sky-300 text-sky-800 font-bold'
-                            : 'border-slate-200 bg-white text-slate-600 hover:text-sky-700 hover:bg-slate-50'
+                            ? 'bg-accent-subtle border-accent text-accent font-bold'
+                            : 'border-line bg-panel text-ink-secondary hover:text-ink-primary hover:bg-background'
                         }`}
                       >
-                        <Cpu className="h-3 w-3 text-sky-600" />
+                        <Cpu className="h-3 w-3 text-accent" />
                         <span>{isSelectedForAi ? 'Selected for AI' : 'Explain with NVIDIA Nemotron'}</span>
                       </button>
                     </div>
@@ -321,7 +372,7 @@ export default function ResultsPage() {
           </div>
         </div>
 
-        {/* Right Column (5 cols): AI Explanation & Next Steps */}
+        {/* Right: AI Synthesis & Next Steps (5 cols) */}
         <div className="lg:col-span-5 space-y-4">
           <div className="sticky top-20 space-y-4">
             <AIExplanationCard
@@ -330,24 +381,24 @@ export default function ResultsPage() {
               onRefresh={selectedDiffItem ? () => fetchAiExplanation(selectedDiffItem) : undefined}
             />
 
-            {/* Checklist */}
-            <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-xs space-y-2.5">
-              <span className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
-                <ShieldCheck className="h-4 w-4 text-emerald-600" />
-                Remediation Checklist
+            {/* Developer Checklist */}
+            <div className="rounded border border-line bg-panel p-4 shadow-panel space-y-2">
+              <span className="text-xs font-bold text-ink-primary uppercase tracking-wider flex items-center gap-1.5">
+                <ShieldCheck className="h-3.5 w-3.5 text-status-success" />
+                Developer Review Checklist
               </span>
-              <ul className="space-y-1.5 text-xs text-slate-600">
+              <ul className="space-y-1.5 text-xs text-ink-secondary">
                 <li className="flex items-start space-x-1.5">
-                  <span className="font-mono text-sky-600 font-bold">1.</span>
-                  <span>Migrate any <code className="text-rose-700 bg-rose-50 px-1 rounded font-mono">error.errors</code> accesses to <code className="text-emerald-700 bg-emerald-50 px-1 rounded font-mono">error.issues</code>.</span>
+                  <span className="font-mono text-accent font-bold">1.</span>
+                  <span>Migrate any <code className="text-status-error font-mono">error.errors</code> property access to <code className="text-status-success font-mono">error.issues</code>.</span>
                 </li>
                 <li className="flex items-start space-x-1.5">
-                  <span className="font-mono text-sky-600 font-bold">2.</span>
-                  <span>Replace <code className="text-amber-700 font-mono">required_error</code> with the unified <code className="text-emerald-700 font-mono">error</code> callback.</span>
+                  <span className="font-mono text-accent font-bold">2.</span>
+                  <span>Replace <code className="font-mono text-status-warning">required_error</code> with the unified <code className="font-mono text-status-success">error</code> callback.</span>
                 </li>
                 <li className="flex items-start space-x-1.5">
-                  <span className="font-mono text-sky-600 font-bold">3.</span>
-                  <span>Run the generated reproduction snippet in your terminal to verify fixes.</span>
+                  <span className="font-mono text-accent font-bold">3.</span>
+                  <span>Run reproduction code locally in terminal to verify fixes.</span>
                 </li>
               </ul>
             </div>

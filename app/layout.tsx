@@ -5,7 +5,7 @@ import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
   title: 'ShadowBump AI — Catch Behavioral Changes Before Production',
-  description: 'A clean developer tool for detecting silent behavioral changes caused by dependency upgrades using twin-environment differential testing and NVIDIA models via Nebius.',
+  description: 'Differential testing tool that runs identical inputs across software dependency versions to surface silent regressions before production.',
   icons: {
     icon: [
       { url: '/icon.svg', type: 'image/svg+xml' },
@@ -22,7 +22,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="min-h-screen flex flex-col bg-[#f8fafc] text-slate-900 selection:bg-sky-100 selection:text-sky-900">
+      <body className="min-h-screen flex flex-col bg-[#F7F5F0] text-[#292824] selection:bg-[#FAF1ED] selection:text-[#C65D32]">
         <Navbar />
         <main className="flex-1">
           {children}

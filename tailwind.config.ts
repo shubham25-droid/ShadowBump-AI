@@ -9,24 +9,38 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: '#f8fafc', // Clean light slate-50
-        surface: {
-          50: '#ffffff',
-          100: '#f8fafc',
-          200: '#f1f5f9',
-          300: '#e2e8f0',
-          card: '#ffffff',
-          border: '#e2e8f0',
+        background: '#F7F5F0',
+        panel: '#FFFFFF',
+        ink: {
+          primary: '#292824',
+          secondary: '#77746D',
+          muted: '#9E9B93',
         },
-        brand: {
-          DEFAULT: '#0284c7', // Sky-600
-          light: '#0ea5e9',
-          dark: '#0369a1',
+        line: {
+          DEFAULT: '#E5E0D7',
+          subtle: '#EFECE6',
+        },
+        accent: {
+          DEFAULT: '#C65D32',
+          hover: '#A94825',
+          subtle: '#FAF1ED',
+        },
+        status: {
+          success: '#38734D',
+          'success-bg': '#EEF5F0',
+          warning: '#A66A16',
+          'warning-bg': '#FBF5EB',
+          error: '#B33A32',
+          'error-bg': '#FAECEB',
         },
       },
       fontFamily: {
         mono: ['JetBrains Mono', 'Fira Code', 'Menlo', 'monospace'],
         sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+      },
+      boxShadow: {
+        panel: '0 1px 2px 0 rgba(41, 40, 36, 0.04)',
+        card: '0 1px 3px 0 rgba(41, 40, 36, 0.06), 0 1px 2px -1px rgba(41, 40, 36, 0.04)',
       },
     },
   },

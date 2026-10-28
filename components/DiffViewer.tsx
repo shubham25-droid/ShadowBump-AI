@@ -33,29 +33,29 @@ export default function DiffViewer({ item, scenarioTitle }: DiffViewerProps) {
     switch (item.classification) {
       case 'MATCH':
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-            <CheckCircle className="h-3.5 w-3.5" />
-            Identical Output
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-mono font-medium bg-status-success-bg text-status-success border border-status-success/20">
+            <CheckCircle className="h-3 w-3" />
+            No Difference Observed
           </span>
         );
       case 'BEHAVIORAL_DIFFERENCE':
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200">
-            <AlertTriangle className="h-3.5 w-3.5" />
-            Behavioral Diff
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-mono font-medium bg-status-warning-bg text-status-warning border border-status-warning/20">
+            <AlertTriangle className="h-3 w-3" />
+            Behavioral Difference
           </span>
         );
       case 'POTENTIAL_REGRESSION':
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-rose-50 text-rose-700 border border-rose-200">
-            <XCircle className="h-3.5 w-3.5" />
-            Regression Detected
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-mono font-semibold bg-status-error-bg text-status-error border border-status-error/30">
+            <XCircle className="h-3 w-3" />
+            Potential Regression
           </span>
         );
       case 'EXECUTION_ERROR':
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-violet-50 text-violet-700 border border-violet-200">
-            <Bug className="h-3.5 w-3.5" />
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-mono font-medium bg-background border border-line text-ink-primary">
+            <Bug className="h-3 w-3" />
             Execution Error
           </span>
         );
@@ -63,50 +63,48 @@ export default function DiffViewer({ item, scenarioTitle }: DiffViewerProps) {
   };
 
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-xs transition-all">
+    <div className="rounded border border-line bg-panel shadow-panel overflow-hidden transition-colors">
       {/* Diff Card Header */}
       <div 
-        className="flex flex-wrap items-center justify-between p-4 bg-slate-50/80 border-b border-slate-100 cursor-pointer select-none hover:bg-slate-100/50 transition-colors"
+        className="flex flex-wrap items-center justify-between p-3.5 bg-panel border-b border-line cursor-pointer select-none hover:bg-background transition-colors"
         onClick={() => setIsExpanded(!isExpanded)}
       >
-        <div className="flex items-center space-x-3">
-          <div className="flex flex-col">
-            <div className="flex items-center space-x-2">
-              <span className="font-mono text-xs font-bold text-sky-600 bg-sky-50 px-1.5 py-0.5 rounded border border-sky-100">
-                {item.id}
-              </span>
-              <span className="text-slate-900 font-bold text-sm">
-                {item.label}
-              </span>
+        <div className="flex items-center space-x-2.5">
+          <span className="font-mono text-xs font-bold text-accent bg-accent-subtle px-1.5 py-0.5 rounded border border-line">
+            {item.id}
+          </span>
+          <div>
+            <div className="font-bold text-ink-primary text-xs sm:text-sm">
+              {item.label}
             </div>
-            <p className="text-xs text-slate-500 mt-0.5">
+            <p className="text-[11px] text-ink-secondary mt-0.5">
               {item.summary}
             </p>
           </div>
         </div>
 
-        <div className="flex items-center space-x-3 mt-2 sm:mt-0">
+        <div className="flex items-center space-x-2.5 mt-2 sm:mt-0">
           {getStatusBadge()}
           <button 
             type="button"
-            className="p-1 rounded text-slate-400 hover:text-slate-600"
-            aria-label={isExpanded ? 'Collapse test case diff' : 'Expand test case diff'}
+            className="p-1 rounded text-ink-secondary hover:text-ink-primary"
+            aria-label={isExpanded ? 'Collapse' : 'Expand'}
           >
-            {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+            {isExpanded ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />}
           </button>
         </div>
       </div>
 
       {/* Expanded Content */}
       {isExpanded && (
-        <div className="p-4 sm:p-5 space-y-4 text-xs">
-          {/* Reason Callout if Difference/Regression */}
+        <div className="p-4 space-y-3.5 text-xs">
+          {/* Empirical Basis / Reasons */}
           {item.reasons.length > 0 && (
-            <div className="p-3 rounded-xl border border-rose-200 bg-rose-50/50">
-              <span className="text-[11px] font-bold text-rose-800 uppercase tracking-wider block mb-1">
-                Observable Differences Detected:
+            <div className="p-2.5 rounded border border-line bg-background">
+              <span className="text-[10px] font-bold text-ink-secondary uppercase tracking-wider block mb-1">
+                Empirical Evidence Detected:
               </span>
-              <ul className="list-disc list-inside space-y-1 text-slate-700">
+              <ul className="list-disc list-inside space-y-0.5 text-ink-primary text-xs">
                 {item.reasons.map((r, i) => (
                   <li key={i} className="leading-relaxed">
                     {r}
@@ -116,116 +114,114 @@ export default function DiffViewer({ item, scenarioTitle }: DiffViewerProps) {
             </div>
           )}
 
-          {/* Test Input */}
+          {/* Test Input Vector */}
           <div>
-            <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider block mb-1">
-              Executed Test Payload:
+            <span className="text-[10px] font-bold text-ink-secondary uppercase tracking-wider block mb-1">
+              Executed Test Input:
             </span>
-            <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-200 font-mono text-[11px] text-slate-800 overflow-x-auto">
+            <div className="p-2 rounded border border-line bg-background font-mono text-xs text-ink-primary overflow-x-auto">
               <pre>{JSON.stringify(item.input, null, 2)}</pre>
             </div>
           </div>
 
-          {/* Side-by-Side Twin Sandbox Results */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+          {/* Side-by-Side Comparison */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {/* Version Old (v3) */}
-            <div className="rounded-xl border border-slate-200 bg-slate-50/50 p-3.5">
-              <div className="flex items-center justify-between pb-2 mb-2 border-b border-slate-200">
-                <span className="font-bold text-slate-800 font-mono text-xs flex items-center gap-1.5">
-                  <span className="h-2 w-2 rounded-full bg-emerald-500" />
-                  Baseline: zod@3.23.8
+            <div className="rounded border border-line bg-panel p-3 space-y-2">
+              <div className="flex items-center justify-between pb-1.5 border-b border-line text-xs">
+                <span className="font-bold text-ink-primary font-mono text-[11px]">
+                  Old Version: zod@3.23.8
                 </span>
-                <span className={`text-[11px] font-mono font-semibold px-2 py-0.5 rounded ${
+                <span className={`text-[10px] font-mono px-1.5 py-0.2 rounded ${
                   item.oldResult.success 
-                    ? 'bg-emerald-100 text-emerald-800' 
-                    : 'bg-rose-100 text-rose-800'
+                    ? 'bg-status-success-bg text-status-success' 
+                    : 'bg-background border border-line text-ink-secondary'
                 }`}>
-                  {item.oldResult.success ? 'PARSED_SUCCESS' : 'VALIDATION_FAILED'}
+                  {item.oldResult.success ? 'PARSE_SUCCESS' : 'VALIDATION_FAILED'}
                 </span>
               </div>
 
               {item.oldResult.success ? (
                 <div>
-                  <span className="text-[10px] font-mono text-slate-500">Output Data:</span>
-                  <div className="p-2 rounded bg-white border border-slate-200 font-mono text-[11px] text-emerald-700 overflow-x-auto">
+                  <span className="text-[10px] font-mono text-ink-secondary">Output:</span>
+                  <div className="p-2 rounded border border-line bg-background font-mono text-xs text-status-success overflow-x-auto">
                     <pre>{JSON.stringify(item.oldResult.output, null, 2)}</pre>
                   </div>
                 </div>
               ) : (
                 <div>
-                  <span className="text-[10px] font-mono text-slate-500">Issues:</span>
-                  <div className="p-2 rounded bg-white border border-slate-200 font-mono text-[11px] text-slate-800 overflow-x-auto max-h-36">
+                  <span className="text-[10px] font-mono text-ink-secondary">Issues:</span>
+                  <div className="p-2 rounded border border-line bg-background font-mono text-xs text-ink-primary overflow-x-auto max-h-36">
                     <pre>{JSON.stringify(item.oldResult.issues, null, 2)}</pre>
                   </div>
                 </div>
               )}
 
-              <div className="mt-2.5 pt-2 border-t border-slate-200 flex items-center justify-between text-[11px] font-mono text-slate-500">
+              <div className="pt-1.5 border-t border-line flex items-center justify-between text-[11px] font-mono text-ink-secondary">
                 <span>error.errors defined:</span>
-                <span className={item.oldResult.legacyProperties?.hasErrorsProp ? 'text-emerald-700 font-bold' : 'text-slate-500'}>
+                <span className={item.oldResult.legacyProperties?.hasErrorsProp ? 'text-status-success font-bold' : 'text-ink-secondary'}>
                   {String(item.oldResult.legacyProperties?.hasErrorsProp)}
                 </span>
               </div>
             </div>
 
             {/* Version New (v4) */}
-            <div className="rounded-xl border border-slate-200 bg-slate-50/50 p-3.5">
-              <div className="flex items-center justify-between pb-2 mb-2 border-b border-slate-200">
-                <span className="font-bold text-slate-800 font-mono text-xs flex items-center gap-1.5">
-                  <span className="h-2 w-2 rounded-full bg-violet-500" />
-                  Candidate: zod@4.6.7
+            <div className="rounded border border-line bg-panel p-3 space-y-2">
+              <div className="flex items-center justify-between pb-1.5 border-b border-line text-xs">
+                <span className="font-bold text-ink-primary font-mono text-[11px]">
+                  New Version: zod@4.6.7
                 </span>
-                <span className={`text-[11px] font-mono font-semibold px-2 py-0.5 rounded ${
+                <span className={`text-[10px] font-mono px-1.5 py-0.2 rounded ${
                   item.newResult.success 
-                    ? 'bg-emerald-100 text-emerald-800' 
-                    : 'bg-rose-100 text-rose-800'
+                    ? 'bg-status-success-bg text-status-success' 
+                    : 'bg-background border border-line text-ink-secondary'
                 }`}>
-                  {item.newResult.success ? 'PARSED_SUCCESS' : 'VALIDATION_FAILED'}
+                  {item.newResult.success ? 'PARSE_SUCCESS' : 'VALIDATION_FAILED'}
                 </span>
               </div>
 
               {item.newResult.success ? (
                 <div>
-                  <span className="text-[10px] font-mono text-slate-500">Output Data:</span>
-                  <div className="p-2 rounded bg-white border border-slate-200 font-mono text-[11px] text-emerald-700 overflow-x-auto">
+                  <span className="text-[10px] font-mono text-ink-secondary">Output:</span>
+                  <div className="p-2 rounded border border-line bg-background font-mono text-xs text-status-success overflow-x-auto">
                     <pre>{JSON.stringify(item.newResult.output, null, 2)}</pre>
                   </div>
                 </div>
               ) : (
                 <div>
-                  <span className="text-[10px] font-mono text-slate-500">Issues:</span>
-                  <div className="p-2 rounded bg-white border border-slate-200 font-mono text-[11px] text-slate-800 overflow-x-auto max-h-36">
+                  <span className="text-[10px] font-mono text-ink-secondary">Issues:</span>
+                  <div className="p-2 rounded border border-line bg-background font-mono text-xs text-ink-primary overflow-x-auto max-h-36">
                     <pre>{JSON.stringify(item.newResult.issues, null, 2)}</pre>
                   </div>
                 </div>
               )}
 
-              <div className="mt-2.5 pt-2 border-t border-slate-200 flex items-center justify-between text-[11px] font-mono text-slate-500">
+              <div className="pt-1.5 border-t border-line flex items-center justify-between text-[11px] font-mono text-ink-secondary">
                 <span>error.errors defined:</span>
-                <span className={item.newResult.legacyProperties?.hasErrorsProp ? 'text-emerald-700 font-bold' : 'text-rose-600 font-bold'}>
+                <span className={item.newResult.legacyProperties?.hasErrorsProp ? 'text-status-success font-bold' : 'text-status-error font-bold'}>
                   {String(item.newResult.legacyProperties?.hasErrorsProp)} {item.newResult.legacyProperties?.hasErrorsProp === false && '(MISSING)'}
                 </span>
               </div>
             </div>
           </div>
 
-          {/* Copyable Reproduction Snippet */}
-          <div className="pt-2">
+          {/* Reproducible Snippet */}
+          <div className="pt-1">
             <div className="flex items-center justify-between mb-1">
-              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
-                <Code className="h-3.5 w-3.5 text-sky-600" />
-                Reproduction Script
+              <span className="text-[10px] font-bold text-ink-secondary uppercase tracking-wider flex items-center gap-1">
+                <Code className="h-3 w-3 text-accent" />
+                Reproduction Code
               </span>
               <button
                 type="button"
                 onClick={handleCopySnippet}
-                className="flex items-center space-x-1 text-xs text-sky-600 hover:text-sky-800 font-medium transition-colors"
+                className="flex items-center space-x-1 text-[11px] text-accent hover:text-accent-hover font-medium transition-colors"
               >
-                {copiedSnippet ? <Check className="h-3 w-3 text-emerald-600" /> : <Copy className="h-3 w-3" />}
-                <span>{copiedSnippet ? 'Copied' : 'Copy Test Snippet'}</span>
+                {copiedSnippet ? <Check className="h-3 w-3 text-status-success" /> : <Copy className="h-3 w-3" />}
+                <span>{copiedSnippet ? 'Copied' : 'Copy Code'}</span>
               </button>
             </div>
-            <pre className="p-2.5 rounded-lg bg-slate-900 font-mono text-[11px] text-slate-200 overflow-x-auto">
+            <pre className="p-2.5 rounded border border-line bg-background font-mono text-xs text-ink-primary overflow-x-auto">
               <code>{item.reproducibleSnippet}</code>
             </pre>
           </div>
