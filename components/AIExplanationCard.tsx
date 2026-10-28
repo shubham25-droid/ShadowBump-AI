@@ -1,16 +1,13 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { AIExplanationResult, RiskLevel } from '@/lib/types';
 import { 
   Sparkles, 
   Cpu, 
   AlertCircle, 
   ShieldAlert, 
-  CheckCircle, 
   FileCode, 
-  Info,
-  ExternalLink,
   RefreshCw
 } from 'lucide-react';
 
@@ -24,36 +21,35 @@ export default function AIExplanationCard({ explanation, isLoading, onRefresh }:
   const getRiskBadge = (level: RiskLevel) => {
     switch (level) {
       case 'LOW':
-        return <span className="px-2 py-0.5 rounded text-xs font-mono font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">LOW RISK</span>;
+        return <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">LOW RISK</span>;
       case 'MEDIUM':
-        return <span className="px-2 py-0.5 rounded text-xs font-mono font-bold bg-amber-500/10 text-amber-400 border border-amber-500/30">MEDIUM RISK</span>;
+        return <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-100 text-amber-800 border border-amber-200">MEDIUM RISK</span>;
       case 'HIGH':
-        return <span className="px-2 py-0.5 rounded text-xs font-mono font-bold bg-rose-500/10 text-rose-400 border border-rose-500/30">HIGH RISK</span>;
+        return <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-rose-100 text-rose-800 border border-rose-200">HIGH RISK</span>;
       case 'CRITICAL':
-        return <span className="px-2 py-0.5 rounded text-xs font-mono font-bold bg-red-600/20 text-red-400 border border-red-500/40 animate-pulse">CRITICAL RISK</span>;
+        return <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-red-600 text-white animate-pulse">CRITICAL RISK</span>;
     }
   };
 
   if (isLoading) {
     return (
-      <div className="rounded-xl border border-sky-500/30 bg-surface-card p-6 shadow-xl">
-        <div className="flex items-center space-x-3 mb-4">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-sky-500/10 border border-sky-500/30 text-sky-400 animate-spin">
-            <RefreshCw className="h-5 w-5" />
+      <div className="rounded-2xl border border-sky-200 bg-white p-5 shadow-xs">
+        <div className="flex items-center space-x-3 mb-3">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-50 text-sky-600 animate-spin">
+            <RefreshCw className="h-4 w-4" />
           </div>
           <div>
-            <h4 className="text-sm font-semibold text-slate-100">
-              Querying Nebius Token Factory...
+            <h4 className="text-xs font-bold text-slate-900">
+              Querying NVIDIA Nemotron via Nebius...
             </h4>
-            <p className="text-xs text-slate-400">
-              Evaluating diff evidence via NVIDIA Llama-3.1-Nemotron-70B-Instruct-HF
+            <p className="text-[11px] text-slate-500">
+              Evaluating empirical diff evidence
             </p>
           </div>
         </div>
-        <div className="space-y-3 animate-pulse">
-          <div className="h-4 bg-slate-800 rounded w-3/4" />
-          <div className="h-4 bg-slate-800 rounded w-1/2" />
-          <div className="h-24 bg-slate-800/60 rounded" />
+        <div className="space-y-2 animate-pulse">
+          <div className="h-3.5 bg-slate-100 rounded w-3/4" />
+          <div className="h-3.5 bg-slate-100 rounded w-1/2" />
         </div>
       </div>
     );
@@ -61,37 +57,35 @@ export default function AIExplanationCard({ explanation, isLoading, onRefresh }:
 
   if (!explanation) {
     return (
-      <div className="rounded-xl border border-surface-border bg-surface-card p-6 text-center">
-        <Cpu className="h-8 w-8 text-slate-400 mx-auto mb-2" />
-        <h4 className="text-sm font-semibold text-slate-300">
-          AI Explanation Ready
+      <div className="rounded-2xl border border-slate-200 bg-white p-5 text-center shadow-xs">
+        <Cpu className="h-7 w-7 text-slate-400 mx-auto mb-2" />
+        <h4 className="text-xs font-bold text-slate-800">
+          NVIDIA AI Analysis
         </h4>
-        <p className="text-xs text-slate-400 mt-1 max-w-md mx-auto">
-          Select any detected behavioral difference or regression above to trigger an evidence-grounded root cause analysis by NVIDIA Nemotron.
+        <p className="text-[11px] text-slate-500 mt-1 max-w-sm mx-auto">
+          Select any detected difference to generate an evidence-grounded root cause explanation.
         </p>
       </div>
     );
   }
 
   return (
-    <div className="rounded-xl border border-sky-500/30 bg-surface-card overflow-hidden shadow-2xl">
-      {/* AI Card Header */}
-      <div className="flex flex-wrap items-center justify-between p-4 bg-slate-900/90 border-b border-sky-500/20">
-        <div className="flex items-center space-x-3">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-500/10 border border-sky-500/30 text-sky-400">
-            <Sparkles className="h-4 w-4" />
+    <div className="rounded-2xl border border-sky-200 bg-white overflow-hidden shadow-xs">
+      {/* Header */}
+      <div className="flex items-center justify-between p-4 bg-sky-50/60 border-b border-sky-100">
+        <div className="flex items-center space-x-2.5">
+          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-sky-600 text-white">
+            <Sparkles className="h-3.5 w-3.5" />
           </div>
           <div>
             <div className="flex items-center space-x-2">
-              <h4 className="text-sm font-semibold text-slate-100">
-                NVIDIA Nemotron Root Cause Analysis
+              <h4 className="text-xs font-bold text-slate-900">
+                NVIDIA Nemotron Analysis
               </h4>
               {getRiskBadge(explanation.riskLevel)}
             </div>
-            <div className="flex items-center space-x-2 text-[11px] text-slate-400 font-mono mt-0.5">
-              <span>Nebius Token Factory</span>
-              <span>•</span>
-              <span className="text-sky-300">{explanation.modelUsed}</span>
+            <div className="text-[10px] text-slate-500 font-mono">
+              Nebius Token Factory • {explanation.modelUsed}
             </div>
           </div>
         </div>
@@ -100,103 +94,85 @@ export default function AIExplanationCard({ explanation, isLoading, onRefresh }:
           <button
             type="button"
             onClick={onRefresh}
-            className="flex items-center space-x-1 px-2.5 py-1 text-xs font-mono rounded border border-slate-700 bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 transition-colors mt-2 sm:mt-0"
+            className="flex items-center space-x-1 px-2 py-1 text-[11px] font-mono rounded border border-slate-200 bg-white text-slate-600 hover:text-slate-900"
           >
             <RefreshCw className="h-3 w-3" />
-            <span>Re-Analyze</span>
+            <span>Re-run</span>
           </button>
         )}
       </div>
 
-      {/* Main Body */}
-      <div className="p-5 space-y-5 text-xs">
-        {/* Error / Limitation Warning Banner */}
+      {/* Main Content */}
+      <div className="p-4 space-y-4 text-xs">
+        {/* Notice if deterministic mode */}
         {explanation.status !== 'SUCCESS' && (
-          <div className="p-3.5 rounded-lg border border-amber-500/30 bg-amber-500/10 text-amber-300">
-            <div className="flex items-start space-x-2.5">
-              <AlertCircle className="h-4 w-4 mt-0.5 shrink-0" />
+          <div className="p-3 rounded-xl border border-amber-200 bg-amber-50 text-amber-800">
+            <div className="flex items-start space-x-2">
+              <AlertCircle className="h-4 w-4 shrink-0 mt-0.5 text-amber-600" />
               <div>
-                <span className="font-semibold block mb-0.5">
-                  {explanation.status === 'UNAVAILABLE' ? 'API Configuration Notice' : 'Nebius Call Notice'}
+                <span className="font-bold block mb-0.5">
+                  Deterministic Fallback Mode
                 </span>
-                <p className="text-amber-200/90 leading-relaxed">
+                <p className="text-[11px] leading-relaxed text-amber-900">
                   {explanation.errorNotice || explanation.rootCause}
                 </p>
-                <div className="mt-2 text-[11px] font-mono text-amber-400/80">
-                  Tip: Provide NEBIUS_API_KEY in .env.local to enable real-time inference with NVIDIA open-source models.
-                </div>
+                <span className="block mt-1 font-mono text-[10px] text-amber-700">
+                  To enable live NVIDIA Nemotron inference, add NEBIUS_API_KEY in .env.local.
+                </span>
               </div>
             </div>
           </div>
         )}
 
-        {/* Executive Summary */}
+        {/* Summary */}
         <div>
-          <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-1">
-            Executive Summary
+          <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
+            Summary:
           </span>
-          <p className="text-slate-200 leading-relaxed font-sans text-sm">
+          <p className="text-slate-800 leading-relaxed font-medium">
             {explanation.summary}
           </p>
         </div>
 
-        {/* Root Cause & Blast Radius Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="p-3.5 rounded-lg border border-slate-800 bg-surface-200">
-            <span className="text-[11px] font-semibold text-sky-400 uppercase tracking-wider block mb-1.5 flex items-center gap-1.5">
-              <Cpu className="h-3.5 w-3.5" />
-              Technical Root Cause
-            </span>
-            <p className="text-slate-300 leading-relaxed">
-              {explanation.rootCause}
-            </p>
-          </div>
-
-          <div className="p-3.5 rounded-lg border border-slate-800 bg-surface-200">
-            <span className="text-[11px] font-semibold text-rose-400 uppercase tracking-wider block mb-1.5 flex items-center gap-1.5">
-              <ShieldAlert className="h-3.5 w-3.5" />
-              Production Blast Radius
-            </span>
-            <p className="text-slate-300 leading-relaxed">
-              {explanation.blastRadius}
-            </p>
-          </div>
+        {/* Technical Root Cause */}
+        <div className="p-3 rounded-xl border border-slate-200 bg-slate-50 space-y-1">
+          <span className="text-[11px] font-bold text-sky-800 uppercase tracking-wider block flex items-center gap-1">
+            <Cpu className="h-3 w-3 text-sky-600" />
+            Root Cause:
+          </span>
+          <p className="text-slate-700 leading-relaxed">
+            {explanation.rootCause}
+          </p>
         </div>
 
-        {/* Recommended Code Remediation Diff */}
+        {/* Suggested Migration Code Diff */}
         {explanation.codeDiff && (
           <div>
-            <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-2 flex items-center gap-1.5">
-              <FileCode className="h-3.5 w-3.5 text-emerald-400" />
-              Suggested Migration Fix (Zod v3 → v4)
+            <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block mb-1.5 flex items-center gap-1">
+              <FileCode className="h-3.5 w-3.5 text-emerald-600" />
+              Migration Code Fix (v3 → v4)
             </span>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 font-mono text-xs">
-              <div className="p-3 rounded-lg border border-rose-900/40 bg-rose-950/20">
-                <span className="text-rose-400 text-[11px] font-bold block mb-1">// Deprecated / Broken Syntax (v3)</span>
-                <pre className="text-rose-200 overflow-x-auto whitespace-pre-wrap">{explanation.codeDiff.before}</pre>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 font-mono text-[11px]">
+              <div className="p-2.5 rounded-lg border border-rose-200 bg-rose-50/70">
+                <span className="text-rose-700 font-bold block mb-1">// Old (v3)</span>
+                <pre className="text-rose-900 whitespace-pre-wrap">{explanation.codeDiff.before}</pre>
               </div>
-              <div className="p-3 rounded-lg border border-emerald-900/40 bg-emerald-950/20">
-                <span className="text-emerald-400 text-[11px] font-bold block mb-1">// Modern Compatible Syntax (v4)</span>
-                <pre className="text-emerald-200 overflow-x-auto whitespace-pre-wrap">{explanation.codeDiff.after}</pre>
+              <div className="p-2.5 rounded-lg border border-emerald-200 bg-emerald-50/70">
+                <span className="text-emerald-700 font-bold block mb-1">// Fixed for (v4)</span>
+                <pre className="text-emerald-900 whitespace-pre-wrap">{explanation.codeDiff.after}</pre>
               </div>
             </div>
           </div>
         )}
 
-        {/* Actionable Engineering Advice */}
-        <div className="p-3 rounded-lg border border-slate-800 bg-surface-300">
-          <span className="text-xs font-semibold text-slate-300 block mb-1">
-            Engineering Action Plan:
+        {/* Action Plan */}
+        <div className="pt-2 border-t border-slate-100">
+          <span className="text-[11px] font-semibold text-slate-700 block mb-0.5">
+            Recommended Action:
           </span>
-          <p className="text-slate-300 leading-relaxed">
+          <p className="text-slate-600 leading-relaxed">
             {explanation.recommendedFix}
           </p>
-        </div>
-
-        {/* Soundness & Limitations Disclaimer */}
-        <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-400">
-          <span>Grounding: Analysis synthesized strictly from observable test vector diffs.</span>
-          <span className="font-mono">Inference Temp: 0.1</span>
         </div>
       </div>
     </div>

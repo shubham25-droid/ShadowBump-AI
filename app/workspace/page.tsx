@@ -3,21 +3,17 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { SCENARIOS } from '@/lib/engine/scenarios';
-import { TestCase, ScenarioDefinition } from '@/lib/types';
+import { TestCase } from '@/lib/types';
 import { 
   Play, 
   Layers, 
-  Code, 
-  Terminal, 
-  CheckCircle2, 
-  Cpu, 
   Plus, 
   Trash2, 
   RefreshCw,
   AlertCircle,
-  ArrowRight,
-  ShieldCheck,
-  FileCode2
+  FileCode2,
+  CheckCircle2,
+  ShieldCheck
 } from 'lucide-react';
 
 export default function WorkspacePage() {
@@ -29,29 +25,20 @@ export default function WorkspacePage() {
   const [inputError, setInputError] = useState<string | null>(null);
   const [isRunning, setIsRunning] = useState<boolean>(false);
   const [currentStep, setCurrentStep] = useState<string>('');
-  const [envStatus, setEnvStatus] = useState<any>(null);
 
   const activeScenario = SCENARIOS.find(s => s.id === selectedScenarioId) || SCENARIOS[0];
 
   useEffect(() => {
-    // When scenario changes, load its default test cases
     const scenario = SCENARIOS.find(s => s.id === selectedScenarioId);
     if (scenario) {
       setTestCases(scenario.testCases);
     }
   }, [selectedScenarioId]);
 
-  useEffect(() => {
-    fetch('/api/health')
-      .then(res => res.json())
-      .then(data => setEnvStatus(data))
-      .catch(() => setEnvStatus(null));
-  }, []);
-
   const handleAddCustomTestCase = () => {
     setInputError(null);
     if (!customInputJson.trim()) {
-      setInputError('Please provide a valid JSON input vector.');
+      setInputError('Please enter a valid JSON object.');
       return;
     }
 
@@ -60,16 +47,15 @@ export default function WorkspacePage() {
       const newTestCase: TestCase = {
         id: `custom-${Date.now().toString().slice(-4)}`,
         label: customInputLabel.trim() || `Custom Vector #${testCases.length + 1}`,
-        description: 'User-defined test vector',
+        description: 'User-provided vector',
         input: parsed,
-        expectedOutcome: undefined
       };
 
       setTestCases([...testCases, newTestCase]);
       setCustomInputJson('');
       setCustomInputLabel('');
     } catch (e: any) {
-      setInputError(`Invalid JSON syntax: ${e.message}`);
+      setInputError(`Invalid JSON: ${e.message}`);
     }
   };
 
@@ -77,17 +63,13 @@ export default function WorkspacePage() {
     setTestCases(testCases.filter(tc => tc.id !== id));
   };
 
-  const handleResetTestCases = () => {
-    setTestCases(activeScenario.testCases);
-  };
-
   const handleRunAnalysis = async () => {
     setIsRunning(true);
-    setCurrentStep('Initializing twin isolated runner environments...');
+    setCurrentStep('Spawning isolated v3 and v4 sandboxes...');
 
     try {
-      setTimeout(() => setCurrentStep('Streaming test vectors across zod@3.23.8 and zod@4.6.7...'), 400);
-      setTimeout(() => setCurrentStep('Executing deterministic comparison engine...'), 800);
+      setTimeout(() => setCurrentStep('Streaming test vectors through both runtimes...'), 350);
+      setTimeout(() => setCurrentStep('Computing deterministic AST diffs...'), 700);
 
       const response = await fetch('/api/run-analysis', {
         method: 'POST',
@@ -103,169 +85,135 @@ export default function WorkspacePage() {
       }
 
       const result = await response.json();
-      
-      // Store result in sessionStorage for display on results view
       sessionStorage.setItem('shadowbump_latest_result', JSON.stringify(result));
       sessionStorage.setItem('shadowbump_active_scenario', JSON.stringify(activeScenario));
 
-      setCurrentStep('Analysis complete! Redirecting to Evidence Inspector...');
+      setCurrentStep('Complete! Loading results view...');
       setTimeout(() => {
         router.push('/results');
-      }, 500);
+      }, 400);
     } catch (err: any) {
-      alert(`Execution error: ${err.message}`);
+      alert(`Error: ${err.message}`);
       setIsRunning(false);
     }
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
-      {/* Page Title & Environment Status */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-surface-border pb-6">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+      {/* Page Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-5">
         <div>
-          <div className="flex items-center space-x-2">
-            <span className="text-xs font-mono uppercase tracking-wider text-sky-400 font-semibold">
-              Execution Control Center
-            </span>
-          </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-100 mt-1">
-            Differential Analysis Workspace
+          <h1 className="text-2xl font-bold text-slate-900">
+            Analysis Workspace
           </h1>
-          <p className="text-xs text-slate-400 mt-1">
-            Configure target dependency versions, select schema test suites, and execute twin-environment verification.
+          <p className="text-xs text-slate-500 mt-0.5">
+            Compare behavior between baseline (<code className="font-mono text-emerald-700">zod@3.23.8</code>) and candidate (<code className="font-mono text-violet-700">zod@4.6.7</code>).
           </p>
         </div>
 
-        {/* Runtime Environment Pills */}
-        <div className="flex flex-wrap items-center gap-2 text-xs font-mono">
-          <div className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg border border-slate-800 bg-surface-card">
-            <span className="h-2 w-2 rounded-full bg-emerald-400" />
-            <span className="text-slate-400">Baseline Sandbox:</span>
-            <span className="text-emerald-300 font-bold">zod@3.23.8</span>
-          </div>
-
-          <div className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg border border-slate-800 bg-surface-card">
-            <span className="h-2 w-2 rounded-full bg-violet-400" />
-            <span className="text-slate-400">Candidate Sandbox:</span>
-            <span className="text-violet-300 font-bold">zod@4.6.7</span>
-          </div>
+        <div className="flex items-center space-x-2 text-xs font-mono">
+          <span className="px-2.5 py-1 rounded-full border border-emerald-200 bg-emerald-50 text-emerald-700 font-medium">
+            ● Baseline: v3.23.8
+          </span>
+          <span className="px-2.5 py-1 rounded-full border border-violet-200 bg-violet-50 text-violet-700 font-medium">
+            ● Candidate: v4.6.7
+          </span>
         </div>
       </div>
 
-      {/* Main Workspace Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Left Column: Scenario & Configuration */}
-        <div className="lg:col-span-1 space-y-6">
-          {/* Scenario Selector */}
-          <div className="rounded-xl border border-surface-border bg-surface-card p-5 space-y-4">
-            <div className="flex items-center justify-between">
-              <label className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
-                <Layers className="h-4 w-4 text-sky-400" />
-                Select Scenario
-              </label>
-              <span className="text-[11px] font-mono text-slate-400">
-                {SCENARIOS.length} Available
-              </span>
-            </div>
+      {/* Scenario Pill Tabs */}
+      <div>
+        <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block mb-2">
+          Choose Test Scenario:
+        </span>
+        <div className="grid grid-cols-1 sm:grid-cols-4 gap-2.5">
+          {SCENARIOS.map((sc) => {
+            const isSelected = sc.id === selectedScenarioId;
+            return (
+              <button
+                key={sc.id}
+                type="button"
+                onClick={() => setSelectedScenarioId(sc.id)}
+                className={`text-left p-3 rounded-xl border transition-all ${
+                  isSelected
+                    ? 'bg-sky-50 border-sky-400 text-sky-900 shadow-xs ring-1 ring-sky-300'
+                    : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                }`}
+              >
+                <div className="text-xs font-bold leading-tight mb-1">
+                  {sc.title}
+                </div>
+                <div className="text-[11px] text-slate-500 font-mono truncate">
+                  {sc.breakingCategory}
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </div>
 
-            <div className="space-y-2">
-              {SCENARIOS.map((sc) => {
-                const isSelected = sc.id === selectedScenarioId;
-                return (
-                  <button
-                    key={sc.id}
-                    type="button"
-                    onClick={() => setSelectedScenarioId(sc.id)}
-                    className={`w-full text-left p-3 rounded-lg border transition-all text-xs ${
-                      isSelected
-                        ? 'border-sky-500/50 bg-sky-950/20 text-slate-100 shadow-sm'
-                        : 'border-slate-800/80 bg-surface-200/40 text-slate-400 hover:text-slate-200 hover:border-slate-700'
-                    }`}
-                  >
-                    <div className="flex items-center justify-between mb-1">
-                      <span className={`font-semibold ${isSelected ? 'text-sky-300' : 'text-slate-200'}`}>
-                        {sc.title}
-                      </span>
-                    </div>
-                    <span className="text-[11px] text-slate-400 block line-clamp-2">
-                      {sc.description}
-                    </span>
-                    <div className="mt-2 text-[10px] font-mono text-slate-400">
-                      Category: <span className="text-slate-300">{sc.breakingCategory}</span>
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Schema Code Preview */}
-          <div className="rounded-xl border border-surface-border bg-surface-card p-5 space-y-3">
+      {/* Main Workspace Layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        {/* Left Column: Schema (5 cols) */}
+        <div className="lg:col-span-5 space-y-4">
+          <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-xs space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
-                <FileCode2 className="h-4 w-4 text-emerald-400" />
+              <span className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
+                <FileCode2 className="h-4 w-4 text-sky-600" />
                 Target Schema Definition
               </span>
               <span className="text-[10px] font-mono text-slate-400">TypeScript</span>
             </div>
-            <div className="p-3 rounded-lg bg-surface-300 border border-slate-800 font-mono text-xs text-slate-300 overflow-x-auto max-h-56">
+
+            <div className="p-3 rounded-xl bg-slate-900 font-mono text-xs text-slate-200 overflow-x-auto max-h-72">
               <pre>{activeScenario.codeSnippet}</pre>
             </div>
+
+            <p className="text-[11px] text-slate-500 leading-relaxed">
+              {activeScenario.description}
+            </p>
           </div>
         </div>
 
-        {/* Right Column: Test Corpus & Execution */}
-        <div className="lg:col-span-2 space-y-6">
-          {/* Test Corpus Header */}
-          <div className="rounded-xl border border-surface-border bg-surface-card p-5 space-y-4">
-            <div className="flex items-center justify-between border-b border-surface-border pb-3">
-              <div>
-                <h3 className="text-sm font-semibold text-slate-200">
-                  Synchronized Test Corpus
-                </h3>
-                <p className="text-xs text-slate-400">
-                  These identical inputs will be delivered concurrently into both Zod v3 and Zod v4 child runners.
-                </p>
-              </div>
-
+        {/* Right Column: Test Corpus & Run (7 cols) */}
+        <div className="lg:col-span-7 space-y-4">
+          {/* Test Vectors Card */}
+          <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-xs space-y-3">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
+              <span className="text-xs font-bold text-slate-800 uppercase tracking-wider">
+                Synchronized Test Inputs ({testCases.length})
+              </span>
               <button
                 type="button"
-                onClick={handleResetTestCases}
-                className="text-xs text-slate-400 hover:text-slate-200 font-mono flex items-center gap-1"
-                title="Reset to scenario defaults"
+                onClick={() => setTestCases(activeScenario.testCases)}
+                className="text-xs text-sky-600 hover:text-sky-800 font-medium"
               >
-                <RefreshCw className="h-3 w-3" />
-                <span>Reset Default Vectors</span>
+                Reset Default Vectors
               </button>
             </div>
 
-            {/* Test Case Cards */}
-            <div className="space-y-2.5">
-              {testCases.map((tc, index) => (
+            {/* List */}
+            <div className="space-y-2 max-h-64 overflow-y-auto pr-1">
+              {testCases.map((tc, idx) => (
                 <div
                   key={tc.id}
-                  className="p-3 rounded-lg border border-slate-800 bg-surface-200/50 flex items-start justify-between gap-4 text-xs"
+                  className="p-2.5 rounded-xl border border-slate-200 bg-slate-50 flex items-start justify-between gap-3 text-xs"
                 >
-                  <div className="space-y-1 flex-1">
-                    <div className="flex items-center space-x-2">
-                      <span className="font-mono text-sky-400 font-bold">
-                        #{index + 1}
+                  <div className="space-y-0.5 flex-1">
+                    <div className="flex items-center space-x-1.5">
+                      <span className="font-mono text-sky-600 font-bold text-[11px]">
+                        #{idx + 1}
                       </span>
-                      <span className="font-semibold text-slate-200">
+                      <span className="font-bold text-slate-800 text-xs">
                         {tc.label}
                       </span>
                       {tc.expectedOutcome && (
-                        <span className="text-[10px] font-mono px-1.5 py-0.2 rounded border border-slate-700 bg-slate-800 text-slate-400">
+                        <span className="text-[10px] font-mono px-1.5 rounded bg-white border border-slate-200 text-slate-600">
                           Oracle: {tc.expectedOutcome}
                         </span>
                       )}
                     </div>
-                    {tc.description && (
-                      <p className="text-[11px] text-slate-400">
-                        {tc.description}
-                      </p>
-                    )}
-                    <div className="mt-1 p-2 rounded bg-surface-300 border border-slate-800/80 font-mono text-[11px] text-slate-300 overflow-x-auto max-h-24">
+                    <div className="p-1.5 rounded bg-white border border-slate-200 font-mono text-[11px] text-slate-700 overflow-x-auto">
                       <pre>{JSON.stringify(tc.input)}</pre>
                     </div>
                   </div>
@@ -274,8 +222,8 @@ export default function WorkspacePage() {
                     <button
                       type="button"
                       onClick={() => handleRemoveTestCase(tc.id)}
-                      className="text-slate-400 hover:text-rose-400 transition-colors p-1"
-                      title="Remove this test vector"
+                      className="text-slate-400 hover:text-rose-600 p-1"
+                      title="Remove vector"
                     >
                       <Trash2 className="h-3.5 w-3.5" />
                     </button>
@@ -284,56 +232,53 @@ export default function WorkspacePage() {
               ))}
             </div>
 
-            {/* Custom Vector Adder */}
-            <div className="pt-3 border-t border-slate-800 space-y-3">
-              <span className="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
-                <Plus className="h-3.5 w-3.5 text-sky-400" />
-                Inject Custom Test Vector
+            {/* Inject Custom Vector */}
+            <div className="pt-2 border-t border-slate-100 space-y-2">
+              <span className="text-[11px] font-bold text-slate-600 uppercase tracking-wider block">
+                + Add Custom Vector:
               </span>
-
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                 <input
                   type="text"
-                  placeholder="Vector Label (e.g. Edge Case Empty Object)"
+                  placeholder="Label"
                   value={customInputLabel}
                   onChange={(e) => setCustomInputLabel(e.target.value)}
-                  className="sm:col-span-1 px-3 py-2 rounded-lg bg-surface-300 border border-slate-800 text-xs text-slate-200 focus:outline-none focus:border-sky-500"
+                  className="px-2.5 py-1.5 rounded-lg border border-slate-200 text-xs bg-white text-slate-800 focus:outline-none focus:border-sky-500"
                 />
                 <input
                   type="text"
-                  placeholder='JSON Payload (e.g. {"username": "", "age": 20})'
+                  placeholder='JSON (e.g. {"username": "bob"})'
                   value={customInputJson}
                   onChange={(e) => setCustomInputJson(e.target.value)}
-                  className="sm:col-span-2 px-3 py-2 rounded-lg bg-surface-300 border border-slate-800 text-xs font-mono text-slate-200 focus:outline-none focus:border-sky-500"
+                  className="sm:col-span-2 px-2.5 py-1.5 rounded-lg border border-slate-200 text-xs font-mono bg-white text-slate-800 focus:outline-none focus:border-sky-500"
                 />
               </div>
 
               {inputError && (
-                <div className="flex items-center space-x-1.5 text-xs text-rose-400">
-                  <AlertCircle className="h-3.5 w-3.5" />
-                  <span>{inputError}</span>
+                <div className="text-xs text-rose-600 font-medium">
+                  {inputError}
                 </div>
               )}
 
               <button
                 type="button"
                 onClick={handleAddCustomTestCase}
-                className="px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-800 hover:bg-slate-700 text-xs text-slate-200 font-medium transition-colors"
+                className="px-3 py-1 rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 text-xs text-slate-700 font-semibold"
               >
-                Add Vector to Corpus
+                Add Vector
               </button>
             </div>
           </div>
 
-          {/* Launch Action Card */}
-          <div className="rounded-xl border border-sky-500/30 bg-surface-card p-6 shadow-xl space-y-4">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          {/* Start Button */}
+          <div className="p-4 rounded-2xl border border-sky-200 bg-sky-50/60 shadow-xs space-y-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
-                <h3 className="text-base font-bold text-slate-100">
-                  Ready to Execute Differential Run
-                </h3>
-                <p className="text-xs text-slate-400 mt-0.5">
-                  Spawns parallel sandboxes, captures output structures, and computes AST diffs.
+                <h4 className="text-sm font-bold text-slate-900">
+                  Execute Twin-Runtime Comparison
+                </h4>
+                <p className="text-xs text-slate-500">
+                  Runs {testCases.length} identical inputs across v3 and v4 sandboxes.
                 </p>
               </div>
 
@@ -341,30 +286,29 @@ export default function WorkspacePage() {
                 type="button"
                 onClick={handleRunAnalysis}
                 disabled={isRunning}
-                className={`inline-flex items-center justify-center space-x-2 px-6 py-3 rounded-lg font-semibold text-sm transition-all shadow-md ${
+                className={`inline-flex items-center justify-center space-x-2 px-5 py-2.5 rounded-xl font-bold text-xs transition-all shadow-sm ${
                   isRunning
-                    ? 'bg-slate-800 text-slate-400 cursor-not-allowed border border-slate-700'
-                    : 'bg-sky-600 hover:bg-sky-500 text-white shadow-sky-600/20'
+                    ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
+                    : 'bg-sky-600 hover:bg-sky-700 text-white'
                 }`}
               >
                 {isRunning ? (
                   <>
-                    <RefreshCw className="h-4 w-4 animate-spin" />
-                    <span>Executing Sandboxes...</span>
+                    <RefreshCw className="h-3.5 w-3.5 animate-spin" />
+                    <span>Testing...</span>
                   </>
                 ) : (
                   <>
-                    <Play className="h-4 w-4 fill-current" />
-                    <span>Start Differential Analysis ({testCases.length} Vectors)</span>
+                    <Play className="h-3.5 w-3.5 fill-current" />
+                    <span>Run Comparison ({testCases.length})</span>
                   </>
                 )}
               </button>
             </div>
 
-            {/* Execution step progress bar */}
             {isRunning && (
-              <div className="p-3 rounded-lg bg-slate-900 border border-sky-500/30 font-mono text-xs text-sky-300 flex items-center space-x-2 animate-pulse">
-                <span className="h-2 w-2 rounded-full bg-sky-400" />
+              <div className="p-2.5 rounded-lg bg-white border border-sky-200 font-mono text-xs text-sky-800 flex items-center space-x-2">
+                <span className="h-2 w-2 rounded-full bg-sky-500 animate-pulse" />
                 <span>{currentStep}</span>
               </div>
             )}

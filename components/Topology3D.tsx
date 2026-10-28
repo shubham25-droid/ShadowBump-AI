@@ -3,307 +3,211 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { 
-  Cpu, 
-  ArrowRight, 
-  Server, 
-  Binary, 
-  Sparkles, 
-  FileText, 
+  Play, 
+  Pause, 
+  RotateCcw, 
+  Info, 
   Layers, 
-  CheckCircle2, 
-  Info,
-  RotateCcw,
-  Pause,
-  Play
+  GitBranch, 
+  Cpu, 
+  ShieldCheck, 
+  ArrowRight,
+  Terminal,
+  CheckCircle2
 } from 'lucide-react';
 
-interface TopologyNode {
+interface StageInfo {
   id: string;
-  number: number;
-  label: string;
-  stage: string;
-  coords: [number, number, number]; // 3D coordinates
-  color: number; // Hex color for Three.js
-  hexString: string;
-  description: string;
-  technicalDetails: {
-    inputs: string;
-    processing: string;
-    outputs: string;
-    isolation: string;
-  };
+  stepNumber: string;
+  title: string;
+  subtitle: string;
+  tag: string;
+  coords: [number, number, number];
+  color: number;
+  hex: string;
+  badgeColor: string;
+  whatItDoes: string;
+  whyItMatters: string;
 }
 
-const TOPOLOGY_NODES: TopologyNode[] = [
+const STAGES: StageInfo[] = [
   {
-    id: 'dep-config',
-    number: 1,
-    label: 'Dependency Configuration',
-    stage: 'Input Spec',
-    coords: [-6, 2, 0],
+    id: 'inputs',
+    stepNumber: '01',
+    title: 'Shared Test Input',
+    subtitle: 'Identical Test Vectors',
+    tag: 'Input Vector',
+    coords: [-6, 0, 0],
     color: 0x0284c7, // Sky
-    hexString: '#0284c7',
-    description: 'Defines target dependency (zod), baseline version (v3.23.8), candidate version (v4.6.7), and validation schemas.',
-    technicalDetails: {
-      inputs: 'Scenario definition, target semver ranges',
-      processing: 'Resolves environment dependencies, validates schema definitions',
-      outputs: 'Environment launch blueprints',
-      isolation: 'Static config / No execution'
-    }
+    hex: '#0284c7',
+    badgeColor: 'bg-sky-50 text-sky-700 border-sky-200',
+    whatItDoes: 'Generates and feeds identical test payloads into both dependency versions simultaneously.',
+    whyItMatters: 'Guarantees that any observed variance is caused strictly by the dependency bump, not differing inputs.'
   },
   {
-    id: 'input-stream',
-    number: 2,
-    label: 'Shared Test Input Stream',
-    stage: 'Vector Feed',
-    coords: [-2.5, 2, 0],
-    color: 0x38bdf8, // Light sky
-    hexString: '#38bdf8',
-    description: 'Generates and delivers identical test vectors to both execution environments simultaneously to guarantee parity.',
-    technicalDetails: {
-      inputs: 'Deterministic edge-case corpus & fuzz candidates',
-      processing: 'Synchronized JSON vector serialization',
-      outputs: 'Identical payload streams piped to stdin',
-      isolation: 'Memory bounded test-vector queue'
-    }
-  },
-  {
-    id: 'env-old',
-    number: 3,
-    label: 'Old Runtime Environment',
-    stage: 'Sandbox v3',
-    coords: [1, 3.5, -2],
+    id: 'v3-box',
+    stepNumber: '02A',
+    title: 'Baseline Sandbox (v3)',
+    subtitle: 'zod@3.23.8',
+    tag: 'Isolated Runtime',
+    coords: [-1.5, 2.2, 0],
     color: 0x10b981, // Emerald
-    hexString: '#10b981',
-    description: 'Isolated Node.js child process running Zod v3.23.8. Captures baseline outputs, ZodError instances, and legacy properties.',
-    technicalDetails: {
-      inputs: 'Stdin stream with test inputs',
-      processing: 'zod@3.23.8 execution with 5s timeout & stripped env',
-      outputs: 'JSON results: output values, errors, error.errors access',
-      isolation: 'Separate process, no secrets inherited'
-    }
+    hex: '#10b981',
+    badgeColor: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+    whatItDoes: 'Executes the inputs in an isolated Node.js child process running Zod v3.23.8.',
+    whyItMatters: 'Records the baseline behavior: parsed outputs, error shapes, and legacy properties like error.errors.'
   },
   {
-    id: 'env-new',
-    number: 4,
-    label: 'New Runtime Environment',
-    stage: 'Sandbox v4',
-    coords: [1, 0.5, 2],
+    id: 'v4-box',
+    stepNumber: '02B',
+    title: 'Candidate Sandbox (v4)',
+    subtitle: 'zod@4.6.7',
+    tag: 'Isolated Runtime',
+    coords: [-1.5, -2.2, 0],
     color: 0x8b5cf6, // Violet
-    hexString: '#8b5cf6',
-    description: 'Parallel isolated Node.js child process running Zod v4.6.7 under identical constraints.',
-    technicalDetails: {
-      inputs: 'Stdin stream with test inputs (identical to v3)',
-      processing: 'zod@4.6.7 execution with 5s timeout & stripped env',
-      outputs: 'JSON results: output values, errors, missing error.errors',
-      isolation: 'Separate process, no secrets inherited'
-    }
+    hex: '#8b5cf6',
+    badgeColor: 'bg-violet-50 text-violet-700 border-violet-200',
+    whatItDoes: 'Executes the exact same inputs in a parallel isolated Node.js process running Zod v4.6.7.',
+    whyItMatters: 'Reveals breaking changes: dropped options like required_error and undefined error.errors.'
   },
   {
-    id: 'diff-comparator',
-    number: 5,
-    label: 'Deterministic Comparator',
-    stage: 'Diff Engine',
-    coords: [4.5, 2, 0],
+    id: 'comparator',
+    stepNumber: '03',
+    title: 'Deterministic Comparator',
+    subtitle: 'AST & Structural Diff',
+    tag: 'Diff Engine',
+    coords: [2.5, 0, 0],
     color: 0xf59e0b, // Amber
-    hexString: '#f59e0b',
-    description: 'AST & semantic diff engine. Compares results deterministically, distinguishing behavioral differences from confirmed regressions.',
-    technicalDetails: {
-      inputs: 'Old & New environment result payloads',
-      processing: 'Deep structural comparison, custom error retention check',
-      outputs: 'Classified diff items: MATCH, DIFF, REGRESSION',
-      isolation: 'Deterministic in-memory diff algorithm'
-    }
+    hex: '#f59e0b',
+    badgeColor: 'bg-amber-50 text-amber-700 border-amber-200',
+    whatItDoes: 'Compares the output values, error codes, and properties between v3 and v4 without AI hallucination.',
+    whyItMatters: 'Distinguishes a harmless difference from a potential regression before passing evidence forward.'
   },
   {
-    id: 'evidence-collector',
-    number: 6,
-    label: 'Evidence Synthesizer',
-    stage: 'Evidence Pack',
-    coords: [7.5, 2, 0],
-    color: 0xec4899, // Pink
-    hexString: '#ec4899',
-    description: 'Prunes irrelevant data and packages the smallest useful evidence payload with side-by-side reproduction cases.',
-    technicalDetails: {
-      inputs: 'Classified diffs & failing input cases',
-      processing: 'Normalization, stack trace scrubbing, snippet generation',
-      outputs: 'Clean prompt payload for NVIDIA Nemotron',
-      isolation: 'Zero PII / Sanitized payload'
-    }
-  },
-  {
-    id: 'nebius-model',
-    number: 7,
-    label: 'NVIDIA Nemotron via Nebius',
-    stage: 'AI Inference',
-    coords: [10.5, 3.2, 0],
-    color: 0x14b8a6, // Teal
-    hexString: '#14b8a6',
-    description: 'Real runtime call to Nebius Token Factory querying NVIDIA Llama-3.1-Nemotron-70B for root cause synthesis and code remedies.',
-    technicalDetails: {
-      inputs: 'Empirical diff evidence package via OpenAI-compatible API',
-      processing: 'NVIDIA Nemotron-70B reasoning at temp=0.1',
-      outputs: 'Root cause explanation, blast radius, migration code diff',
-      isolation: 'Server-side only (API key never exposed to client)'
-    }
-  },
-  {
-    id: 'final-report',
-    number: 8,
-    label: 'Diagnostic Report',
-    stage: 'Decision Artifact',
-    coords: [13.5, 2, 0],
-    color: 0x22c55e, // Green
-    hexString: '#22c55e',
-    description: 'Interactive developer report featuring side-by-side AST diffs, risk assessment, and one-click copyable reproduction scripts.',
-    technicalDetails: {
-      inputs: 'Deterministic comparison + NVIDIA AI synthesis',
-      processing: 'Report structuring & reproducible script formatting',
-      outputs: 'Actionable developer inspection view',
-      isolation: 'Client-rendered structured interface'
-    }
+    id: 'nebius-ai',
+    stepNumber: '04',
+    title: 'NVIDIA Nemotron (Nebius)',
+    subtitle: 'Root Cause & Blast Radius',
+    tag: 'AI Synthesis',
+    coords: [6.5, 0, 0],
+    color: 0x0ea5e9, // Bright Sky
+    hex: '#0ea5e9',
+    badgeColor: 'bg-sky-50 text-sky-700 border-sky-200',
+    whatItDoes: 'Sends the raw empirical diff to NVIDIA Llama-3.1-Nemotron-70B on Nebius Token Factory.',
+    whyItMatters: 'Explains the architectural breaking change and generates copy-pasteable migration fixes.'
   }
-];
-
-// Connection edges indicating data flow
-const EDGES: [string, string][] = [
-  ['dep-config', 'input-stream'],
-  ['input-stream', 'env-old'],
-  ['input-stream', 'env-new'],
-  ['env-old', 'diff-comparator'],
-  ['env-new', 'diff-comparator'],
-  ['diff-comparator', 'evidence-collector'],
-  ['evidence-collector', 'nebius-model'],
-  ['nebius-model', 'final-report'],
-  ['evidence-collector', 'final-report'] // Direct bypass line
 ];
 
 export default function Topology3D() {
   const mountRef = useRef<HTMLDivElement>(null);
-  const [selectedNode, setSelectedNode] = useState<TopologyNode>(TOPOLOGY_NODES[0]);
+  const [activeStage, setActiveStage] = useState<StageInfo>(STAGES[0]);
   const [isPaused, setIsPaused] = useState(false);
-  const [isInteracting, setIsInteracting] = useState(false);
 
   useEffect(() => {
     const container = mountRef.current;
     if (!container) return;
 
     const width = container.clientWidth;
-    const height = 440;
+    const height = 320;
 
     // 1. Scene, Camera, Renderer
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x090d16);
+    scene.background = new THREE.Color(0xf8fafc); // Clean light slate-50
 
-    const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 1000);
-    camera.position.set(3.5, 7, 18);
-    camera.lookAt(3.5, 2, 0);
+    const camera = new THREE.PerspectiveCamera(36, width / height, 0.1, 1000);
+    camera.position.set(0.5, 0.5, 17);
+    camera.lookAt(0.5, 0, 0);
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     container.appendChild(renderer.domElement);
 
-    // 2. Ambient & Directional Lights
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
+    // 2. Bright Soft Studio Lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
     scene.add(ambientLight);
 
-    const dirLight = new THREE.DirectionalLight(0x38bdf8, 1.5);
-    dirLight.position.set(10, 20, 15);
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1.0);
+    dirLight.position.set(10, 15, 12);
     scene.add(dirLight);
 
-    const pointLight = new THREE.PointLight(0x0ea5e9, 2, 50);
-    pointLight.position.set(4, 5, 5);
-    scene.add(pointLight);
+    const fillLight = new THREE.DirectionalLight(0xe2e8f0, 0.8);
+    fillLight.position.set(-10, -5, -10);
+    scene.add(fillLight);
 
-    // 3. Grid Plane (Subtle engineering floor)
-    const gridHelper = new THREE.GridHelper(36, 36, 0x1e293b, 0x0f172a);
-    gridHelper.position.y = -1.5;
-    scene.add(gridHelper);
+    // 3. Stage Platforms (Clean 3D Cylinders with White Tops)
+    const stageMeshes: { mesh: THREE.Mesh; stage: StageInfo }[] = [];
+    const stagePosMap = new Map<string, THREE.Vector3>();
 
-    // 4. Create 3D Nodes
-    const nodeMeshes: { mesh: THREE.Mesh; node: TopologyNode }[] = [];
-    const nodeLookup = new Map<string, THREE.Vector3>();
+    STAGES.forEach((stage) => {
+      const pos = new THREE.Vector3(...stage.coords);
+      stagePosMap.set(stage.id, pos);
 
-    TOPOLOGY_NODES.forEach((node) => {
-      const pos = new THREE.Vector3(...node.coords);
-      nodeLookup.set(node.id, pos);
-
-      // Node base geometry: Cylinder with rounded top or bevel
-      const geometry = new THREE.CylinderGeometry(0.75, 0.85, 0.6, 24);
-      const material = new THREE.MeshStandardMaterial({
-        color: node.color,
-        roughness: 0.2,
-        metalness: 0.7,
-        emissive: node.color,
-        emissiveIntensity: 0.25
+      // Main stage platform
+      const geo = new THREE.CylinderGeometry(1.2, 1.2, 0.4, 32);
+      const mat = new THREE.MeshStandardMaterial({
+        color: stage.color,
+        roughness: 0.3,
+        metalness: 0.2
       });
 
-      const mesh = new THREE.Mesh(geometry, material);
+      const mesh = new THREE.Mesh(geo, mat);
       mesh.position.copy(pos);
-      mesh.userData = { node };
+      mesh.userData = { stage };
       scene.add(mesh);
-      nodeMeshes.push({ mesh, node });
+      stageMeshes.push({ mesh, stage });
 
-      // Pulsing outer orbit ring
-      const ringGeo = new THREE.RingGeometry(1.05, 1.15, 32);
-      const ringMat = new THREE.MeshBasicMaterial({
-        color: node.color,
-        side: THREE.DoubleSide,
-        transparent: true,
-        opacity: 0.4
-      });
-      const ring = new THREE.Mesh(ringGeo, ringMat);
-      ring.rotation.x = Math.PI / 2;
-      ring.position.copy(pos);
-      ring.position.y -= 0.25;
-      scene.add(ring);
+      // Clean white top cap
+      const capGeo = new THREE.CylinderGeometry(1.05, 1.05, 0.05, 32);
+      const capMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.2 });
+      const cap = new THREE.Mesh(capGeo, capMat);
+      cap.position.set(pos.x, pos.y + 0.2, pos.z);
+      scene.add(cap);
     });
 
-    // 5. Create Connection Curves & Animated Flow Particles
-    const curves: THREE.CatmullRomCurve3[] = [];
-    const particlesList: { mesh: THREE.Mesh; curve: THREE.CatmullRomCurve3; offset: number; speed: number }[] = [];
+    // 4. Clean Connecting Beams
+    // Path 1: Input -> Baseline (v3)
+    // Path 2: Input -> Candidate (v4)
+    // Path 3: Baseline (v3) -> Comparator
+    // Path 4: Candidate (v4) -> Comparator
+    // Path 5: Comparator -> NVIDIA AI
+    const connections = [
+      ['inputs', 'v3-box'],
+      ['inputs', 'v4-box'],
+      ['v3-box', 'comparator'],
+      ['v4-box', 'comparator'],
+      ['comparator', 'nebius-ai']
+    ];
 
-    const particleGeo = new THREE.SphereGeometry(0.12, 12, 12);
-    const particleMat = new THREE.MeshBasicMaterial({ color: 0x38bdf8 });
+    const pulses: { mesh: THREE.Mesh; curve: THREE.LineCurve3; progress: number }[] = [];
+    const pulseGeo = new THREE.SphereGeometry(0.18, 16, 16);
+    const pulseMat = new THREE.MeshBasicMaterial({ color: 0x0284c7 });
 
-    EDGES.forEach(([fromId, toId]) => {
-      const p1 = nodeLookup.get(fromId);
-      const p2 = nodeLookup.get(toId);
+    connections.forEach(([fromId, toId]) => {
+      const p1 = stagePosMap.get(fromId);
+      const p2 = stagePosMap.get(toId);
       if (!p1 || !p2) return;
 
-      // Arc middle point
-      const mid = new THREE.Vector3().addVectors(p1, p2).multiplyScalar(0.5);
-      // Lift the arc slightly
-      mid.y += (p1.z !== p2.z) ? 0.8 : 0.4;
-
-      const curve = new THREE.CatmullRomCurve3([p1, mid, p2]);
-      curves.push(curve);
-
-      // Tube geometry for line
-      const tubeGeo = new THREE.TubeGeometry(curve, 32, 0.04, 8, false);
+      const curve = new THREE.LineCurve3(p1, p2);
+      const tubeGeo = new THREE.TubeGeometry(curve, 20, 0.07, 8, false);
       const tubeMat = new THREE.MeshStandardMaterial({
-        color: 0x334155,
-        roughness: 0.5,
-        metalness: 0.3,
-        transparent: true,
-        opacity: 0.7
+        color: 0xcbd5e1, // clean slate-300
+        roughness: 0.4
       });
       const tube = new THREE.Mesh(tubeGeo, tubeMat);
       scene.add(tube);
 
-      // Add flowing data packet particle
-      const pMesh = new THREE.Mesh(particleGeo, particleMat);
-      scene.add(pMesh);
-      particlesList.push({
-        mesh: pMesh,
+      // Data pulse
+      const pulseMesh = new THREE.Mesh(pulseGeo, pulseMat);
+      scene.add(pulseMesh);
+      pulses.push({
+        mesh: pulseMesh,
         curve: curve,
-        offset: Math.random(),
-        speed: 0.004 + Math.random() * 0.002
+        progress: Math.random()
       });
     });
 
-    // 6. Raycasting & Interaction
+    // 5. Click Raycasting
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
 
@@ -313,47 +217,43 @@ export default function Topology3D() {
       mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
 
       raycaster.setFromCamera(mouse, camera);
-      const intersects = raycaster.intersectObjects(nodeMeshes.map(n => n.mesh));
+      const intersects = raycaster.intersectObjects(stageMeshes.map(s => s.mesh));
 
       if (intersects.length > 0) {
         const clickedMesh = intersects[0].object as THREE.Mesh;
-        if (clickedMesh.userData?.node) {
-          setSelectedNode(clickedMesh.userData.node);
+        if (clickedMesh.userData?.stage) {
+          setActiveStage(clickedMesh.userData.stage);
         }
       }
     };
 
     renderer.domElement.addEventListener('pointerdown', onPointerDown);
 
-    // 7. Animation Loop
-    let animationFrameId: number;
+    // 6. Animation
+    let animId: number;
     let clock = new THREE.Clock();
 
     const animate = () => {
-      animationFrameId = requestAnimationFrame(animate);
+      animId = requestAnimationFrame(animate);
 
       if (!isPaused) {
-        const delta = clock.getDelta();
-
-        // Update flowing particles
-        particlesList.forEach(p => {
-          p.offset = (p.offset + p.speed) % 1;
-          const pos = p.curve.getPointAt(p.offset);
+        // Move data pulses
+        pulses.forEach((p) => {
+          p.progress = (p.progress + 0.008) % 1;
+          const pos = p.curve.getPointAt(p.progress);
           p.mesh.position.copy(pos);
         });
 
-        // Gentle camera orbit if not actively interacting
-        const time = clock.getElapsedTime() * 0.2;
-        camera.position.x = 3.5 + Math.sin(time) * 0.8;
-        camera.position.y = 7 + Math.cos(time * 0.7) * 0.3;
-        camera.lookAt(3.5, 2, 0);
-
-        // Highlight selected node
-        nodeMeshes.forEach(({ mesh, node }) => {
-          const isSelected = selectedNode.id === node.id;
-          const mat = mesh.material as THREE.MeshStandardMaterial;
-          mat.emissiveIntensity = isSelected ? 0.8 : 0.25;
-          mesh.scale.setScalar(isSelected ? 1.15 : 1.0);
+        // Gentle floating effect on selected stage
+        stageMeshes.forEach(({ mesh, stage }) => {
+          const isSelected = activeStage.id === stage.id;
+          if (isSelected) {
+            mesh.scale.set(1.15, 1.15, 1.15);
+            mesh.rotation.y += 0.01;
+          } else {
+            mesh.scale.set(1.0, 1.0, 1.0);
+            mesh.rotation.y = 0;
+          }
         });
       }
 
@@ -362,7 +262,6 @@ export default function Topology3D() {
 
     animate();
 
-    // 8. Resize Handler
     const handleResize = () => {
       if (!container) return;
       const newWidth = container.clientWidth;
@@ -374,7 +273,7 @@ export default function Topology3D() {
     window.addEventListener('resize', handleResize);
 
     return () => {
-      cancelAnimationFrame(animationFrameId);
+      cancelAnimationFrame(animId);
       window.removeEventListener('resize', handleResize);
       renderer.domElement.removeEventListener('pointerdown', onPointerDown);
       if (container.contains(renderer.domElement)) {
@@ -382,113 +281,123 @@ export default function Topology3D() {
       }
       renderer.dispose();
     };
-  }, [isPaused, selectedNode.id]);
+  }, [isPaused, activeStage.id]);
 
   return (
-    <div className="w-full rounded-xl border border-surface-border bg-surface-card overflow-hidden shadow-2xl">
-      {/* Topology Header Controls */}
-      <div className="flex flex-wrap items-center justify-between border-b border-surface-border px-4 py-3 bg-surface-200/80">
+    <div className="w-full rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+      {/* Topology Header */}
+      <div className="flex flex-wrap items-center justify-between border-b border-slate-100 px-5 py-3.5 bg-slate-50/70">
         <div className="flex items-center space-x-2">
-          <div className="h-2 w-2 rounded-full bg-sky-400 animate-pulse" />
-          <h3 className="text-sm font-semibold text-slate-200">
-            Interactive Architecture Topology
+          <div className="h-2 w-2 rounded-full bg-sky-500 animate-pulse" />
+          <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wider">
+            Twin-Environment Differential Pipeline
           </h3>
           <span className="text-xs text-slate-400 font-mono hidden sm:inline">
-            (8-Stage Differential Pipeline)
+            (How ShadowBump AI Works)
           </span>
         </div>
 
         <div className="flex items-center space-x-2">
           <button
             onClick={() => setIsPaused(!isPaused)}
-            className="flex items-center space-x-1 px-2.5 py-1 rounded text-xs font-mono border border-slate-700 bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 transition-colors"
-            title={isPaused ? 'Resume 3D animation' : 'Pause animation (Reduced Motion)'}
+            className="flex items-center space-x-1 px-2.5 py-1 rounded text-xs font-mono border border-slate-200 bg-white text-slate-600 hover:text-slate-900 shadow-xs"
           >
             {isPaused ? <Play className="h-3 w-3" /> : <Pause className="h-3 w-3" />}
-            <span className="hidden sm:inline">{isPaused ? 'Resume' : 'Pause'}</span>
+            <span>{isPaused ? 'Resume' : 'Pause'}</span>
           </button>
           <button
-            onClick={() => setSelectedNode(TOPOLOGY_NODES[0])}
-            className="flex items-center space-x-1 px-2.5 py-1 rounded text-xs font-mono border border-slate-700 bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 transition-colors"
-            title="Reset focus to Stage 1"
+            onClick={() => setActiveStage(STAGES[0])}
+            className="flex items-center space-x-1 px-2.5 py-1 rounded text-xs font-mono border border-slate-200 bg-white text-slate-600 hover:text-slate-900 shadow-xs"
           >
             <RotateCcw className="h-3 w-3" />
-            <span className="hidden sm:inline">Reset</span>
+            <span>Reset</span>
           </button>
         </div>
       </div>
 
-      {/* 3D WebGL Canvas */}
-      <div className="relative w-full h-[440px] bg-[#090d16] cursor-pointer">
+      {/* 3D Canvas */}
+      <div className="relative w-full h-[320px] bg-[#f8fafc] cursor-pointer">
         <div ref={mountRef} className="w-full h-full" />
 
-        {/* Floating Quick Hint */}
+        {/* Quick Hint */}
         <div className="absolute top-3 left-3 pointer-events-none">
-          <span className="inline-flex items-center gap-1.5 px-2 py-1 rounded bg-slate-900/90 border border-slate-800 text-[11px] text-slate-400">
-            <Info className="h-3.5 w-3.5 text-sky-400" />
-            Click any 3D node to inspect pipeline data flow
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/90 border border-slate-200 text-[11px] font-medium text-slate-600 shadow-xs">
+            <Info className="h-3.5 w-3.5 text-sky-600" />
+            Click any platform to inspect that step
           </span>
-        </div>
-
-        {/* Selected Stage HUD Overlay */}
-        <div className="absolute bottom-3 left-3 right-3 sm:right-auto sm:max-w-md pointer-events-auto">
-          <div className="p-3.5 rounded-lg border border-slate-700/80 bg-slate-900/95 backdrop-blur-md shadow-xl text-xs">
-            <div className="flex items-center justify-between mb-1.5">
-              <div className="flex items-center space-x-2">
-                <span 
-                  className="inline-flex items-center justify-center h-5 w-5 rounded-full text-[11px] font-bold text-white"
-                  style={{ backgroundColor: selectedNode.hexString }}
-                >
-                  {selectedNode.number}
-                </span>
-                <span className="font-semibold text-slate-100 text-sm">
-                  {selectedNode.label}
-                </span>
-              </div>
-              <span className="font-mono text-[10px] text-slate-400 uppercase tracking-wider px-1.5 py-0.5 rounded border border-slate-800 bg-slate-950">
-                {selectedNode.stage}
-              </span>
-            </div>
-            <p className="text-slate-300 text-xs mb-2.5 leading-relaxed">
-              {selectedNode.description}
-            </p>
-            <div className="grid grid-cols-2 gap-2 text-[11px] border-t border-slate-800 pt-2 font-mono">
-              <div>
-                <span className="text-slate-400 block">Processing:</span>
-                <span className="text-slate-200 truncate block">{selectedNode.technicalDetails.processing}</span>
-              </div>
-              <div>
-                <span className="text-slate-400 block">Isolation:</span>
-                <span className="text-sky-300 truncate block">{selectedNode.technicalDetails.isolation}</span>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
 
-      {/* Accessible Node Selector Tabs (Ensures Keyboard & Touch Accessibility) */}
-      <div className="border-t border-surface-border bg-surface-200 p-2 sm:p-3 overflow-x-auto">
-        <div className="flex items-center space-x-1.5 min-w-max">
-          {TOPOLOGY_NODES.map((node) => {
-            const isSelected = selectedNode.id === node.id;
+      {/* Simplified, Crystal-Clear 5-Stage Step Bar */}
+      <div className="border-t border-slate-200 bg-slate-50 p-3 sm:p-4">
+        <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
+          {STAGES.map((s) => {
+            const isSelected = activeStage.id === s.id;
             return (
               <button
-                key={node.id}
-                onClick={() => setSelectedNode(node)}
-                className={`flex items-center space-x-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium transition-all ${
+                key={s.id}
+                onClick={() => setActiveStage(s)}
+                className={`text-left p-2.5 rounded-xl border transition-all ${
                   isSelected
-                    ? 'bg-slate-800 text-white border border-slate-600 shadow-sm'
-                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/60'
+                    ? 'bg-white border-sky-400 shadow-sm ring-1 ring-sky-400/20'
+                    : 'bg-white/60 border-slate-200 hover:bg-white text-slate-600'
                 }`}
               >
-                <span 
-                  className="h-2 w-2 rounded-full" 
-                  style={{ backgroundColor: node.hexString }} 
-                />
-                <span>{node.number}. {node.stage}</span>
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-[10px] font-mono font-bold text-slate-400">
+                    STEP {s.stepNumber}
+                  </span>
+                  <span
+                    className="h-2 w-2 rounded-full"
+                    style={{ backgroundColor: s.hex }}
+                  />
+                </div>
+                <div className={`text-xs font-bold leading-tight ${isSelected ? 'text-slate-900' : 'text-slate-700'}`}>
+                  {s.title}
+                </div>
+                <div className="text-[11px] text-slate-500 font-mono truncate mt-0.5">
+                  {s.subtitle}
+                </div>
               </button>
             );
           })}
+        </div>
+
+        {/* Selected Stage Explanation Box (Clean & Readable) */}
+        <div className="mt-3 p-4 rounded-xl border border-slate-200 bg-white shadow-xs">
+          <div className="flex items-center space-x-2 mb-2">
+            <span
+              className="px-2 py-0.5 rounded text-[10px] font-mono font-bold text-white"
+              style={{ backgroundColor: activeStage.hex }}
+            >
+              STEP {activeStage.stepNumber}
+            </span>
+            <span className="text-sm font-bold text-slate-900">
+              {activeStage.title}
+            </span>
+            <span className="text-xs text-slate-400 font-mono hidden sm:inline">
+              — {activeStage.tag}
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+            <div>
+              <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider block mb-0.5">
+                What happens here:
+              </span>
+              <p className="text-slate-700 leading-relaxed">
+                {activeStage.whatItDoes}
+              </p>
+            </div>
+            <div>
+              <span className="text-[11px] font-semibold text-sky-600 uppercase tracking-wider block mb-0.5">
+                Why it matters:
+              </span>
+              <p className="text-slate-700 leading-relaxed">
+                {activeStage.whyItMatters}
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>

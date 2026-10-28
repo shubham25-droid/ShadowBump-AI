@@ -5,196 +5,138 @@ import Link from 'next/link';
 import Topology3D from '@/components/Topology3D';
 import { 
   Play, 
-  Layers, 
-  ShieldAlert, 
+  ShieldCheck, 
   GitCompare, 
   Cpu, 
-  Terminal, 
-  CheckCircle2, 
-  AlertTriangle, 
   ArrowRight,
   Code2,
-  FileSearch,
-  BookOpen
+  Terminal,
+  CheckCircle2,
+  AlertTriangle
 } from 'lucide-react';
 
 export default function LandingPage() {
   return (
-    <div className="relative overflow-hidden">
+    <div className="relative">
       {/* Hero Section */}
-      <section className="relative px-4 pt-16 pb-20 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <div className="text-center max-w-3xl mx-auto space-y-6">
-          {/* Eyebrow Pill */}
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-sky-500/30 bg-sky-500/10 text-xs font-mono text-sky-400">
-            <span className="h-1.5 w-1.5 rounded-full bg-sky-400 animate-ping" />
-            <span>Nebius x NVIDIA Global AI Hackathon Track: Coding & Agentic Engineering</span>
+      <section className="px-4 pt-14 pb-16 sm:px-6 lg:px-8 max-w-6xl mx-auto">
+        <div className="text-center max-w-3xl mx-auto space-y-5">
+          {/* Tagline Badge */}
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-sky-200 bg-sky-50 text-xs font-semibold text-sky-700">
+            <span className="h-2 w-2 rounded-full bg-sky-500 animate-pulse" />
+            <span>Nebius x NVIDIA Global AI Hackathon (Coding Track)</span>
           </div>
 
           {/* Headline */}
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-100">
-            Catch Behavioral Changes{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-teal-300">
+          <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-slate-900 leading-tight">
+            Catch Dependency Regressions{' '}
+            <span className="text-sky-600">
               Before Production.
             </span>
           </h1>
 
-          {/* Subheading */}
-          <p className="text-base sm:text-lg text-slate-400 leading-relaxed">
-            Software dependencies regularly alter runtime behavior across versions without failing builds or existing happy-path tests. 
-            ShadowBump AI executes identical test vectors across isolated twin runtimes, detects observable behavioral divergences, and synthesizes root-cause evidence using NVIDIA Nemotron on Nebius Token Factory.
+          {/* Punchy Subtitle */}
+          <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
+            Upgrading dependencies can silently break error handling, property access, and type coercion even when all tests pass. 
+            ShadowBump AI runs identical test inputs against twin runtime sandboxes and explains the differences with NVIDIA Nemotron on Nebius.
           </p>
 
-          {/* CTAs */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+          {/* Clean Action Buttons */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
             <Link
               href="/workspace"
-              className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-6 py-3 rounded-lg bg-sky-600 hover:bg-sky-500 text-white font-medium text-sm transition-all shadow-lg shadow-sky-600/20"
+              className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-5 py-3 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-semibold text-sm transition-all shadow-sm"
             >
               <Play className="h-4 w-4 fill-current" />
-              <span>Launch Live Demonstration</span>
+              <span>Test Zod v3 vs v4 Live</span>
             </Link>
 
             <Link
               href="/methodology"
-              className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-6 py-3 rounded-lg border border-slate-700 bg-surface-card hover:bg-slate-800 text-slate-300 font-medium text-sm transition-colors"
+              className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-5 py-3 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-semibold text-sm transition-colors shadow-xs"
             >
-              <BookOpen className="h-4 w-4" />
-              <span>Read Methodology & Soundness</span>
+              <span>Methodology & Soundness</span>
             </Link>
           </div>
         </div>
 
-        {/* 3D Pipeline Topology Section */}
-        <div className="mt-16 sm:mt-20">
-          <div className="mb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-            <div>
-              <h2 className="text-lg font-bold text-slate-200">
-                Differential Testing Topology
-              </h2>
-              <p className="text-xs text-slate-400">
-                Real-time interactive schematic of ShadowBump AI twin execution and evidence collection pipeline
-              </p>
-            </div>
-            <span className="text-xs font-mono text-slate-400">
-              Interactive 3D Isometric View
-            </span>
-          </div>
+        {/* Simplified 3D Pipeline Topology */}
+        <div className="mt-12">
           <Topology3D />
         </div>
       </section>
 
-      {/* The Core Problem & Solution */}
-      <section className="border-t border-surface-border bg-surface-200/50 py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="max-w-2xl mb-12">
-            <h2 className="text-xs font-mono uppercase tracking-wider text-sky-400 font-semibold mb-2">
-              The Engineering Challenge
+      {/* 3 Simple Value Columns */}
+      <section className="border-t border-slate-200 bg-white py-14 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center max-w-xl mx-auto mb-10">
+            <h2 className="text-xs font-bold uppercase tracking-wider text-sky-600 mb-1">
+              Differential Engine
             </h2>
-            <h3 className="text-2xl sm:text-3xl font-bold text-slate-100">
-              Why Dependency Upgrades Cause Silent Regressions
+            <h3 className="text-2xl font-bold text-slate-900">
+              How ShadowBump AI Protects You
             </h3>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="p-6 rounded-xl border border-surface-border bg-surface-card space-y-3">
-              <div className="h-10 w-10 rounded-lg bg-rose-500/10 border border-rose-500/20 text-rose-400 flex items-center justify-center">
-                <AlertTriangle className="h-5 w-5" />
-              </div>
-              <h4 className="font-semibold text-slate-200 text-base">
-                1. Test Coverage Blind Spots
-              </h4>
-              <p className="text-xs text-slate-400 leading-relaxed">
-                Unit test suites routinely verify happy paths and basic validation. However, edge cases—such as NaN coercion, removed error accessor properties, or customized error strings—slip into production unnoticed.
-              </p>
-            </div>
-
-            <div className="p-6 rounded-xl border border-surface-border bg-surface-card space-y-3">
-              <div className="h-10 w-10 rounded-lg bg-sky-500/10 border border-sky-500/20 text-sky-400 flex items-center justify-center">
+            {/* Card 1 */}
+            <div className="p-6 rounded-2xl border border-slate-200 bg-slate-50/50 space-y-2.5">
+              <div className="h-9 w-9 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-600 flex items-center justify-center">
                 <GitCompare className="h-5 w-5" />
               </div>
-              <h4 className="font-semibold text-slate-200 text-base">
-                2. Twin Differential Execution
+              <h4 className="font-bold text-slate-900 text-base">
+                1. Twin Sandbox Runtimes
               </h4>
-              <p className="text-xs text-slate-400 leading-relaxed">
-                Instead of guessing code changes from release notes, ShadowBump AI executes the identical test input against two isolated Node.js environments (baseline version vs candidate version) to capture empirical diffs.
+              <p className="text-xs text-slate-600 leading-relaxed">
+                Executes the baseline version (<code className="font-mono text-emerald-700 bg-emerald-50 px-1 py-0.5 rounded">zod@3.23.8</code>) and candidate version (<code className="font-mono text-violet-700 bg-violet-50 px-1 py-0.5 rounded">zod@4.6.7</code>) in parallel, isolated child processes.
               </p>
             </div>
 
-            <div className="p-6 rounded-xl border border-surface-border bg-surface-card space-y-3">
-              <div className="h-10 w-10 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center">
+            {/* Card 2 */}
+            <div className="p-6 rounded-2xl border border-slate-200 bg-slate-50/50 space-y-2.5">
+              <div className="h-9 w-9 rounded-xl bg-amber-50 border border-amber-200 text-amber-600 flex items-center justify-center">
+                <ShieldCheck className="h-5 w-5" />
+              </div>
+              <h4 className="font-bold text-slate-900 text-base">
+                2. Deterministic AST Diffing
+              </h4>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                Compares output values, exception payloads, and property access like <code className="font-mono text-slate-700 bg-slate-200 px-1 py-0.5 rounded">error.errors</code> without relying on AI guesswork.
+              </p>
+            </div>
+
+            {/* Card 3 */}
+            <div className="p-6 rounded-2xl border border-slate-200 bg-slate-50/50 space-y-2.5">
+              <div className="h-9 w-9 rounded-xl bg-sky-50 border border-sky-200 text-sky-600 flex items-center justify-center">
                 <Cpu className="h-5 w-5" />
               </div>
-              <h4 className="font-semibold text-slate-200 text-base">
-                3. NVIDIA AI Root Cause Synthesis
+              <h4 className="font-bold text-slate-900 text-base">
+                3. NVIDIA Nemotron AI
               </h4>
-              <p className="text-xs text-slate-400 leading-relaxed">
-                Empirical diffs are packaged into structured evidence for NVIDIA Llama-3.1-Nemotron-70B on Nebius Token Factory. The model pinpoints breaking architectural changes, estimates blast radius, and generates migration diffs.
+              <p className="text-xs text-slate-600 leading-relaxed">
+                Synthesizes the empirical diff through Nebius Token Factory, explaining the root cause, blast radius, and exact migration code fix.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* What the User Receives */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <div className="max-w-2xl mb-12">
-          <h2 className="text-xs font-mono uppercase tracking-wider text-sky-400 font-semibold mb-2">
-            Analysis Output Artifacts
-          </h2>
-          <h3 className="text-2xl sm:text-3xl font-bold text-slate-100">
-            What You Receive After an Analysis
-          </h3>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
-          <div className="p-5 rounded-xl border border-surface-border bg-surface-card space-y-3">
-            <div className="flex items-center space-x-2.5">
-              <Code2 className="h-5 w-5 text-sky-400" />
-              <h4 className="font-semibold text-slate-200">
-                Side-by-Side AST & Error Diffs
-              </h4>
-            </div>
-            <p className="text-xs text-slate-400 leading-relaxed">
-              Examine exactly how return types, parsed objects, issue codes, and property structures changed between versions with zero ambiguity.
-            </p>
-            <div className="p-3 rounded-lg bg-surface-300 font-mono text-[11px] text-slate-300 border border-slate-800">
-              <span className="text-emerald-400 block">// Baseline (v3): error.errors is defined Array(1)</span>
-              <span className="text-rose-400 block">// Candidate (v4): error.errors is undefined (Crash Risk)</span>
-            </div>
-          </div>
-
-          <div className="p-5 rounded-xl border border-surface-border bg-surface-card space-y-3">
-            <div className="flex items-center space-x-2.5">
-              <Terminal className="h-5 w-5 text-emerald-400" />
-              <h4 className="font-semibold text-slate-200">
-                Deterministic Reproduction Snippets
-              </h4>
-            </div>
-            <p className="text-xs text-slate-400 leading-relaxed">
-              Every identified behavioral divergence comes with a standalone, copy-pasteable script to reproduce the regression locally in your terminal or CI pipeline.
-            </p>
-            <div className="p-3 rounded-lg bg-surface-300 font-mono text-[11px] text-slate-300 border border-slate-800">
-              <span className="text-slate-400 block">// Run locally</span>
-              <span className="text-sky-300 block">npx ts-node reproduce-issue-tc2.ts</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Start Demonstration CTA */}
-        <div className="mt-14 p-8 rounded-2xl border border-sky-500/30 bg-gradient-to-r from-sky-950/40 via-surface-card to-slate-900 flex flex-col md:flex-row items-center justify-between gap-6">
+      {/* Clean Callout Section */}
+      <section className="py-12 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
+        <div className="p-8 rounded-2xl border border-slate-200 bg-gradient-to-r from-sky-50 via-white to-slate-50 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xs">
           <div>
-            <h3 className="text-xl font-bold text-slate-100 mb-1">
-              Test Real-World Dependency Differences
+            <h3 className="text-lg font-bold text-slate-900 mb-1">
+              Ready to test real dependency behavioral changes?
             </h3>
-            <p className="text-xs text-slate-400 max-w-xl">
-              Experience the live controlled demonstration comparing Zod v3.23.8 against Zod v4.6.7 across custom error mapping, property access, and edge-case type coercion.
+            <p className="text-xs text-slate-600 max-w-lg">
+              Run the verified Zod v3 vs v4 suite: dropped custom errors, removed <code className="font-mono text-slate-800">error.errors</code> property, and NaN coercion.
             </p>
           </div>
           <Link
             href="/workspace"
-            className="shrink-0 inline-flex items-center space-x-2 px-5 py-2.5 rounded-lg bg-sky-600 hover:bg-sky-500 text-white font-medium text-xs transition-all shadow-md"
+            className="shrink-0 inline-flex items-center space-x-2 px-5 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-semibold text-xs transition-all shadow-sm"
           >
-            <span>Open Workspace</span>
+            <span>Launch Workspace</span>
             <ArrowRight className="h-4 w-4" />
           </Link>
         </div>

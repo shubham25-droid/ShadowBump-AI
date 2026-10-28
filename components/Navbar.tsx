@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ShieldAlert, Play, Cpu, Sparkles, BookOpen, Layers } from 'lucide-react';
+import { ShieldCheck, Play, Cpu, BookOpen, Layers } from 'lucide-react';
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -20,25 +20,25 @@ export default function Navbar() {
 
   const navItems = [
     { href: '/', label: 'Overview', icon: Layers },
-    { href: '/workspace', label: 'Analysis Workspace', icon: Play },
-    { href: '/methodology', label: 'Methodology & Soundness', icon: BookOpen },
+    { href: '/workspace', label: 'Workspace', icon: Play },
+    { href: '/methodology', label: 'Methodology', icon: BookOpen },
   ];
 
   return (
-    <header className="sticky top-0 z-50 border-b border-surface-border bg-surface-300/80 backdrop-blur-md">
+    <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
         {/* Brand */}
         <div className="flex items-center space-x-3">
           <Link href="/" className="flex items-center space-x-2.5 group">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-sky-500/10 border border-sky-500/30 text-sky-400 group-hover:border-sky-500 transition-colors">
-              <ShieldAlert className="h-5 w-5" />
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-50 border border-sky-200 text-sky-600 group-hover:bg-sky-100 transition-colors">
+              <ShieldCheck className="h-4 w-4" />
             </div>
-            <div>
-              <span className="font-semibold text-slate-100 tracking-tight text-base group-hover:text-sky-300 transition-colors">
-                ShadowBump <span className="text-sky-400 font-mono text-sm">AI</span>
+            <div className="flex items-center space-x-1.5">
+              <span className="font-bold text-slate-900 tracking-tight text-base group-hover:text-sky-600 transition-colors">
+                ShadowBump
               </span>
-              <span className="hidden sm:inline-block ml-2 text-[11px] font-mono uppercase tracking-wider text-slate-400 px-1.5 py-0.5 rounded border border-slate-800 bg-slate-900">
-                v1.0 MVP
+              <span className="text-[11px] font-mono uppercase tracking-wider text-sky-700 bg-sky-50 border border-sky-200 px-1.5 py-0.5 rounded font-semibold">
+                AI
               </span>
             </div>
           </Link>
@@ -53,10 +53,10 @@ export default function Navbar() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
+                className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                   isActive
-                    ? 'bg-slate-800 text-sky-400 border border-slate-700/60'
-                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
+                    ? 'bg-slate-100 text-sky-700 font-semibold'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                 }`}
               >
                 <Icon className="h-4 w-4" />
@@ -66,31 +66,29 @@ export default function Navbar() {
           })}
         </nav>
 
-        {/* Provider Status & Action */}
+        {/* Status Pill & Action */}
         <div className="flex items-center space-x-3">
-          {/* Nebius Badge */}
-          <div className="hidden lg:flex items-center space-x-1.5 text-xs text-slate-400 px-2.5 py-1 rounded-full border border-slate-800 bg-slate-900/90">
-            <Cpu className="h-3.5 w-3.5 text-sky-400" />
-            <span>NVIDIA Nemotron via Nebius:</span>
+          <div className="hidden lg:flex items-center space-x-1.5 text-xs text-slate-600 px-2.5 py-1 rounded-full border border-slate-200 bg-slate-50">
+            <Cpu className="h-3.5 w-3.5 text-sky-600" />
+            <span className="font-medium">NVIDIA Nemotron:</span>
             <span
               className={`inline-block h-2 w-2 rounded-full ${
                 hasNebiusKey === true
-                  ? 'bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.5)]'
-                  : 'bg-amber-400'
+                  ? 'bg-emerald-500'
+                  : 'bg-amber-500'
               }`}
-              title={hasNebiusKey ? 'Nebius API Key configured' : 'Using deterministic fallback (Key not set in env)'}
             />
-            <span className="text-[11px] font-mono text-slate-300">
-              {hasNebiusKey === true ? 'Active' : 'Deterministic Mode'}
+            <span className="font-mono text-[11px] text-slate-500">
+              {hasNebiusKey === true ? 'Connected' : 'Deterministic Mode'}
             </span>
           </div>
 
           <Link
             href="/workspace"
-            className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-md bg-sky-600 hover:bg-sky-500 text-white text-sm font-medium transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-sky-500/50"
+            className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg bg-sky-600 hover:bg-sky-700 text-white text-xs font-semibold transition-all shadow-sm"
           >
-            <Play className="h-3.5 w-3.5 fill-current" />
-            <span>Launch Analysis</span>
+            <Play className="h-3 w-3 fill-current" />
+            <span>Start Analysis</span>
           </Link>
         </div>
       </div>
