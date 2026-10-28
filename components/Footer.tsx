@@ -1,15 +1,16 @@
 import React from 'react';
 import Link from 'next/link';
-import { ShieldCheck, ExternalLink, Cpu } from 'lucide-react';
+import BrandLogo from '@/components/BrandLogo';
+import { ExternalLink, Cpu } from 'lucide-react';
 
 export default function Footer() {
   return (
     <footer className="border-t border-slate-200 bg-white py-8 mt-auto">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-          <div className="flex items-center space-x-2">
-            <ShieldCheck className="h-4 w-4 text-sky-600" />
-            <span className="font-semibold text-slate-800">ShadowBump AI</span>
+          <div className="flex items-center space-x-2.5">
+            <BrandLogo size={22} showText={false} />
+            <span className="font-bold text-slate-800">ShadowBump AI</span>
             <span>—</span>
             <span>Differential runtime testing for dependency upgrades</span>
           </div>

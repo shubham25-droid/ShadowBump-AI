@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Topology3D from '@/components/Topology3D';
+import { BrandSymbol } from '@/components/BrandLogo';
 import { 
   Play, 
   ShieldCheck, 
@@ -124,13 +125,16 @@ export default function LandingPage() {
       {/* Clean Callout Section */}
       <section className="py-12 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
         <div className="p-8 rounded-2xl border border-slate-200 bg-gradient-to-r from-sky-50 via-white to-slate-50 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xs">
-          <div>
-            <h3 className="text-lg font-bold text-slate-900 mb-1">
-              Ready to test real dependency behavioral changes?
-            </h3>
-            <p className="text-xs text-slate-600 max-w-lg">
-              Run the verified Zod v3 vs v4 suite: dropped custom errors, removed <code className="font-mono text-slate-800">error.errors</code> property, and NaN coercion.
-            </p>
+          <div className="flex items-center space-x-4">
+            <BrandSymbol size={44} className="shrink-0 hidden sm:block" />
+            <div>
+              <h3 className="text-lg font-bold text-slate-900 mb-1">
+                Ready to test real dependency behavioral changes?
+              </h3>
+              <p className="text-xs text-slate-600 max-w-lg">
+                Run the verified Zod v3 vs v4 suite: dropped custom errors, removed <code className="font-mono text-slate-800">error.errors</code> property, and NaN coercion.
+              </p>
+            </div>
           </div>
           <Link
             href="/workspace"

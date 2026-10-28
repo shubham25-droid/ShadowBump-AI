@@ -3,7 +3,8 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ShieldCheck, Play, Cpu, BookOpen, Layers } from 'lucide-react';
+import BrandLogo from '@/components/BrandLogo';
+import { Play, Cpu, BookOpen, Layers } from 'lucide-react';
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -27,22 +28,10 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
-        {/* Brand */}
-        <div className="flex items-center space-x-3">
-          <Link href="/" className="flex items-center space-x-2.5 group">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-50 border border-sky-200 text-sky-600 group-hover:bg-sky-100 transition-colors">
-              <ShieldCheck className="h-4 w-4" />
-            </div>
-            <div className="flex items-center space-x-1.5">
-              <span className="font-bold text-slate-900 tracking-tight text-base group-hover:text-sky-600 transition-colors">
-                ShadowBump
-              </span>
-              <span className="text-[11px] font-mono uppercase tracking-wider text-sky-700 bg-sky-50 border border-sky-200 px-1.5 py-0.5 rounded font-semibold">
-                AI
-              </span>
-            </div>
-          </Link>
-        </div>
+        {/* Brand Lockup */}
+        <Link href="/" className="group flex items-center transition-opacity hover:opacity-90">
+          <BrandLogo size={30} />
+        </Link>
 
         {/* Navigation Links */}
         <nav className="hidden md:flex items-center space-x-1">

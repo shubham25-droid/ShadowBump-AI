@@ -12,6 +12,7 @@ import {
 import MetricCard from '@/components/MetricCard';
 import DiffViewer from '@/components/DiffViewer';
 import AIExplanationCard from '@/components/AIExplanationCard';
+import { BrandSymbol } from '@/components/BrandLogo';
 import { 
   Layers, 
   CheckCircle2, 
@@ -130,7 +131,7 @@ export default function ResultsPage() {
   if (isLoadingDefault) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-20 text-center space-y-3">
-        <RefreshCw className="h-7 w-7 text-sky-600 animate-spin mx-auto" />
+        <BrandSymbol size={40} className="mx-auto animate-pulse" />
         <h2 className="text-base font-bold text-slate-800">
           Running Differential Analysis...
         </h2>
