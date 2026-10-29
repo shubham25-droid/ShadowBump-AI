@@ -2,170 +2,138 @@
 > **Catch Behavioral Changes Before Production.**
 
 [![Live Demo (Vercel)](https://img.shields.io/badge/Live_Demo-shadow--bump--ai.vercel.app-000000.svg?style=for-the-badge&logo=vercel&logoColor=white)](https://shadow-bump-ai.vercel.app/)
-[![Live Demo (Render)](https://img.shields.io/badge/Live_Demo-shadowbump--ai.onrender.com-0064d2.svg?style=for-the-badge&logo=render&logoColor=white)](https://shadowbump-ai.onrender.com)
-
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Hackathon: Nebius x NVIDIA](https://img.shields.io/badge/Nebius_x_NVIDIA-Global_AI_Hackathon-76b900.svg)](https://nebiusglobalaihackathon.devpost.com/)
 [![Track: Coding & Agentic Engineering](https://img.shields.io/badge/Track-Coding_%26_Agentic_Engineering-0284c7.svg)](https://nebiusglobalaihackathon.devpost.com/)
 [![Model: NVIDIA Nemotron-70B](https://img.shields.io/badge/NVIDIA_Model-Llama--3.1--Nemotron--70B-76b900.svg)](https://build.nvidia.com/)
-[![Infrastructure: Nebius Token Factory](https://img.shields.io/badge/Compute-Nebius_Token_Factory-8b5cf6.svg)](https://tokenfactory.nebius.com/)
+[![Compute: Nebius Token Factory](https://img.shields.io/badge/Compute-Nebius_Token_Factory-8b5cf6.svg)](https://tokenfactory.nebius.com/)
 
 ---
 
-## 1. The Core Problem
+## 1. The Problem
 
-When developers upgrade a software dependency (such as migrating from **Zod v3 to Zod v4**), the project often compiles cleanly and standard happy-path unit tests pass. 
+When developers upgrade dependencies (such as migrating from **Zod v3 to Zod v4**), builds compile cleanly and standard happy-path unit tests pass. 
 
-However, subtle behavioral regressions frequently slip through:
-* **Custom Error Options Deprecated**: In Zod 3, `z.string({ required_error: "Must be provided" })` rendered custom error messages. In Zod 4, `{ required_error: ... }` is discarded in favor of a unified `{ error: ... }` callback, silently reverting API errors to generic text (`"Invalid input: expected string, received undefined"`).
-* **Interface Property Removal**: In Zod 3, `error.errors` was populated alongside `error.issues`. In Zod 4, `error.errors` is `undefined`. Any downstream API handler or UI form doing `res.error.errors.map(...)` throws an unhandled `TypeError` in production.
-* **Coercion & Error Semantics**: Date coercion and numeric NaN parsing format errors differently (`"nan"` vs `"NaN"`).
+However, subtle behavioral regressions slip into production:
+- **Custom Error Options Discarded**: In Zod 3, `z.string({ required_error: "Username required" })` worked. In Zod 4, `{ required_error: ... }` is discarded, silently falling back to generic text (`"Invalid input: expected string, received undefined"`).
+- **Interface Property Removal**: In Zod 3, `error.errors` was populated. In Zod 4, `error.errors` is `undefined`. Any downstream API handler running `error.errors.map(...)` crashes with an unhandled `TypeError` in production.
+- **Coercion Semantics**: `z.coerce.date("")` error phrasing and numeric `NaN` parsing received tags change without compile errors.
 
 ---
 
 ## 2. The Solution: ShadowBump AI
 
-**ShadowBump AI** is a professional developer tool and differential testing harness that:
-1. Spawns **two isolated twin runtime environments** (baseline version in `environments/v3` and candidate version in `environments/v4`).
-2. Streams **identical test vectors** simultaneously to both environments over standard input with strict execution timeouts and sanitized environments.
-3. Evaluates observable outputs, error objects, and property access using a **deterministic differential comparator**.
-4. Distinguishes a **behavioral difference** from an actual **potential regression** (using explicit test oracles).
-5. Queries an **NVIDIA open-source model (`nvidia/Llama-3.1-Nemotron-70B-Instruct-HF`) via Nebius Token Factory** to synthesize root causes, evaluate blast radius, and generate before/after migration code diffs.
-6. Generates **standalone, reproducible code snippets** developers can immediately copy and run in their local terminals.
+**ShadowBump AI** is a differential testing harness that detects breaking changes before production code is merged:
+
+1. **Twin Isolated Sandboxes**: Spawns parallel Node.js child processes (`environments/v3` and `environments/v4`) with 5s watchdog timeouts.
+2. **Identical Test Vectors**: Streams identical JSON inputs simultaneously to both environments.
+3. **Deterministic AST Diff**: Compares observable return values and error objects mathematically without AI guesswork.
+4. **NVIDIA Nemotron AI Synthesis**: Uses `nvidia/Llama-3.1-Nemotron-70B-Instruct-HF` via Nebius Token Factory to explain the root cause, quantify blast radius, and generate before/after code migration patches.
+5. **Reproducible Proof**: Generates standalone terminal commands developers can run locally.
 
 ---
 
-## 3. Interactive Architecture & Pipeline Topology
-
-ShadowBump AI structures differential verification into an 8-stage pipeline, visualizable via our interactive 3D WebGL / Canvas isometric topology:
+## 3. Architecture & Execution Flow
 
 ```text
-[1. Dependency Config] ──────► [2. Shared Input Stream]
-                                       │
-                ┌──────────────────────┴──────────────────────┐
-                ▼                                             ▼
-     [3. Old Runtime (v3)]                         [4. New Runtime (v4)]
-         (zod@3.23.8)                                  (zod@4.6.7)
-                │                                             │
-                └──────────────────────┬──────────────────────┘
-                                       ▼
-                          [5. Deterministic Comparator]
-                                       ▼
-                          [6. Evidence Synthesizer]
-                                       ▼
-                   [7. NVIDIA Nemotron via Nebius Token Factory]
-                                       ▼
-                              [8. Diagnostic Report]
+[ Test Input Stream ]
+         │
+         ├───► [ Baseline Runtime (zod@3.23.8)  ] ──┐
+         │                                          ▼
+         └───► [ Candidate Runtime (zod@4.6.7) ] ──► [ Comparison Engine (AST Diff) ]
+                                                            │
+                                                            ▼
+                                                   [ Observed Evidence ]
+                                                            │
+                                                            ▼
+                                          [ NVIDIA Nemotron 70B via Nebius ]
+                                                            │
+                                                            ▼
+                                                [ Root-Cause & Migration Fix ]
 ```
 
 ---
 
-## 4. Technology Stack
+## 4. Tech Stack
 
-* **Frontend**: Next.js 14 (App Router), React 18, TypeScript, Tailwind CSS, Lucide React.
-* **Interactive 3D**: Three.js WebGL with isometric camera, animated data-flow curves, and reduced-motion controls.
-* **Execution Engine**: Node.js child-process isolated sandboxes (`environments/v3` and `environments/v4`) with 5s timeout guards and stripped environment credentials.
-* **AI Provider**: **Nebius Token Factory** (`https://api.tokenfactory.nebius.com/v1`) using **NVIDIA Llama-3.1-Nemotron-70B-Instruct-HF** at temperature `0.1` for grounded root-cause analysis.
+| Layer | Technology | Role |
+| :--- | :--- | :--- |
+| **Frontend** | Next.js 14 (App Router), React 18, TypeScript | High-performance developer interface |
+| **Styling** | Tailwind CSS, Plus Jakarta Sans, JetBrains Mono | Clean engineering design system |
+| **Interactive 3D** | Three.js (WebGL) | Architectural 3D server-blade data flow |
+| **Twin Sandboxes** | Node.js child processes, IPC streams | Isolated environments with 5s watchdog |
+| **Comparison** | Deterministic AST Diff Engine | Zero-hallucination mathematical comparison |
+| **AI Synthesis** | Nebius Token Factory (`nvidia/Llama-3.1-Nemotron-70B-Instruct-HF`) | Root-cause analysis and migration code diffs |
+| **Deployment** | Vercel Serverless Functions | Edge-ready serverless execution (~36ms latency) |
 
 ---
 
-## 5. Quickstart & Installation
+## 5. Live Deployments
 
-### Prerequisites
-* Node.js `>= 18.0.0`
-* npm `>= 9.0.0`
+- **Primary (Vercel)**: [https://shadow-bump-ai.vercel.app/](https://shadow-bump-ai.vercel.app/)
+- **Backup (Render)**: [https://shadowbump-ai.onrender.com/](https://shadowbump-ai.onrender.com/)
+- **Health Check API**: [https://shadow-bump-ai.vercel.app/api/health](https://shadow-bump-ai.vercel.app/api/health)
 
-### Step 1: Clone & Install Root Dependencies
+---
+
+## 6. Quickstart (Local Setup)
+
 ```bash
-git clone https://github.com/your-username/shadow-bump-ai.git
-cd shadow-bump-ai
-npm install
-```
+# 1. Clone repository
+git clone https://github.com/shubham25-droid/ShadowBump-AI.git
+cd ShadowBump-AI
 
-### Step 2: Install Twin Sandboxes
-```bash
-# Install Zod v3 baseline sandbox
-cd environments/v3
+# 2. Install root dependencies
 npm install
 
-# Install Zod v4 candidate sandbox
-cd ../v4
-npm install
-
-# Return to root
+# 3. Install twin sandboxes
+cd environments/v3 && npm install
+cd ../v4 && npm install
 cd ../..
-```
 
-### Step 3: Configure Environment Variables
-Copy `.env.example` to `.env.local`:
-```bash
+# 4. Configure environment variables (optional for AI synthesis)
 cp .env.example .env.local
-```
+# Set NEBIUS_API_KEY=your_token in .env.local
 
-Edit `.env.local` to configure your **Nebius Token Factory** API key:
-```ini
-NEBIUS_API_KEY=your_nebius_api_key_here
-NEBIUS_BASE_URL=https://api.tokenfactory.nebius.com/v1
-NEBIUS_MODEL=nvidia/Llama-3.1-Nemotron-70B-Instruct-HF
-```
-
-> **Note on Graceful Deterministic Fallback**: If `NEBIUS_API_KEY` is not provided, the application runs entirely in deterministic mode. The core twin-environment differential testing engine executes normally, capturing all AST differences and reproduction snippets, while displaying a transparent notice regarding the AI synthesis layer.
-
-### Step 4: Run the Development Server
-```bash
+# 5. Run development server
 npm run dev
 ```
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+> **Deterministic Fallback**: If `NEBIUS_API_KEY` is omitted, ShadowBump AI runs completely in deterministic mode. The twin sandboxes, AST diffing, and reproducible test vectors execute with zero external dependencies.
 
 ---
 
-## 6. Real-World Demonstration Scenarios
+## 7. Differential Test Suite
 
-ShadowBump AI includes 4 verified empirical scenarios comparing `zod@3.23.8` vs `zod@4.6.7`:
+Run differential verification suite directly:
 
-1. **User Registration: Custom Error Map Deprecation**:
-   * *Problem*: `required_error` in `z.string({ required_error: "Username is required" })` is ignored in Zod 4.
-   * *Evidence*: v3 returns `"Username is required"`; v4 returns `"Invalid input: expected string, received undefined"`.
-2. **Downstream API Adapter: `error.errors` Property Removal**:
-   * *Problem*: In Zod 3, `ZodError` has `.errors` and `.issues`. In Zod 4, `.errors` is `undefined`.
-   * *Evidence*: Downstream code doing `error.errors.map()` throws `TypeError` in production.
-3. **Coercion & Numeric Edge Cases (Date & NaN Normalization)**:
-   * *Problem*: `z.coerce.date("")` error phrasing differs; `z.number().safeParse(NaN)` changes received identifier from `"nan"` to `"NaN"`.
-4. **Record Dictionary Validation**:
-   * *Problem*: Structural and error reporting variations for non-matching dictionary value constraints.
+```bash
+# Run unit & differential assertions
+node tests/differential.test.mjs
+
+# Verify backend health and twin sandboxes
+node scripts/verify-backend.mjs
+```
 
 ---
 
-## 7. Nebius x NVIDIA Hackathon Compliance
+## 8. Nebius x NVIDIA Hackathon Highlights
 
-* **Competition**: Nebius x NVIDIA Global AI Hackathon
-* **Track**: Coding and Agentic Engineering
-* **Compute Infrastructure**: Nebius Token Factory (`api.tokenfactory.nebius.com`)
-* **NVIDIA Model**: `nvidia/Llama-3.1-Nemotron-70B-Instruct-HF`
-* **Evidence Grounding**: The AI model is strictly prompted with normalized empirical diffs from actual execution—it does not hallucinate package behavior or fake test passes.
-
----
-
-## 8. 3-Minute Video Demonstration Plan
-
-1. **0:00 - 0:35: The Problem**:
-   * Introduce a dependency upgrade PR (Zod v3 to v4).
-   * Demonstrate unit tests passing while an edge-case form input fails silently.
-2. **0:35 - 1:15: Interactive 3D Architecture**:
-   * Walk through the 8-stage differential pipeline on the landing page.
-   * Show how identical test vectors are streamed into isolated twin sandboxes.
-3. **1:15 - 2:05: Live Analysis in Workspace**:
-   * Select the *User Registration* scenario, add a custom edge-case vector, and execute.
-   * Review the real-time execution across both environments.
-4. **2:05 - 2:45: Evidence & NVIDIA Nemotron Explanation**:
-   * Inspect the side-by-side AST diff.
-   * Review the NVIDIA Nemotron root-cause analysis and migration code snippet generated via Nebius Token Factory.
-   * Copy and run the reproducible test script in the terminal.
-5. **2:45 - 3:00: Summary & Open-Source Takeaways**:
-   * Highlight soundness principles and limitations.
+- **Track**: Coding and Agentic Engineering
+- **Infrastructure**: Nebius Token Factory (`https://api.tokenfactory.nebius.com/v1`)
+- **Model**: `nvidia/Llama-3.1-Nemotron-70B-Instruct-HF`
+- **Core Principle**: Observed evidence first, AI explanation second. Zero hallucination.
 
 ---
 
-## 9. License
+## 9. Copyright & License
 
-Released under the [Apache 2.0 License](LICENSE).
+Copyright (c) 2026 Shubham & ShadowBump AI Contributors. All rights reserved.
+
+This project is licensed under the **Apache License, Version 2.0**. You may obtain a copy of the License at:
+
+[http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0)
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+
+**Notice**: Unauthorized copying, reproduction, or distribution of this software's original design assets, custom 3D architecture, and branding without proper attribution is strictly prohibited.
