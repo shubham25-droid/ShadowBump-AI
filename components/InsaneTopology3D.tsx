@@ -15,11 +15,8 @@ import {
   GitCompare,
   Terminal,
   ShieldCheck,
-  Sparkles,
   Zap,
-  Code2,
-  Lock,
-  Compass
+  Code2
 } from 'lucide-react';
 
 interface StageTelemetry {
@@ -44,15 +41,15 @@ const STAGES: StageTelemetry[] = [
     id: 'inputs',
     step: '01',
     title: 'Synchronized Input Stream',
-    shortLabel: 'Input Stream',
+    shortLabel: 'Input Dispatcher',
     badge: 'STAGE 01 • DISPATCHER',
     tag: 'Input Dispatcher',
     coords: [-6.4, 0, 0],
-    color: 0x0064d2, // Royal Cobalt Blue
+    color: 0x0064d2, // Royal Blue
     hex: '#0064d2',
-    description: 'Generates or loads identical test payloads and dispatches identical JSON vectors to both environments simultaneously over stdin.',
-    mechanism: 'Piped through stdin to isolated Node.js child processes without network or disk mutation.',
-    verdictRole: 'Guarantees that 100% of observable differences are caused by library code changes, eliminating test pollution.',
+    description: 'Generates or loads identical test payloads and streams synchronized JSON vectors simultaneously to both environments via stdin pipes.',
+    mechanism: 'Piped through stdin to isolated Node.js child processes without network or disk mutations.',
+    verdictRole: 'Guarantees that 100% of observable differences are caused strictly by library version changes, eliminating test pollution.',
     codeSnippet: 'const payload = { email: "alex@company.org", age: 28 };\nstreamToStdin([baselineV3, candidateV4], payload);',
     quarantineSpecs: 'Synchronized Stdin • Deterministic JSON'
   },
@@ -68,7 +65,7 @@ const STAGES: StageTelemetry[] = [
     hex: '#10b981',
     description: 'Executes inputs against the established baseline library inside an isolated child process under a strict 5-second watchdog timer.',
     mechanism: 'Executes z.object schema in quarantine; captures validated output and legacy error.errors properties.',
-    verdictRole: 'Establishes the ground-truth benchmark. Custom error messages and error.errors properties are honored.',
+    verdictRole: 'Establishes empirical expected behavior. Custom error messages and error.errors properties are honored.',
     codeSnippet: 'z.string({ required_error: "Username is required" });\n// v3 Output: "Username is required"\n// v3 error.errors: defined Array(1)',
     quarantineSpecs: 'Child Process • 5s Watchdog • Zero Net Access'
   },
@@ -77,7 +74,7 @@ const STAGES: StageTelemetry[] = [
     step: '02B',
     title: 'Candidate Sandbox (zod@4.6.7)',
     shortLabel: 'Candidate v4',
-    badge: 'STAGE 02B • UPGRADE TARGET',
+    badge: 'STAGE 02B • BREAKING TARGET',
     tag: 'Upgrade Target',
     coords: [-2.0, -2.5, 0],
     color: 0xef4444, // Crimson Red / Regression Alert
@@ -92,7 +89,7 @@ const STAGES: StageTelemetry[] = [
     id: 'comparator',
     step: '03',
     title: 'Deterministic AST Comparator',
-    shortLabel: 'AST Diff',
+    shortLabel: 'AST Comparator',
     badge: 'STAGE 03 • COMPARATOR',
     tag: 'Differential Engine',
     coords: [2.2, 0, 0],
@@ -122,53 +119,6 @@ const STAGES: StageTelemetry[] = [
   }
 ];
 
-// Helper to generate high-DPI 3D Billboard Canvas Labels
-function createBillboardLabel(title: string, subtitle: string, badgeColor: string, tag: string): THREE.Sprite {
-  const canvas = document.createElement('canvas');
-  canvas.width = 512;
-  canvas.height = 160;
-  const ctx = canvas.getContext('2d')!;
-
-  // Smooth background container with glowing border
-  ctx.fillStyle = 'rgba(8, 24, 39, 0.92)';
-  ctx.strokeStyle = badgeColor;
-  ctx.lineWidth = 3.5;
-  ctx.beginPath();
-  ctx.roundRect(8, 8, 496, 144, 20);
-  ctx.fill();
-  ctx.stroke();
-
-  // Top Accent Tag Pill
-  ctx.fillStyle = badgeColor;
-  ctx.beginPath();
-  ctx.roundRect(24, 24, 180, 30, 8);
-  ctx.fill();
-  ctx.fillStyle = '#ffffff';
-  ctx.font = 'bold 15px sans-serif';
-  ctx.fillText(tag.toUpperCase(), 36, 45);
-
-  // Title
-  ctx.fillStyle = '#ffffff';
-  ctx.font = 'bold 24px sans-serif';
-  ctx.fillText(title, 24, 88);
-
-  // Subtitle
-  ctx.fillStyle = '#bcd2e5';
-  ctx.font = '16px monospace';
-  ctx.fillText(subtitle, 24, 120);
-
-  const texture = new THREE.CanvasTexture(canvas);
-  texture.minFilter = THREE.LinearFilter;
-  const spriteMat = new THREE.SpriteMaterial({ 
-    map: texture, 
-    transparent: true, 
-    depthTest: false 
-  });
-  const sprite = new THREE.Sprite(spriteMat);
-  sprite.scale.set(3.4, 1.06, 1.0);
-  return sprite;
-}
-
 export default function InsaneTopology3D() {
   const mountRef = useRef<HTMLDivElement>(null);
   const [activeStage, setActiveStage] = useState<StageTelemetry>(STAGES[2]); // Default on candidate v4
@@ -180,23 +130,23 @@ export default function InsaneTopology3D() {
   const triggerSimulation = () => {
     if (isSimulating) return;
     setIsSimulating(true);
-    setSimStep('INPUT_DISPATCH');
+    setSimStep('DISPATCHING INPUT');
     setActiveStage(STAGES[0]);
 
     setTimeout(() => {
-      setSimStep('TWIN_EXECUTION');
-      setActiveStage(STAGES[2]); // Show candidate v4 regression
-    }, 1200);
+      setSimStep('TWIN RUNTIME EXECUTION');
+      setActiveStage(STAGES[2]); // Candidate v4
+    }, 1300);
 
     setTimeout(() => {
-      setSimStep('AST_DIFF_DETECTION');
-      setActiveStage(STAGES[3]); // Show comparator
-    }, 2600);
+      setSimStep('DETERMINISTIC AST COMPARISON');
+      setActiveStage(STAGES[3]); // Comparator
+    }, 2700);
 
     setTimeout(() => {
-      setSimStep('NVIDIA_SYNTHESIS');
-      setActiveStage(STAGES[4]); // Show NVIDIA AI
-    }, 4000);
+      setSimStep('NVIDIA NEMOTRON SYNTHESIS');
+      setActiveStage(STAGES[4]); // NVIDIA AI
+    }, 4100);
 
     setTimeout(() => {
       setSimStep('COMPLETED');
@@ -209,13 +159,13 @@ export default function InsaneTopology3D() {
     if (!container) return;
 
     const width = container.clientWidth;
-    const height = 500;
+    const height = 380;
 
-    // 1. Scene, Camera, WebGL Renderer (Transparent to blend with clinical atmosphere)
+    // 1. Scene, Camera, WebGL Renderer (Transparent to blend with clinical slate-grey)
     const scene = new THREE.Scene();
 
-    const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 1000);
-    camera.position.set(0, 4.5, 17.5);
+    const camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 1000);
+    camera.position.set(0, 5.0, 18.0);
     camera.lookAt(0, 0, 0);
 
     const renderer = new THREE.WebGLRenderer({ 
@@ -228,59 +178,38 @@ export default function InsaneTopology3D() {
     renderer.setClearColor(0x000000, 0);
     container.appendChild(renderer.domElement);
 
-    // 2. Full-featured OrbitControls for user exploration
+    // 2. Full-featured OrbitControls
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
-    controls.maxPolarAngle = Math.PI / 2 - 0.05; // Stay above floor
-    controls.minDistance = 8;
-    controls.maxDistance = 28;
-    controls.enablePan = true;
+    controls.maxPolarAngle = Math.PI / 2 - 0.08; // Stay strictly above floor
+    controls.minDistance = 9;
+    controls.maxDistance = 26;
+    controls.enablePan = false;
 
-    // 3. Clinical Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.1);
+    // 3. Clinical Daylight Lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
     scene.add(ambientLight);
 
-    const dirLight = new THREE.DirectionalLight(0xe0f2fe, 2.2);
+    const dirLight = new THREE.DirectionalLight(0xe4edf5, 2.0);
     dirLight.position.set(12, 18, 12);
     scene.add(dirLight);
 
-    const fillLight = new THREE.DirectionalLight(0x0064d2, 0.9);
+    const fillLight = new THREE.DirectionalLight(0x0064d2, 0.8);
     fillLight.position.set(-12, -6, -6);
     scene.add(fillLight);
 
-    // 4. Reflective Floor Grid with Cyan/Navy Traces
-    const grid = new THREE.GridHelper(36, 36, 0x1c456e, 0x0c243e);
-    grid.position.y = -3.6;
+    // 4. Clinical Slate-Grey Floor Grid
+    const grid = new THREE.GridHelper(34, 34, 0x2e4153, 0x1b2733);
+    grid.position.y = -3.5;
     scene.add(grid);
 
-    // Ambient floating data particles
-    const particleCount = 140;
-    const particleGeo = new THREE.BufferGeometry();
-    const particlePositions = new Float32Array(particleCount * 3);
-    for (let i = 0; i < particleCount * 3; i += 3) {
-      particlePositions[i] = (Math.random() - 0.5) * 28;
-      particlePositions[i + 1] = (Math.random() - 0.5) * 12 + 1;
-      particlePositions[i + 2] = (Math.random() - 0.5) * 16;
-    }
-    particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
-    const particleMat = new THREE.PointsMaterial({
-      color: 0x38bdf8,
-      size: 0.12,
-      transparent: true,
-      opacity: 0.45
-    });
-    const particleField = new THREE.Points(particleGeo, particleMat);
-    scene.add(particleField);
-
-    // 5. Multi-tiered Architectural Pedestals with Holographic Containment Shields
+    // 5. Precision Hardware Pedestals
     const stageMeshes: { 
       group: THREE.Group; 
       stage: StageTelemetry; 
       coreMesh: THREE.Mesh | THREE.Group; 
       ringMesh: THREE.Mesh;
-      shieldMesh?: THREE.Mesh;
-      billboard: THREE.Sprite;
     }[] = [];
     const stagePosMap = new Map<string, THREE.Vector3>();
 
@@ -292,185 +221,157 @@ export default function InsaneTopology3D() {
       group.position.copy(pos);
       group.userData = { stage };
 
-      // Base Pedestal (Brushed Dark Slate Steel)
-      const baseGeo = new THREE.CylinderGeometry(1.45, 1.6, 0.45, 48);
+      // Base Pedestal (Precision Brushed Slate-Steel)
+      const baseGeo = new THREE.CylinderGeometry(1.4, 1.55, 0.42, 48);
       const baseMat = new THREE.MeshStandardMaterial({
-        color: 0x0c243e,
-        roughness: 0.25,
-        metalness: 0.8
+        color: 0x1f2e3c,
+        roughness: 0.3,
+        metalness: 0.75
       });
       const baseMesh = new THREE.Mesh(baseGeo, baseMat);
       group.add(baseMesh);
 
-      // Upper Chrome Bevel Ring
-      const bevelGeo = new THREE.CylinderGeometry(1.2, 1.35, 0.12, 36);
+      // Chamfered Metallic Edge
+      const bevelGeo = new THREE.CylinderGeometry(1.25, 1.35, 0.1, 36);
       const bevelMat = new THREE.MeshStandardMaterial({
-        color: 0x1c456e,
-        roughness: 0.15,
-        metalness: 0.95
+        color: 0x2e4153,
+        roughness: 0.2,
+        metalness: 0.9
       });
       const bevelMesh = new THREE.Mesh(bevelGeo, bevelMat);
-      bevelMesh.position.y = 0.26;
+      bevelMesh.position.y = 0.24;
       group.add(bevelMesh);
 
-      // Outer Glowing LED Perimeter Ring
-      const ringGeo = new THREE.TorusGeometry(1.62, 0.05, 16, 64);
+      // Base Status Indicator Ring
+      const ringGeo = new THREE.TorusGeometry(1.56, 0.045, 16, 64);
       const ringMat = new THREE.MeshStandardMaterial({ 
         color: stage.color,
         emissive: stage.color,
-        emissiveIntensity: 1.6,
+        emissiveIntensity: 1.4,
         roughness: 0.2
       });
       const ringMesh = new THREE.Mesh(ringGeo, ringMat);
       ringMesh.rotation.x = Math.PI / 2;
-      ringMesh.position.y = 0.18;
+      ringMesh.position.y = 0.16;
       group.add(ringMesh);
 
       let coreMesh: THREE.Mesh | THREE.Group;
-      let shieldMesh: THREE.Mesh | undefined;
 
-      // Customized Core Geometry per Architectural Stage
       if (stage.id === 'inputs') {
-        // Stage 1: Dual Icosahedron Core
-        const coreGeo = new THREE.IcosahedronGeometry(0.68, 0);
+        // Stage 1: Dual Dispatcher Core
+        const coreGeo = new THREE.IcosahedronGeometry(0.65, 0);
         const coreMat = new THREE.MeshStandardMaterial({
           color: stage.color,
           emissive: stage.color,
-          emissiveIntensity: 0.6,
-          metalness: 0.85,
-          roughness: 0.15
+          emissiveIntensity: 0.5,
+          metalness: 0.8,
+          roughness: 0.2
         });
         coreMesh = new THREE.Mesh(coreGeo, coreMat);
-        coreMesh.position.y = 1.05;
+        coreMesh.position.y = 0.95;
         group.add(coreMesh);
       } else if (stage.id === 'v3-box' || stage.id === 'v4-box') {
-        // Stages 2A & 2B: Silicon Microchip Die inside Frosted Containment Chamber
+        // Stages 2A & 2B: Silicon Process Core with Glass Containment Shield
         const sandboxGroup = new THREE.Group();
 
-        // Silicon die stack
-        const chipGeo = new THREE.BoxGeometry(0.9, 0.25, 0.9);
+        // Silicon die
+        const chipGeo = new THREE.BoxGeometry(0.85, 0.2, 0.85);
         const chipMat = new THREE.MeshStandardMaterial({
-          color: 0x081827,
-          metalness: 0.9,
-          roughness: 0.1
+          color: 0x17212b,
+          metalness: 0.85,
+          roughness: 0.2
         });
         const chip = new THREE.Mesh(chipGeo, chipMat);
-        chip.position.y = 0.55;
+        chip.position.y = 0.48;
         sandboxGroup.add(chip);
 
-        // Glowing silicon core glyph
-        const glyphGeo = new THREE.OctahedronGeometry(0.48, 0);
+        // Core Prism
+        const glyphGeo = new THREE.OctahedronGeometry(0.44, 0);
         const glyphMat = new THREE.MeshStandardMaterial({
-          color: stage.color,
-          emissive: stage.color,
-          emissiveIntensity: 0.8,
-          metalness: 0.9,
-          roughness: 0.1
-        });
-        const glyph = new THREE.Mesh(glyphGeo, glyphMat);
-        glyph.position.y = 1.15;
-        sandboxGroup.add(glyph);
-
-        // Transparent Quarantined Glass Cylinder
-        const shieldGeo = new THREE.CylinderGeometry(1.25, 1.25, 1.8, 32, 1, true);
-        const shieldMat = new THREE.MeshStandardMaterial({
-          color: stage.color,
-          transparent: true,
-          opacity: 0.2,
-          roughness: 0.1,
-          metalness: 0.1,
-          side: THREE.DoubleSide
-        });
-        shieldMesh = new THREE.Mesh(shieldGeo, shieldMat);
-        shieldMesh.position.y = 1.1;
-        sandboxGroup.add(shieldMesh);
-
-        // Shield top rim
-        const shieldRimGeo = new THREE.TorusGeometry(1.25, 0.035, 16, 48);
-        const shieldRimMat = new THREE.MeshBasicMaterial({ color: stage.color });
-        const shieldRim = new THREE.Mesh(shieldRimGeo, shieldRimMat);
-        shieldRim.rotation.x = Math.PI / 2;
-        shieldRim.position.y = 2.0;
-        sandboxGroup.add(shieldRim);
-
-        coreMesh = sandboxGroup;
-        group.add(sandboxGroup);
-      } else if (stage.id === 'comparator') {
-        // Stage 3: Interlocking Dual Wireframe Cubes (Structural AST Diff)
-        const compGroup = new THREE.Group();
-        const innerGeo = new THREE.BoxGeometry(0.75, 0.75, 0.75);
-        const innerMat = new THREE.MeshStandardMaterial({
           color: stage.color,
           emissive: stage.color,
           emissiveIntensity: 0.7,
           metalness: 0.8,
           roughness: 0.2
         });
+        const glyph = new THREE.Mesh(glyphGeo, glyphMat);
+        glyph.position.y = 1.05;
+        sandboxGroup.add(glyph);
+
+        // Glass containment shield
+        const shieldGeo = new THREE.CylinderGeometry(1.15, 1.15, 1.6, 32, 1, true);
+        const shieldMat = new THREE.MeshStandardMaterial({
+          color: stage.color,
+          transparent: true,
+          opacity: 0.16,
+          roughness: 0.1,
+          metalness: 0.1,
+          side: THREE.DoubleSide
+        });
+        const shield = new THREE.Mesh(shieldGeo, shieldMat);
+        shield.position.y = 1.0;
+        sandboxGroup.add(shield);
+
+        coreMesh = sandboxGroup;
+        group.add(sandboxGroup);
+      } else if (stage.id === 'comparator') {
+        // Stage 3: Interlocking AST Analysis Cubes
+        const compGroup = new THREE.Group();
+        const innerGeo = new THREE.BoxGeometry(0.7, 0.7, 0.7);
+        const innerMat = new THREE.MeshStandardMaterial({
+          color: stage.color,
+          emissive: stage.color,
+          emissiveIntensity: 0.6,
+          metalness: 0.75,
+          roughness: 0.25
+        });
         const innerBox = new THREE.Mesh(innerGeo, innerMat);
-        innerBox.position.y = 1.1;
+        innerBox.position.y = 1.0;
         compGroup.add(innerBox);
 
-        const outerGeo = new THREE.BoxGeometry(1.15, 1.15, 1.15);
+        const outerGeo = new THREE.BoxGeometry(1.05, 1.05, 1.05);
         const outerMat = new THREE.MeshBasicMaterial({
           color: stage.color,
           wireframe: true
         });
         const outerBox = new THREE.Mesh(outerGeo, outerMat);
-        outerBox.position.y = 1.1;
+        outerBox.position.y = 1.0;
         compGroup.add(outerBox);
 
         coreMesh = compGroup;
         group.add(compGroup);
       } else {
-        // Stage 4: NVIDIA Nemotron Neural Sphere with Gyroscopic Electron Orbit Rings
+        // Stage 4: NVIDIA Nemotron Neural Core
         const aiGroup = new THREE.Group();
-        const sphereGeo = new THREE.SphereGeometry(0.6, 32, 32);
+        const sphereGeo = new THREE.SphereGeometry(0.55, 32, 32);
         const sphereMat = new THREE.MeshStandardMaterial({
           color: stage.color,
           emissive: stage.color,
-          emissiveIntensity: 0.85,
+          emissiveIntensity: 0.75,
           metalness: 0.8,
-          roughness: 0.1
+          roughness: 0.2
         });
         const sphere = new THREE.Mesh(sphereGeo, sphereMat);
-        sphere.position.y = 1.1;
+        sphere.position.y = 1.0;
         aiGroup.add(sphere);
 
-        // Gyro ring 1
-        const gyro1Geo = new THREE.TorusGeometry(0.95, 0.035, 16, 48);
-        const gyro1Mat = new THREE.MeshBasicMaterial({ color: 0x38bdf8 });
-        const gyro1 = new THREE.Mesh(gyro1Geo, gyro1Mat);
-        gyro1.position.y = 1.1;
-        gyro1.rotation.x = Math.PI / 3;
-        aiGroup.add(gyro1);
-
-        // Gyro ring 2
-        const gyro2Geo = new THREE.TorusGeometry(1.05, 0.035, 16, 48);
-        const gyro2Mat = new THREE.MeshBasicMaterial({ color: 0x0064d2 });
-        const gyro2 = new THREE.Mesh(gyro2Geo, gyro2Mat);
-        gyro2.position.y = 1.1;
-        gyro2.rotation.y = Math.PI / 4;
-        aiGroup.add(gyro2);
+        // Orbit ring
+        const orbitGeo = new THREE.TorusGeometry(0.9, 0.03, 16, 48);
+        const orbitMat = new THREE.MeshBasicMaterial({ color: 0x38bdf8 });
+        const orbit = new THREE.Mesh(orbitGeo, orbitMat);
+        orbit.position.y = 1.0;
+        orbit.rotation.x = Math.PI / 3;
+        aiGroup.add(orbit);
 
         coreMesh = aiGroup;
         group.add(aiGroup);
       }
 
-      // 3D Billboard Canvas Label hovering directly over node
-      const billboard = createBillboardLabel(
-        stage.shortLabel, 
-        stage.tag, 
-        stage.hex, 
-        `STEP ${stage.step}`
-      );
-      billboard.position.set(0, 2.7, 0);
-      group.add(billboard);
-
       scene.add(group);
-      stageMeshes.push({ group, stage, coreMesh, ringMesh, shieldMesh, billboard });
+      stageMeshes.push({ group, stage, coreMesh, ringMesh });
     });
 
-    // 6. Dual-layer Optical Fiber Conduits with Flowing Laser Data Packets
+    // 6. Optical Conduit Pipes & Flowing Data Pulses
     const connections = [
       { from: 'inputs', to: 'v3-box', color: 0x10b981 },
       { from: 'inputs', to: 'v4-box', color: 0xef4444 },
@@ -486,7 +387,7 @@ export default function InsaneTopology3D() {
       speed: number;
     }[] = [];
 
-    const packetGeo = new THREE.SphereGeometry(0.18, 16, 16);
+    const packetGeo = new THREE.SphereGeometry(0.16, 16, 16);
 
     connections.forEach(({ from, to, color }) => {
       const p1 = stagePosMap.get(from);
@@ -494,42 +395,32 @@ export default function InsaneTopology3D() {
       if (!p1 || !p2) return;
 
       const mid = new THREE.Vector3().addVectors(p1, p2).multiplyScalar(0.5);
-      mid.y += 0.45;
+      mid.y += 0.35;
 
       const curve = new THREE.CatmullRomCurve3([p1, mid, p2]);
       
       // Outer glass protective conduit
-      const outerTubeGeo = new THREE.TubeGeometry(curve, 48, 0.08, 12, false);
-      const outerTubeMat = new THREE.MeshStandardMaterial({
-        color: 0x0c243e,
+      const tubeGeo = new THREE.TubeGeometry(curve, 36, 0.06, 8, false);
+      const tubeMat = new THREE.MeshStandardMaterial({
+        color: 0x1f2e3c,
         transparent: true,
-        opacity: 0.65,
+        opacity: 0.6,
         roughness: 0.3,
         metalness: 0.8
       });
-      const outerTube = new THREE.Mesh(outerTubeGeo, outerTubeMat);
-      scene.add(outerTube);
+      const tube = new THREE.Mesh(tubeGeo, tubeMat);
+      scene.add(tube);
 
-      // Inner illuminated core rail
-      const innerRailGeo = new THREE.TubeGeometry(curve, 48, 0.025, 8, false);
-      const innerRailMat = new THREE.MeshBasicMaterial({ 
-        color: color,
-        transparent: true,
-        opacity: 0.8
-      });
-      const innerRail = new THREE.Mesh(innerRailGeo, innerRailMat);
-      scene.add(innerRail);
-
-      // Multi-packet photon stream
-      for (let i = 0; i < 3; i++) {
+      // Flowing data packets
+      for (let i = 0; i < 2; i++) {
         const pMat = new THREE.MeshBasicMaterial({ color: color });
         const pMesh = new THREE.Mesh(packetGeo, pMat);
         scene.add(pMesh);
         packetTokens.push({
           mesh: pMesh,
           curve,
-          offset: (i * 0.33) + Math.random() * 0.1,
-          speed: 0.0075 + Math.random() * 0.002
+          offset: (i * 0.5) + Math.random() * 0.1,
+          speed: 0.007 + Math.random() * 0.002
         });
       }
     });
@@ -568,10 +459,7 @@ export default function InsaneTopology3D() {
     const animate = () => {
       animId = requestAnimationFrame(animate);
 
-      const delta = clock.getDelta();
       const time = clock.getElapsedTime();
-
-      // Update OrbitControls
       controls.update();
 
       if (!isPaused) {
@@ -583,27 +471,20 @@ export default function InsaneTopology3D() {
         });
 
         // Rotate stage cores & highlight active selection
-        stageMeshes.forEach(({ group, stage, coreMesh, ringMesh, shieldMesh }) => {
+        stageMeshes.forEach(({ group, stage, coreMesh, ringMesh }) => {
           if (coreMesh) {
-            coreMesh.rotation.y += 0.015;
-          }
-
-          if (shieldMesh) {
-            shieldMesh.rotation.y -= 0.008;
+            coreMesh.rotation.y += 0.012;
           }
 
           const isSelected = activeStage.id === stage.id;
           if (isSelected) {
-            group.scale.setScalar(1.08 + Math.sin(time * 3.5) * 0.025);
-            (ringMesh.material as THREE.MeshStandardMaterial).emissiveIntensity = 2.4;
+            group.scale.setScalar(1.06 + Math.sin(time * 3.0) * 0.02);
+            (ringMesh.material as THREE.MeshStandardMaterial).emissiveIntensity = 2.0;
           } else {
             group.scale.setScalar(1.0);
-            (ringMesh.material as THREE.MeshStandardMaterial).emissiveIntensity = 1.3;
+            (ringMesh.material as THREE.MeshStandardMaterial).emissiveIntensity = 1.1;
           }
         });
-
-        // Subtle floating motion on background data particles
-        particleField.rotation.y = time * 0.018;
       }
 
       renderer.render(scene, camera);
@@ -635,16 +516,16 @@ export default function InsaneTopology3D() {
 
   return (
     <div className="w-full rounded-card border border-line bg-card overflow-hidden shadow-panel">
-      {/* 3D Header Bar with Live Simulation Controls */}
+      {/* 3D Header Bar with Simulation & View Controls */}
       <div className="flex flex-wrap items-center justify-between border-b border-line px-5 py-3.5 bg-hero">
         <div className="flex items-center space-x-3">
-          <div className="flex h-8 w-8 items-center justify-center rounded-button bg-accent/20 text-tech border border-accent/40 shadow-sm">
+          <div className="flex h-8 w-8 items-center justify-center rounded-button bg-accent/20 text-tech border border-accent/30 shadow-sm">
             <GitCompare className="h-4 w-4" />
           </div>
           <div>
             <h3 className="font-heading font-bold text-sm text-white flex items-center gap-2">
-              <span>Differential Comparison Architecture</span>
-              <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-accent/20 text-tech border border-accent/30 uppercase">
+              <span>Differential Architecture Pipeline</span>
+              <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-card text-ink-secondary border border-line uppercase">
                 Interactive 3D Pipeline
               </span>
             </h3>
@@ -687,70 +568,68 @@ export default function InsaneTopology3D() {
         </div>
       </div>
 
-      {/* 3D WebGL Canvas Container */}
-      <div className="relative w-full h-[500px] bg-bg/50 backdrop-blur-sm cursor-grab active:cursor-grabbing">
+      {/* 3D WebGL Canvas Viewport (100% Unobstructed & Crystal Clear) */}
+      <div className="relative w-full h-[380px] bg-bg/40 backdrop-blur-sm cursor-grab active:cursor-grabbing border-b border-line">
         <div ref={mountRef} className="w-full h-full" />
 
         {/* Top Floating Helper Controls */}
-        <div className="absolute top-4 left-4 pointer-events-none flex items-center gap-2">
-          <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-card/90 border border-line text-xs text-ink-secondary font-mono shadow-card backdrop-blur-md">
-            <span className="h-2 w-2 rounded-full bg-tech animate-pulse" />
-            Click any 3D pedestal to inspect • Drag to rotate 360° • Scroll to zoom
+        <div className="absolute top-3.5 left-4 pointer-events-none flex items-center gap-2">
+          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-card/90 border border-line text-[11px] text-ink-secondary font-mono shadow-card backdrop-blur-md">
+            <span className="h-1.5 w-1.5 rounded-full bg-tech animate-pulse" />
+            Click any 3D pod to inspect • Drag to rotate 360° • Scroll to zoom
+          </span>
+        </div>
+      </div>
+
+      {/* Dedicated Inspection Panel (Positioned Below Canvas - Zero View Obstruction!) */}
+      <div className="p-4 sm:p-5 bg-card/90 border-b border-line text-xs space-y-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-line gap-2">
+          <div className="flex items-center space-x-2.5">
+            <span 
+              className="inline-flex items-center justify-center px-2 py-0.5 rounded text-[10px] font-mono font-bold text-white shadow-sm"
+              style={{ backgroundColor: activeStage.hex }}
+            >
+              {activeStage.badge}
+            </span>
+            <span className="font-heading font-bold text-white text-sm sm:text-base">
+              {activeStage.title}
+            </span>
+          </div>
+          <span className="text-[11px] font-mono px-2.5 py-1 rounded border border-line bg-hero text-tech flex items-center gap-1.5 self-start sm:self-auto">
+            <ShieldCheck className="h-3.5 w-3.5 text-tech" />
+            {activeStage.quarantineSpecs}
           </span>
         </div>
 
-        {/* Floating Telemetry & Code Inspection Card (Non-Truncated, Full Details) */}
-        <div className="absolute bottom-4 left-4 right-4 sm:right-auto sm:max-w-lg pointer-events-auto">
-          <div className="p-4 sm:p-5 rounded-card border border-line bg-card/95 backdrop-blur-md shadow-panel text-xs space-y-3">
-            <div className="flex items-center justify-between pb-2 border-b border-line">
-              <div className="flex items-center space-x-2">
-                <span 
-                  className="inline-flex items-center justify-center px-2 py-0.5 rounded text-[10px] font-mono font-bold text-white shadow-sm"
-                  style={{ backgroundColor: activeStage.hex }}
-                >
-                  {activeStage.badge}
-                </span>
-                <span className="font-heading font-bold text-white text-sm">
-                  {activeStage.title}
-                </span>
-              </div>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded border border-line bg-hero text-tech flex items-center gap-1">
-                <ShieldCheck className="h-3 w-3" />
-                {activeStage.quarantineSpecs}
-              </span>
-            </div>
+        <p className="text-ink-secondary text-xs sm:text-sm leading-relaxed">
+          {activeStage.description}
+        </p>
 
-            <p className="text-ink-secondary text-xs leading-relaxed">
-              {activeStage.description}
-            </p>
+        {/* Live Code Snippet Preview */}
+        <div className="space-y-1">
+          <span className="text-[10px] font-mono text-tech uppercase font-bold flex items-center gap-1.5">
+            <Code2 className="h-3 w-3" />
+            Runtime Execution Vector:
+          </span>
+          <pre className="p-3 rounded border border-line bg-[#16202a] text-xs font-mono text-tech overflow-x-auto leading-relaxed">
+            <code>{activeStage.codeSnippet}</code>
+          </pre>
+        </div>
 
-            {/* Live Code Snippet Preview */}
-            <div className="space-y-1">
-              <span className="text-[10px] font-mono text-tech uppercase font-bold flex items-center gap-1">
-                <Code2 className="h-3 w-3" />
-                Runtime Execution Vector:
-              </span>
-              <pre className="p-2.5 rounded border border-line bg-[#081827] text-[11px] font-mono text-tech overflow-x-auto leading-relaxed">
-                <code>{activeStage.codeSnippet}</code>
-              </pre>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1 border-t border-line text-[11px] font-mono">
-              <div>
-                <span className="text-ink-muted block text-[10px] uppercase font-bold">Mechanism:</span>
-                <span className="text-white block leading-snug">{activeStage.mechanism}</span>
-              </div>
-              <div>
-                <span className="text-tech block text-[10px] uppercase font-bold">Why It Matters:</span>
-                <span className="text-ink-secondary block leading-snug">{activeStage.verdictRole}</span>
-              </div>
-            </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1 border-t border-line text-xs font-mono">
+          <div>
+            <span className="text-ink-muted block text-[10px] uppercase font-bold mb-0.5">Execution Mechanism:</span>
+            <span className="text-white block leading-relaxed">{activeStage.mechanism}</span>
+          </div>
+          <div>
+            <span className="text-tech block text-[10px] uppercase font-bold mb-0.5">Soundness & Verdict Role:</span>
+            <span className="text-ink-secondary block leading-relaxed">{activeStage.verdictRole}</span>
           </div>
         </div>
       </div>
 
       {/* 5-Step Clear Interactive Stage Bar */}
-      <div className="border-t border-line bg-hero p-3 sm:p-4">
+      <div className="bg-hero p-3 sm:p-4">
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
           {STAGES.map((s) => {
             const isSelected = activeStage.id === s.id;
@@ -774,7 +653,7 @@ export default function InsaneTopology3D() {
                   />
                 </div>
                 <div className={`font-heading text-xs font-bold leading-tight ${isSelected ? 'text-white' : 'text-ink-secondary'}`}>
-                  {s.title}
+                  {s.shortLabel}
                 </div>
                 <div className="text-[11px] text-ink-muted font-mono truncate mt-1">
                   {s.tag}

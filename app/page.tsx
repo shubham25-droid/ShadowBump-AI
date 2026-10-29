@@ -151,7 +151,7 @@ export default function LandingPage() {
             <span className="text-xs font-mono text-ink-secondary block">
               Synchronized Input (Missing required <code className="text-white font-bold">username</code> field):
             </span>
-            <pre className="p-3.5 rounded border border-line bg-[#0a1826] font-mono text-xs text-tech overflow-x-auto">
+            <pre className="p-3.5 rounded border border-line bg-[#17212b] font-mono text-xs text-tech overflow-x-auto">
               <code>{JSON.stringify({ email: "alex@company.org", age: 28 }, null, 2)}</code>
             </pre>
           </div>
@@ -159,7 +159,7 @@ export default function LandingPage() {
           {/* Twin Output Comparison */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono">
             {/* Baseline v3 */}
-            <div className="p-4 rounded-card border border-status-success/30 bg-[#0a1826] space-y-2.5">
+            <div className="p-4 rounded-card border border-status-success/30 bg-[#17212b] space-y-2.5">
               <div className="flex items-center justify-between pb-2 border-b border-line">
                 <span className="font-bold text-status-success">
                   Baseline (zod@3.23.8)
@@ -178,7 +178,7 @@ export default function LandingPage() {
             </div>
 
             {/* Candidate v4 */}
-            <div className="p-4 rounded-card border border-status-error/30 bg-[#0a1826] space-y-2.5">
+            <div className="p-4 rounded-card border border-status-error/30 bg-[#17212b] space-y-2.5">
               <div className="flex items-center justify-between pb-2 border-b border-status-error/20">
                 <span className="font-bold text-status-error">
                   Candidate (zod@4.6.7)

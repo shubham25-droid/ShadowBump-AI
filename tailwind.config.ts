@@ -9,19 +9,19 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Exact Clinical Slate-Navy & Royal Cobalt Palette from Reference Screenshot
-        bg: '#081827',
-        canvas: '#081827',
-        hero: '#0c243e',
-        card: '#0f2945',
-        panel: '#0f2945',
-        panelHover: '#16395e',
-        line: '#1c456e',
-        lineSubtle: '#143555',
+        // Clinical Slate-Grey & Royal Blue Palette (From Reference Image)
+        bg: '#17212b',
+        canvas: '#17212b',
+        hero: '#1c2834',
+        card: '#202e3b',
+        panel: '#202e3b',
+        panelHover: '#283949',
+        line: '#2e4153',
+        lineSubtle: '#243443',
         ink: {
           primary: '#ffffff',
-          secondary: '#bcd2e5',
-          muted: '#779cb8',
+          secondary: '#a7b9c9',
+          muted: '#6f8496',
         },
         accent: {
           DEFAULT: '#0064d2', // Exact "Plan your visit" vibrant blue button

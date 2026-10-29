@@ -5,7 +5,7 @@
 @tailwind utilities;
 
 :root {
-  --background: #081827;
+  --background: #17212b;
   --foreground: #ffffff;
   --font-manrope: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-inter: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -29,12 +29,12 @@ pre, code {
   font-family: var(--font-mono);
 }
 
-/* Clinical Slate Navy Atmospheric Background (From Reference Image) */
+/* Clinical Slate-Grey Atmospheric Background (Exact match to medical reference image) */
 .hero-clinical-bg {
   position: relative;
   background: 
-    radial-gradient(ellipse at 88% 22%, rgba(100, 155, 195, 0.45) 0%, rgba(42, 85, 128, 0.38) 32%, rgba(14, 48, 84, 0.6) 65%, #081827 100%),
-    linear-gradient(135deg, #081827 0%, #0c243e 50%, #102d4d 100%);
+    radial-gradient(ellipse at 88% 22%, rgba(135, 155, 175, 0.35) 0%, rgba(55, 75, 95, 0.4) 35%, rgba(28, 40, 52, 0.75) 65%, #17212b 100%),
+    linear-gradient(135deg, #17212b 0%, #1d2a37 50%, #243545 100%);
 }
 
 .hero-clinical-bg::before {
@@ -55,16 +55,16 @@ pre, code {
 }
 
 ::-webkit-scrollbar-track {
-  background: #081827;
+  background: #17212b;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1c456e;
+  background: #2e4153;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #285e94;
+  background: #3a5369;
 }
 
 /* Royal blue selection highlight */
