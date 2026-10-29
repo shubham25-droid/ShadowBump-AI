@@ -8,6 +8,11 @@ const __dirname = path.dirname(__filename);
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  experimental: {
+    outputFileTracingIncludes: {
+      '/api/**/*': ['./environments/**/*'],
+    },
+  },
   webpack: (config) => {
     config.resolve.alias['@'] = path.resolve(__dirname);
     return config;
