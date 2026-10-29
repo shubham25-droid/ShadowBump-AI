@@ -23,28 +23,28 @@ import {
 export default function LandingPage() {
   return (
     <div className="space-y-16 pb-20">
-      {/* 1. Immersive Hero Section (Spacious, Left-Aligned Composition Inspired by Reference) */}
-      <section className="bg-hero border-b border-line pt-14 pb-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto space-y-12">
+      {/* 1. Immersive Hero Section (Exact Match to Clinical Atmospheric Reference) */}
+      <section className="hero-clinical-bg border-b border-line pt-16 pb-14 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto space-y-10">
           {/* Left-Aligned Headline Block with Generous Whitespace */}
-          <div className="max-w-3xl space-y-5">
-            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full border border-line bg-card text-xs font-mono font-medium text-ink-secondary">
+          <div className="max-w-3xl space-y-6">
+            <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full border border-line bg-card/80 backdrop-blur-md text-xs font-mono font-medium text-ink-secondary">
               <span className="h-1.5 w-1.5 rounded-full bg-tech animate-pulse" />
               <span>Nebius Token Factory × NVIDIA Nemotron • Differential Testing Harness</span>
             </div>
 
-            <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.12]">
-              Catch Behavioral Changes Before Production.
+            <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-normal text-white tracking-tight leading-[1.14]">
+              Catch Behavioral Changes<br className="hidden sm:inline" /> Before Production.
             </h1>
 
-            <p className="text-base sm:text-lg text-ink-secondary leading-relaxed font-normal max-w-2xl">
+            <p className="text-base sm:text-lg text-ink-secondary leading-relaxed font-light max-w-2xl">
               Compare dependency behaviour across versions. Investigate differences with reproducible evidence.
             </p>
 
             <div className="pt-2 flex flex-wrap items-center gap-3">
               <Link
                 href="/workspace"
-                className="inline-flex items-center space-x-2 px-5 py-2.5 rounded-button bg-accent hover:bg-accent-hover text-white text-sm font-semibold transition-all shadow-glowBlue"
+                className="inline-flex items-center space-x-2.5 px-6 py-3 rounded-[5px] bg-accent hover:bg-accent-hover text-white text-sm font-semibold transition-all shadow-glowBlue"
               >
                 <span>Analyze an Upgrade</span>
                 <ArrowRight className="h-4 w-4" />
@@ -52,7 +52,7 @@ export default function LandingPage() {
 
               <a
                 href="#topology"
-                className="inline-flex items-center space-x-2 px-4 py-2.5 rounded-button border border-line bg-card hover:bg-panelHover text-white text-sm font-medium transition-colors"
+                className="inline-flex items-center space-x-2 px-5 py-3 rounded-[5px] border border-line bg-card/70 hover:bg-panelHover text-white text-sm font-medium transition-colors backdrop-blur-sm"
               >
                 <Layers className="h-4 w-4 text-tech" />
                 <span>View Comparison Pipeline</span>
@@ -60,49 +60,11 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* Docked Architecture Shelf (Inspired by the Reference Screenshot's Bottom Cards) */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            <div className="p-4 rounded-card border border-line bg-card/80 hover:bg-card transition-colors space-y-1">
-              <span className="text-[10px] font-mono text-tech uppercase tracking-wider font-bold block">
-                Feature 01
-              </span>
-              <h3 className="font-heading font-bold text-white text-sm">
-                Twin Sandbox Isolation
-              </h3>
-              <p className="text-xs text-ink-secondary leading-relaxed">
-                Parallel Node.js child processes for <code className="text-status-success font-mono">zod@3.23.8</code> vs <code className="text-status-error font-mono">zod@4.6.7</code> with 5s watchdog limits.
-              </p>
-            </div>
-
-            <div className="p-4 rounded-card border border-line bg-card/80 hover:bg-card transition-colors space-y-1">
-              <span className="text-[10px] font-mono text-tech uppercase tracking-wider font-bold block">
-                Feature 02
-              </span>
-              <h3 className="font-heading font-bold text-white text-sm">
-                Deterministic AST Comparator
-              </h3>
-              <p className="text-xs text-ink-secondary leading-relaxed">
-                Zero-AI mathematical comparison categorizes outputs into 4 deterministic tiers before any model inference.
-              </p>
-            </div>
-
-            <div className="p-4 rounded-card border border-line bg-card/80 hover:bg-card transition-colors space-y-1">
-              <span className="text-[10px] font-mono text-tech uppercase tracking-wider font-bold block">
-                Feature 03
-              </span>
-              <h3 className="font-heading font-bold text-white text-sm">
-                NVIDIA Nemotron on Nebius
-              </h3>
-              <p className="text-xs text-ink-secondary leading-relaxed">
-                Synthesizes observable AST diffs into root causes, blast radius estimates, and before/after migration code.
-              </p>
-            </div>
-          </div>
-
           {/* 3D Physical Architecture Visualization */}
-          <div id="topology" className="space-y-3 pt-4">
+          <div id="topology" className="space-y-3 pt-2">
             <div className="flex items-center justify-between text-xs text-ink-secondary">
-              <span className="font-mono uppercase tracking-wider font-semibold text-tech">
+              <span className="font-mono uppercase tracking-wider font-semibold text-tech flex items-center gap-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-tech" />
                 Technical Visualization: Twin Runtime Comparison
               </span>
               <span className="font-mono text-[11px] text-ink-muted">
@@ -111,6 +73,54 @@ export default function LandingPage() {
             </div>
             
             <InsaneTopology3D />
+          </div>
+
+          {/* Pagination Dots (Matching Reference Center Indicator) */}
+          <div className="flex items-center justify-center space-x-2 pt-2">
+            <span className="h-4 w-4 rounded-full border-2 border-tech/80 flex items-center justify-center">
+              <span className="h-1.5 w-1.5 rounded-full bg-tech" />
+            </span>
+            <span className="h-2 w-2 rounded-full bg-white/30" />
+            <span className="h-2 w-2 rounded-full bg-white/30" />
+          </div>
+
+          {/* Docked Solid Vibrant Blue Shelf Cards (Exact match to bottom shelf of reference) */}
+          <div className="grid grid-cols-1 md:grid-cols-3 rounded-card overflow-hidden shadow-panel border border-accent/30">
+            <div className="p-6 bg-shelf-blue1 hover:bg-[#005298] transition-colors text-white space-y-2 border-b md:border-b-0 md:border-r border-white/10">
+              <span className="text-[10px] font-mono uppercase tracking-widest text-blue-200 font-bold block">
+                Feature 01 • Sandbox Isolation
+              </span>
+              <h3 className="font-heading text-lg font-bold text-white">
+                Twin Sandbox Isolation
+              </h3>
+              <p className="text-xs text-blue-100/90 leading-relaxed">
+                Parallel Node.js child processes for <code className="bg-black/25 px-1 py-0.5 rounded text-white font-mono">zod@3.23.8</code> vs <code className="bg-black/25 px-1 py-0.5 rounded text-white font-mono">zod@4.6.7</code> with strict 5s watchdog limits.
+              </p>
+            </div>
+
+            <div className="p-6 bg-shelf-blue2 hover:bg-[#0058a6] transition-colors text-white space-y-2 border-b md:border-b-0 md:border-r border-white/10">
+              <span className="text-[10px] font-mono uppercase tracking-widest text-blue-200 font-bold block">
+                Feature 02 • AST Comparator
+              </span>
+              <h3 className="font-heading text-lg font-bold text-white">
+                Deterministic AST Comparator
+              </h3>
+              <p className="text-xs text-blue-100/90 leading-relaxed">
+                Zero-AI mathematical comparison categorizes outputs into 4 deterministic tiers before any model inference is dispatched.
+              </p>
+            </div>
+
+            <div className="p-6 bg-shelf-blue3 hover:bg-[#004787] transition-colors text-white space-y-2">
+              <span className="text-[10px] font-mono uppercase tracking-widest text-blue-200 font-bold block">
+                Feature 03 • AI Synthesis
+              </span>
+              <h3 className="font-heading text-lg font-bold text-white">
+                NVIDIA Nemotron on Nebius
+              </h3>
+              <p className="text-xs text-blue-100/90 leading-relaxed">
+                Synthesizes observable AST diffs into root causes, blast radius estimates, and concrete before/after migration code.
+              </p>
+            </div>
           </div>
         </div>
       </section>

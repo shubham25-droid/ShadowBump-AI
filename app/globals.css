@@ -5,7 +5,7 @@
 @tailwind utilities;
 
 :root {
-  --background: #0c1d2e;
+  --background: #081827;
   --foreground: #ffffff;
   --font-manrope: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-inter: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -29,27 +29,46 @@ pre, code {
   font-family: var(--font-mono);
 }
 
-/* Deep Slate Navy Scrollbar */
+/* Clinical Slate Navy Atmospheric Background (From Reference Image) */
+.hero-clinical-bg {
+  position: relative;
+  background: 
+    radial-gradient(ellipse at 88% 22%, rgba(100, 155, 195, 0.45) 0%, rgba(42, 85, 128, 0.38) 32%, rgba(14, 48, 84, 0.6) 65%, #081827 100%),
+    linear-gradient(135deg, #081827 0%, #0c243e 50%, #102d4d 100%);
+}
+
+.hero-clinical-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(circle at 1.5px 1.5px, rgba(255, 255, 255, 0.05) 1px, transparent 0);
+  background-size: 28px 28px;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+/* Clean Slate Scrollbar */
 ::-webkit-scrollbar {
   width: 7px;
   height: 7px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #0c1d2e;
+  background: #081827;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #23425e;
+  background: #1c456e;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #2d5578;
+  background: #285e94;
 }
 
-/* Cobalt selection highlight */
+/* Royal blue selection highlight */
 ::selection {
-  background: rgba(0, 102, 204, 0.4);
+  background: rgba(0, 100, 210, 0.45);
   color: #ffffff;
 }

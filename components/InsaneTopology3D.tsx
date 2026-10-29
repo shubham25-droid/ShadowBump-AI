@@ -39,8 +39,8 @@ const STAGES: StageTelemetry[] = [
     subtitle: 'Identical Test Payloads',
     tag: 'Input Dispatcher',
     coords: [-6.8, 0, 0],
-    color: 0x0066cc, // Cobalt Blue
-    hex: '#0066cc',
+    color: 0x0064d2, // Vibrant Cobalt Blue
+    hex: '#0064d2',
     description: 'Generates or loads identical test vectors and streams the exact same JSON payloads to both environments simultaneously.',
     mechanism: 'Piped through stdin to isolated Node.js child processes.',
     verdictRole: 'Guarantees that any observable difference is 100% caused by dependency version changes.'
@@ -111,10 +111,8 @@ export default function InsaneTopology3D() {
     const width = container.clientWidth;
     const height = 450;
 
-    // 1. Scene, Camera, WebGL Renderer (Slate Navy Theme #0c1d2e)
+    // 1. Scene, Camera, WebGL Renderer (Transparent to inherit clinical atmosphere)
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x0c1d2e);
-    scene.fog = new THREE.FogExp2(0x0c1d2e, 0.035);
 
     const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 1000);
     camera.position.set(0, 3, 17);
@@ -123,22 +121,23 @@ export default function InsaneTopology3D() {
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setClearColor(0x000000, 0);
     container.appendChild(renderer.domElement);
 
     // 2. Clinical Lighting Setup
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.95);
     scene.add(ambientLight);
 
     const dirLight = new THREE.DirectionalLight(0xe0f2fe, 1.8);
     dirLight.position.set(10, 15, 10);
     scene.add(dirLight);
 
-    const fillLight = new THREE.DirectionalLight(0x0066cc, 0.7);
+    const fillLight = new THREE.DirectionalLight(0x0064d2, 0.7);
     fillLight.position.set(-10, -5, -5);
     scene.add(fillLight);
 
     // 3. Slate Blue Floor Grid
-    const grid = new THREE.GridHelper(32, 32, 0x23425e, 0x152c44);
+    const grid = new THREE.GridHelper(32, 32, 0x1c456e, 0x0f2945);
     grid.position.y = -3.8;
     scene.add(grid);
 
@@ -157,7 +156,7 @@ export default function InsaneTopology3D() {
       // Base Pedestal
       const baseGeo = new THREE.CylinderGeometry(1.25, 1.35, 0.5, 32);
       const baseMat = new THREE.MeshStandardMaterial({
-        color: 0x152c44,
+        color: 0x0f2945,
         roughness: 0.2,
         metalness: 0.6
       });
@@ -365,7 +364,7 @@ export default function InsaneTopology3D() {
       </div>
 
       {/* 3D WebGL Canvas */}
-      <div className="relative w-full h-[450px] bg-bg cursor-grab active:cursor-grabbing">
+      <div className="relative w-full h-[450px] bg-bg/40 backdrop-blur-sm cursor-grab active:cursor-grabbing">
         <div ref={mountRef} className="w-full h-full" />
 
         {/* Clear Instructions Badge */}
