@@ -128,12 +128,18 @@ node scripts/verify-backend.mjs
 
 ## 9. Copyright & License
 
-Copyright (c) 2026 Shubham & ShadowBump AI Contributors. All rights reserved.
+Copyright (c) 2026 Shubham Yadav and ShadowBump AI Contributors. All rights reserved.
 
-This project is licensed under the **Apache License, Version 2.0**. You may obtain a copy of the License at:
+ShadowBump AI is licensed under the **Apache License, Version 2.0**. You may use, modify, and distribute the project's licensed source code in accordance with the terms and conditions of this license.
 
-[http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0)
+A copy of the license is available at:
 
-Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+[https://www.apache.org/licenses/LICENSE-2.0](https://www.apache.org/licenses/LICENSE-2.0)
 
-**Notice**: Unauthorized copying, reproduction, or distribution of this software's original design assets, custom 3D architecture, and branding without proper attribution is strictly prohibited.
+Unless required by applicable law or agreed to in writing, the software is distributed on an **"AS IS" BASIS**, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the Apache License 2.0 for the specific language governing permissions and limitations.
+
+### Branding & Original Assets Protection
+
+The ShadowBump AI name, logo, visual identity, and original design assets are not automatically granted trademark or other rights merely by virtue of this software license. Unless expressly permitted by applicable law or separately authorized in writing, do not imply endorsement, affiliation, or official association with the original project or its creator.
+
+Third-party libraries, trademarks, and assets remain subject to their respective licenses and ownership rights. Unauthorized copying, cloning, re-branding, or distribution of this software's original visual assets and branding without prior written permission is strictly prohibited.

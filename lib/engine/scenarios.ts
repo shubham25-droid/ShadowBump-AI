@@ -101,7 +101,7 @@ function handleValidation(schema, payload) {
         label: 'Valid API Config Payload',
         description: 'Payload matches schema expectations',
         input: {
-          apiKey: 'sk-live-94827492',
+          apiKey: 'demo-api-token-sample-9482',
           retries: 3
         },
         expectedOutcome: 'VALID'
@@ -120,7 +120,7 @@ function handleValidation(schema, payload) {
         label: 'Non-numeric Retry Count',
         description: 'Passes string instead of number for retries',
         input: {
-          apiKey: 'sk-live-94827492',
+          apiKey: 'demo-api-token-sample-9482',
           retries: 'unlimited'
         },
         expectedOutcome: 'INVALID'
