@@ -9,62 +9,49 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Refined Grey / Slate / Charcoal Palette
-        background: '#101115',
-        canvas: '#16171d',
-        panel: '#1c1f26',
-        panelHover: '#252832',
-        card: '#181a21',
-        grey: {
-          50: '#f9fafb',
-          100: '#f3f4f6',
-          200: '#e5e7eb',
-          300: '#d1d5db',
-          400: '#9ca3af',
-          500: '#6b7280',
-          600: '#4b5563',
-          700: '#374151',
-          750: '#2c313d',
-          800: '#1f242d',
-          850: '#171a22',
-          900: '#111318',
-          950: '#0b0c0f',
-        },
-        border: {
-          DEFAULT: '#2c303c',
-          subtle: '#222530',
-          bright: '#4b5563',
-          glow: 'rgba(209, 213, 219, 0.2)',
-        },
+        // Warm Neutral Light Mode Palette
+        bg: '#F7F5F0',
+        hero: '#EEEAE2',
+        card: '#FFFFFF',
+        panel: '#FFFFFF',
+        line: '#E5E0D7',
+        lineSubtle: '#EFECE6',
         ink: {
-          primary: '#f9fafb',
-          secondary: '#9ca3af',
-          muted: '#6b7280',
+          primary: '#292824',
+          secondary: '#77746D',
+          muted: '#9E9A90',
         },
-        brand: {
-          silver: '#e5e7eb',
-          titanium: '#cbd5e1',
-          slate: '#94a3b8',
-          emerald: '#10b981',
-          rose: '#f43f5e',
-          amber: '#f59e0b',
-          cyan: '#38bdf8',
+        accent: {
+          DEFAULT: '#C65D32', // Burnt orange / Terracotta
+          hover: '#A94825',
+          subtle: '#F6EAE4',
+        },
+        tech: {
+          DEFAULT: '#B9A58A', // Warm sand gold
+          subtle: '#F4EFEA',
+        },
+        status: {
+          success: '#38734D',
+          successBg: '#EBF3ED',
+          error: '#B33A32',
+          errorBg: '#FDF2F0',
+          warning: '#A66A16',
+          warningBg: '#FDF8EE',
         },
       },
       fontFamily: {
-        mono: ['JetBrains Mono', 'Fira Code', 'Menlo', 'monospace'],
-        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
-      },
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'titanium-gradient': 'linear-gradient(135deg, #ffffff 0%, #d1d5db 50%, #9ca3af 100%)',
-        'silver-glow': 'radial-gradient(circle at 50% -20%, rgba(209, 213, 219, 0.12), transparent 70%)',
-        'grey-surface': 'linear-gradient(180deg, #1f222b 0%, #15171e 100%)',
+        heading: ['var(--font-manrope)', 'Manrope', 'sans-serif'],
+        sans: ['var(--font-inter)', 'Inter', 'sans-serif'],
+        mono: ['var(--font-mono)', 'JetBrains Mono', 'monospace'],
       },
       boxShadow: {
-        glowGrey: '0 0 25px -5px rgba(209, 213, 219, 0.18)',
-        glowSubtle: '0 0 20px -3px rgba(156, 163, 175, 0.12)',
-        card: '0 8px 30px rgba(0, 0, 0, 0.6)',
+        card: '0 1px 3px rgba(41, 40, 36, 0.05), 0 1px 2px rgba(41, 40, 36, 0.03)',
+        panel: '0 4px 12px rgba(41, 40, 36, 0.06)',
+        elevated: '0 12px 28px rgba(41, 40, 36, 0.08)',
+      },
+      borderRadius: {
+        'card': '10px',
+        'button': '8px',
       },
     },
   },

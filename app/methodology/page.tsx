@@ -17,181 +17,139 @@ import {
 
 export default function MethodologyPage() {
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 py-12 space-y-12">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10 space-y-8">
       {/* Page Title */}
-      <div className="border-b border-zinc-750 pb-6 space-y-2">
-        <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-zinc-800 border border-zinc-700 text-zinc-300 text-xs font-mono font-semibold uppercase tracking-wider">
-          <Sparkles className="h-3.5 w-3.5 text-zinc-400" />
-          <span>Soundness & Scientific Design</span>
-        </div>
-        <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
-          Methodology & Architecture
+      <div className="border-b border-line pb-4">
+        <h1 className="font-heading text-2xl sm:text-3xl font-bold text-ink-primary">
+          Methodology & Soundness
         </h1>
-        <p className="text-base sm:text-lg text-zinc-400 max-w-3xl leading-relaxed">
-          How ShadowBump AI reliably isolates dependency behavioral regressions using twin runtime sandboxes and NVIDIA open-source intelligence on Nebius.
+        <p className="text-xs sm:text-sm text-ink-secondary mt-1 max-w-xl leading-relaxed">
+          How ShadowBump AI reliably detects dependency behavioral regressions and leverages NVIDIA open-source models via Nebius.
         </p>
       </div>
 
       {/* 1. The Core Problem */}
-      <section className="space-y-4">
-        <div className="flex items-center space-x-2.5">
-          <div className="p-2 rounded-xl bg-zinc-800 border border-zinc-700 text-rose-400">
-            <ShieldAlert className="h-5 w-5" />
-          </div>
-          <h2 className="text-xl sm:text-2xl font-bold text-white">
-            1. The Silent Regression Problem
-          </h2>
-        </div>
-        <p className="text-sm sm:text-base text-zinc-300 leading-relaxed">
-          Standard test suites only assert anticipated code paths. When upgrading dependencies (such as migrating from <strong className="text-white">Zod v3 to Zod v4</strong>), breaking changes often compile cleanly and pass existing unit tests while silently failing in production:
+      <section className="space-y-3">
+        <h2 className="font-heading text-sm sm:text-base font-bold text-ink-primary flex items-center gap-2">
+          <ShieldAlert className="h-4 w-4 text-accent" />
+          1. The Silent Regression Problem
+        </h2>
+        <p className="text-xs sm:text-sm text-ink-secondary leading-relaxed">
+          Standard test suites only assert anticipated code paths. When upgrading dependencies (such as migrating from <strong>Zod v3 to Zod v4</strong>), breaking changes often pass build steps while silently failing in production:
         </p>
-
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
-          <div className="p-5 rounded-2xl border border-zinc-750 bg-[#161821]/80 shadow-card space-y-2">
-            <span className="font-bold text-white text-sm block">Custom Option Deprecation</span>
-            <p className="text-zinc-400 text-xs leading-relaxed">
-              <code className="text-amber-400 font-mono">{`{ required_error }`}</code> is silently ignored in Zod v4 without compiler warnings, falling back to generic error strings.
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+          <div className="p-3.5 rounded-card border border-line bg-card shadow-card">
+            <span className="font-heading font-bold text-ink-primary block mb-1">Option Deprecation</span>
+            <p className="text-ink-secondary text-[11px] leading-relaxed">
+              <code className="text-status-warning font-mono font-semibold">required_error</code> is discarded in v4 without throwing compile errors, falling back to generic phrasing.
             </p>
           </div>
-          <div className="p-5 rounded-2xl border border-zinc-750 bg-[#161821]/80 shadow-card space-y-2">
-            <span className="font-bold text-white text-sm block">Interface Property Removal</span>
-            <p className="text-zinc-400 text-xs leading-relaxed">
-              <code className="text-rose-400 font-mono">error.errors</code> is deprecated in favor of <code className="text-emerald-400 font-mono">.issues</code>, breaking downstream <code className="font-mono text-zinc-300">.errors.map()</code> with unhandled TypeErrors.
+          <div className="p-3.5 rounded-card border border-line bg-card shadow-card">
+            <span className="font-heading font-bold text-ink-primary block mb-1">Property Removal</span>
+            <p className="text-ink-secondary text-[11px] leading-relaxed">
+              <code className="text-status-error font-mono font-semibold">error.errors</code> is replaced by <code className="text-status-success font-mono font-semibold">.issues</code>, causing downstream runtime TypeErrors.
             </p>
           </div>
-          <div className="p-5 rounded-2xl border border-zinc-750 bg-[#161821]/80 shadow-card space-y-2">
-            <span className="font-bold text-white text-sm block">Coercion Semantics Shift</span>
-            <p className="text-zinc-400 text-xs leading-relaxed">
-              Date and NaN parsing format issue strings differently (<code className="font-mono text-zinc-200">&quot;nan&quot;</code> vs <code className="font-mono text-zinc-200">&quot;NaN&quot;</code>), breaking string-matching error handlers.
+          <div className="p-3.5 rounded-card border border-line bg-card shadow-card">
+            <span className="font-heading font-bold text-ink-primary block mb-1">Coercion Semantics</span>
+            <p className="text-ink-secondary text-[11px] leading-relaxed">
+              Date and NaN parsing format issue strings differently (<code className="font-mono text-ink-primary">&quot;nan&quot;</code> vs <code className="font-mono text-ink-primary">&quot;NaN&quot;</code>).
             </p>
           </div>
         </div>
       </section>
 
       {/* 2. Difference vs Defect */}
-      <section className="space-y-4">
-        <div className="flex items-center space-x-2.5">
-          <div className="p-2 rounded-xl bg-zinc-800 border border-zinc-700 text-emerald-400">
-            <GitCompare className="h-5 w-5" />
-          </div>
-          <h2 className="text-xl sm:text-2xl font-bold text-white">
-            2. Difference vs Defect (The Oracle Problem)
-          </h2>
-        </div>
-        <p className="text-sm sm:text-base text-zinc-300 leading-relaxed">
-          A behavioral difference is not automatically a bug. Libraries modernize API shapes intentionally. ShadowBump AI uses a deterministic 4-tier taxonomy before querying any AI:
+      <section className="space-y-3">
+        <h2 className="font-heading text-sm sm:text-base font-bold text-ink-primary flex items-center gap-2">
+          <GitCompare className="h-4 w-4 text-status-success" />
+          2. Difference vs Defect (The Oracle Problem)
+        </h2>
+        <p className="text-xs sm:text-sm text-ink-secondary leading-relaxed">
+          A behavioral difference is not automatically a bug. Libraries intentionally modernize APIs and error phrasing. ShadowBump AI categorizes outcomes into four explicit tiers:
         </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2">
-          <div className="p-4 rounded-xl border border-emerald-500/25 bg-emerald-950/15 space-y-1">
-            <span className="font-bold text-emerald-400 font-mono text-sm flex items-center gap-1.5">
-              <CheckCircle2 className="h-4 w-4" />
-              MATCH
-            </span>
-            <p className="text-zinc-300 text-xs leading-relaxed">Identical output values, validation status, and issue codes across both baseline and candidate.</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
+          <div className="p-3 rounded-card border border-status-success/30 bg-status-success-bg/40">
+            <span className="font-bold text-status-success block mb-0.5 font-mono">● MATCH</span>
+            <p className="text-ink-primary text-[11px]">Identical output values, validation status, and issue codes across both versions.</p>
           </div>
-          <div className="p-4 rounded-xl border border-amber-500/25 bg-amber-950/15 space-y-1">
-            <span className="font-bold text-amber-400 font-mono text-sm flex items-center gap-1.5">
-              <AlertTriangle className="h-4 w-4" />
-              BEHAVIORAL DIFFERENCE
-            </span>
-            <p className="text-zinc-300 text-xs leading-relaxed">Observable changes in error phrasing or output structure that do not violate an explicit contract.</p>
+          <div className="p-3 rounded-card border border-status-warning/30 bg-status-warning-bg/40">
+            <span className="font-bold text-status-warning block mb-0.5 font-mono">● BEHAVIORAL DIFFERENCE</span>
+            <p className="text-ink-primary text-[11px]">Observable changes in error phrasing or output structure that do not violate an explicit contract.</p>
           </div>
-          <div className="p-4 rounded-xl border border-rose-500/30 bg-rose-950/15 space-y-1">
-            <span className="font-bold text-rose-400 font-mono text-sm flex items-center gap-1.5">
-              <XCircle className="h-4 w-4" />
-              POTENTIAL REGRESSION
-            </span>
-            <p className="text-zinc-300 text-xs leading-relaxed">Validation status flipped, missing properties (<code className="font-mono text-rose-300">error.errors</code>), or dropped custom messages.</p>
+          <div className="p-3 rounded-card border border-status-error/30 bg-status-error-bg/40">
+            <span className="font-bold text-status-error block mb-0.5 font-mono">● POTENTIAL REGRESSION</span>
+            <p className="text-ink-primary text-[11px]">Validation status flipped, missing properties (<code className="font-mono font-semibold">error.errors</code>), or dropped custom messages.</p>
           </div>
-          <div className="p-4 rounded-xl border border-zinc-750 bg-zinc-850 space-y-1">
-            <span className="font-bold text-zinc-300 font-mono text-sm flex items-center gap-1.5">
-              <Bug className="h-4 w-4 text-zinc-400" />
-              EXECUTION ERROR
-            </span>
-            <p className="text-zinc-400 text-xs leading-relaxed">Subprocess crashed, timed out (5s limit), or threw an unhandled internal exception.</p>
+          <div className="p-3 rounded-card border border-line bg-hero">
+            <span className="font-bold text-ink-primary block mb-0.5 font-mono">● EXECUTION ERROR</span>
+            <p className="text-ink-secondary text-[11px]">Subprocess crashed, timed out (5,000ms limit), or threw an unhandled internal exception.</p>
           </div>
         </div>
       </section>
 
       {/* 3. Sandbox Isolation */}
-      <section className="space-y-4">
-        <div className="flex items-center space-x-2.5">
-          <div className="p-2 rounded-xl bg-zinc-800 border border-zinc-700 text-zinc-300">
-            <Lock className="h-5 w-5" />
+      <section className="space-y-3">
+        <h2 className="font-heading text-sm sm:text-base font-bold text-ink-primary flex items-center gap-2">
+          <Lock className="h-4 w-4 text-accent" />
+          3. Twin Sandbox Isolation Boundary
+        </h2>
+        <div className="p-4 rounded-card border border-line bg-card shadow-card space-y-2 text-xs text-ink-secondary">
+          <div className="flex items-start gap-2">
+            <span className="font-mono text-accent font-bold">•</span>
+            <span><strong>Separate Directories:</strong> Baseline (<code className="text-status-success font-mono font-semibold">zod@3.23.8</code>) and candidate (<code className="text-status-error font-mono font-semibold">zod@4.6.7</code>) are installed in independent folders with isolated <code className="font-mono">node_modules</code>.</span>
           </div>
-          <h2 className="text-xl sm:text-2xl font-bold text-white">
-            3. Twin Sandbox Isolation Boundary
-          </h2>
-        </div>
-        <div className="p-6 rounded-2xl border border-zinc-750 bg-[#161821]/80 shadow-card space-y-3 text-sm text-zinc-300">
-          <div className="flex items-start gap-3">
-            <span className="h-2 w-2 rounded-full bg-zinc-400 mt-2 shrink-0" />
-            <div>
-              <strong className="text-white block">Quarantined Directories & Runtimes:</strong>
-              Baseline (<code className="text-emerald-400 font-mono">zod@3.23.8</code>) and candidate (<code className="text-rose-400 font-mono">zod@4.6.7</code>) reside in separate physical disk folders with isolated <code className="font-mono text-zinc-400">node_modules</code>.
-            </div>
+          <div className="flex items-start gap-2">
+            <span className="font-mono text-accent font-bold">•</span>
+            <span><strong>Sanitized Environment:</strong> Subprocesses are spawned without host credentials or forwarded API keys (<code className="font-mono">NODE_ENV: &apos;test&apos;</code>).</span>
           </div>
-          <div className="flex items-start gap-3">
-            <span className="h-2 w-2 rounded-full bg-zinc-400 mt-2 shrink-0" />
-            <div>
-              <strong className="text-white block">Sanitized Subprocess Execution:</strong>
-              Subprocesses are spawned via child processes with zero host credentials, no API keys forwarded, and restricted environmental context.
-            </div>
-          </div>
-          <div className="flex items-start gap-3">
-            <span className="h-2 w-2 rounded-full bg-zinc-400 mt-2 shrink-0" />
-            <div>
-              <strong className="text-white block">5,000ms Watchdog Protection:</strong>
-              Every execution has a hard watchdog timer killing rogue processes, preventing infinite loops or memory leaks from blocking analysis.
-            </div>
+          <div className="flex items-start gap-2">
+            <span className="font-mono text-accent font-bold">•</span>
+            <span><strong>Execution Timeouts:</strong> Subprocesses are forcefully terminated after 5,000ms to eliminate infinite loop risks.</span>
           </div>
         </div>
       </section>
 
       {/* 4. Nebius & NVIDIA */}
-      <section className="space-y-4">
-        <div className="flex items-center space-x-2.5">
-          <div className="p-2 rounded-xl bg-zinc-800 border border-zinc-700 text-zinc-300">
-            <Cpu className="h-5 w-5" />
-          </div>
-          <h2 className="text-xl sm:text-2xl font-bold text-white">
-            4. NVIDIA Nemotron on Nebius Token Factory
-          </h2>
-        </div>
-        <div className="p-6 rounded-2xl border border-zinc-750 bg-[#161821]/80 shadow-card space-y-3 text-sm text-zinc-300">
+      <section className="space-y-3">
+        <h2 className="font-heading text-sm sm:text-base font-bold text-ink-primary flex items-center gap-2">
+          <Cpu className="h-4 w-4 text-accent" />
+          4. NVIDIA Nemotron & Nebius Token Factory
+        </h2>
+        <div className="p-4 rounded-card border border-line bg-card shadow-card space-y-1.5 text-xs text-ink-secondary">
           <p className="leading-relaxed">
-            ShadowBump AI connects to Nebius Token Factory querying <strong className="text-white font-mono">nvidia/Llama-3.1-Nemotron-70B-Instruct-HF</strong>.
+            ShadowBump AI connects to Nebius Token Factory querying <strong>nvidia/Llama-3.1-Nemotron-70B-Instruct-HF</strong>.
           </p>
-          <p className="leading-relaxed text-xs sm:text-sm text-zinc-400">
-            The model receives strictly the minimal empirical diff evidence (schema code, executed test input, and twin AST outputs). It does not replace the deterministic comparator; instead, it synthesizes root causes, estimates blast radius, and provides precise Before/After code fixes.
+          <p className="leading-relaxed text-[11px]">
+            The model receives only the minimal empirical evidence package (schema snippet, failing test vector, v3 vs v4 AST output). It does not replace the deterministic diff engine; rather, it synthesizes the root cause and provides a concrete migration code fix.
           </p>
         </div>
       </section>
 
-      {/* 5. Soundness & Scientific Limitations */}
-      <section className="space-y-4 border-t border-zinc-750 pt-8">
-        <h2 className="text-xl sm:text-2xl font-bold text-white">
+      {/* 5. Scientific Limitations */}
+      <section className="space-y-3 border-t border-line pt-6">
+        <h2 className="font-heading text-sm sm:text-base font-bold text-ink-primary">
           5. Soundness & Scientific Limitations
         </h2>
-        <div className="p-6 rounded-2xl border border-zinc-750 bg-zinc-850 space-y-3 text-sm text-zinc-300 leading-relaxed">
-          <p>
-            • <strong className="text-white">Tested Equivalence ≠ Global Proof:</strong> If an input corpus shows zero differences, it proves only that the specific inputs evaluated produced identical output under the test harness. Untested inputs may still diverge.
+        <div className="p-4 rounded-card border border-line bg-card shadow-card space-y-2 text-xs text-ink-secondary">
+          <p className="leading-relaxed">
+            • <strong>No Difference Observed ≠ Proof of Full Correctness:</strong> If a test corpus produces zero differences, it establishes only that the tested inputs behaved identically under the tested runtime. Untested edge cases may still diverge.
           </p>
-          <p>
-            • <strong className="text-white">Oracle Specification:</strong> Distinguishing intentional library evolutions from unintended defects requires explicit oracle rules or human engineering judgment.
+          <p className="leading-relaxed">
+            • <strong>Oracle Dependency:</strong> Distinguishing intentional changes from true defects requires an explicit expectation or oracle specification.
           </p>
         </div>
       </section>
 
       {/* CTA */}
-      <div className="pt-4 flex items-center justify-between">
+      <div className="pt-2 flex items-center justify-between">
         <Link
           href="/workspace"
-          className="inline-flex items-center space-x-2 px-6 py-3 rounded-xl bg-zinc-100 hover:bg-white text-zinc-950 text-sm font-bold transition-all shadow-sm hover:shadow-glowGrey"
+          className="inline-flex items-center space-x-1.5 px-4 py-2 rounded-button bg-accent hover:bg-accent-hover text-white text-xs font-semibold transition-colors shadow-card"
         >
-          <span>Open Differential Workspace</span>
-          <ArrowRight className="h-4 w-4" />
+          <span>Open Analysis Workspace</span>
+          <ArrowRight className="h-3.5 w-3.5" />
         </Link>
       </div>
     </div>

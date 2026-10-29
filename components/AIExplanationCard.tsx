@@ -23,25 +23,25 @@ export default function AIExplanationCard({ explanation, isLoading, onRefresh }:
   const getRiskBadge = (level: RiskLevel) => {
     switch (level) {
       case 'LOW':
-        return <span className="px-3 py-0.5 rounded-full text-xs font-mono font-bold bg-emerald-950/50 text-emerald-400 border border-emerald-500/30">LOW RISK</span>;
+        return <span className="px-2.5 py-0.5 rounded text-[10px] font-mono font-bold bg-status-success-bg text-status-success border border-status-success/30">LOW RISK</span>;
       case 'MEDIUM':
-        return <span className="px-3 py-0.5 rounded-full text-xs font-mono font-bold bg-amber-950/50 text-amber-400 border border-amber-500/30">MEDIUM RISK</span>;
+        return <span className="px-2.5 py-0.5 rounded text-[10px] font-mono font-bold bg-status-warning-bg text-status-warning border border-status-warning/30">MEDIUM RISK</span>;
       case 'HIGH':
-        return <span className="px-3 py-0.5 rounded-full text-xs font-mono font-bold bg-rose-950/60 text-rose-400 border border-rose-500/40 animate-pulse">HIGH RISK</span>;
+        return <span className="px-2.5 py-0.5 rounded text-[10px] font-mono font-bold bg-status-error-bg text-status-error border border-status-error/30">HIGH RISK</span>;
       case 'CRITICAL':
-        return <span className="px-3 py-0.5 rounded-full text-xs font-mono font-bold bg-rose-600 text-white shadow-[0_0_15px_rgba(244,63,94,0.5)] animate-pulse">CRITICAL RISK</span>;
+        return <span className="px-2.5 py-0.5 rounded text-[10px] font-mono font-bold bg-status-error text-white">CRITICAL RISK</span>;
     }
   };
 
   if (isLoading) {
     return (
-      <div className="rounded-2xl border border-zinc-700 bg-[#161821]/95 p-6 shadow-card space-y-3">
-        <div className="flex items-center space-x-3 text-sm text-zinc-200">
-          <RefreshCw className="h-5 w-5 animate-spin text-zinc-400" />
-          <span className="font-bold text-white">Synthesizing Root Cause with NVIDIA Nemotron-70B on Nebius...</span>
+      <div className="rounded-card border border-line bg-card p-5 shadow-card space-y-2">
+        <div className="flex items-center space-x-2.5 text-xs text-ink-primary">
+          <RefreshCw className="h-4 w-4 animate-spin text-accent" />
+          <span className="font-semibold">Querying NVIDIA Nemotron-70B on Nebius...</span>
         </div>
-        <p className="text-xs text-zinc-400">
-          Feeding empirical AST diffs to Nebius Token Factory at temperature=0.1 for deterministic analysis.
+        <p className="text-xs text-ink-secondary">
+          Synthesizing root cause from empirical diff evidence.
         </p>
       </div>
     );
@@ -49,34 +49,31 @@ export default function AIExplanationCard({ explanation, isLoading, onRefresh }:
 
   if (!explanation) {
     return (
-      <div className="rounded-2xl border border-zinc-750 bg-[#161821]/80 p-8 text-center shadow-card space-y-2">
-        <Cpu className="h-8 w-8 text-zinc-500 mx-auto" />
-        <div className="text-base font-bold text-white">
-          NVIDIA AI Root-Cause Synthesis
+      <div className="rounded-card border border-line bg-card p-6 text-center shadow-card space-y-1.5">
+        <Cpu className="h-6 w-6 text-ink-muted mx-auto" />
+        <div className="font-heading font-bold text-xs text-ink-primary">
+          NVIDIA AI Explanation
         </div>
-        <p className="text-xs text-zinc-400 max-w-sm mx-auto">
-          Select any detected difference above to synthesize an evidence-grounded root-cause explanation and migration diff.
+        <p className="text-[11px] text-ink-secondary max-w-xs mx-auto">
+          Select any detected difference to generate an evidence-grounded root-cause explanation.
         </p>
       </div>
     );
   }
 
   return (
-    <div className="rounded-2xl border border-zinc-750 bg-[#161821]/95 shadow-card overflow-hidden space-y-0 text-sm">
+    <div className="rounded-card border border-line bg-card shadow-card overflow-hidden space-y-0 text-xs">
       {/* Header */}
-      <div className="flex flex-wrap items-center justify-between p-4 sm:p-5 bg-gradient-to-r from-zinc-850 via-[#181a23] to-zinc-850 border-b border-zinc-750 gap-3">
-        <div className="space-y-1">
-          <div className="flex items-center space-x-3">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-zinc-800 border border-zinc-700 text-zinc-300">
-              <Sparkles className="h-4 w-4" />
-            </div>
-            <span className="font-bold text-white text-base">
-              NVIDIA Nemotron Root Cause Synthesis
+      <div className="flex flex-wrap items-center justify-between p-4 bg-bg border-b border-line gap-2">
+        <div className="space-y-0.5">
+          <div className="flex items-center space-x-2">
+            <span className="font-heading font-bold text-ink-primary text-xs">
+              NVIDIA Nemotron Analysis
             </span>
             {getRiskBadge(explanation.riskLevel)}
           </div>
-          <div className="text-xs text-zinc-400 font-mono">
-            Nebius Token Factory • <span className="text-zinc-200 font-semibold">{explanation.modelUsed}</span>
+          <div className="text-[10px] text-ink-secondary font-mono">
+            Nebius Token Factory • {explanation.modelUsed}
           </div>
         </div>
 
@@ -84,27 +81,27 @@ export default function AIExplanationCard({ explanation, isLoading, onRefresh }:
           <button
             type="button"
             onClick={onRefresh}
-            className="flex items-center space-x-1.5 px-3 py-1.5 text-xs font-mono rounded-lg border border-zinc-700 bg-zinc-800 hover:bg-zinc-750 text-zinc-300 hover:text-white transition-colors"
+            className="flex items-center space-x-1 px-2.5 py-1 text-xs font-mono rounded border border-line bg-card hover:bg-hero text-ink-secondary hover:text-ink-primary transition-colors"
           >
-            <RefreshCw className="h-3.5 w-3.5 text-zinc-400" />
+            <RefreshCw className="h-3 w-3 text-accent" />
             <span>Re-analyze</span>
           </button>
         )}
       </div>
 
-      <div className="p-5 sm:p-6 space-y-6">
+      <div className="p-4 sm:p-5 space-y-4">
         {/* Offline / Unavailable Notice */}
         {explanation.status !== 'SUCCESS' && (
-          <div className="p-4 rounded-xl border border-amber-500/30 bg-amber-950/15 text-amber-300 text-xs sm:text-sm space-y-1.5">
+          <div className="p-3.5 rounded border border-status-warning/40 bg-status-warning-bg text-ink-primary text-xs space-y-1">
             <div className="flex items-start space-x-2">
-              <AlertCircle className="h-4 w-4 shrink-0 mt-0.5 text-amber-400" />
+              <AlertCircle className="h-4 w-4 shrink-0 mt-0.5 text-status-warning" />
               <div>
-                <strong className="block text-white font-bold">Deterministic Fallback Mode Active</strong>
-                <p className="text-zinc-300 leading-relaxed text-xs">
+                <strong className="block font-semibold">Deterministic Mode Active</strong>
+                <p className="text-[11px] text-ink-secondary leading-relaxed">
                   {explanation.errorNotice || explanation.rootCause}
                 </p>
-                <div className="mt-2 font-mono text-[11px] text-zinc-400">
-                  Tip: Supply <code className="text-zinc-200">NEBIUS_API_KEY</code> in environment variables to enable live Nebius Token Factory inference.
+                <div className="mt-1 font-mono text-[10px] text-ink-muted">
+                  Configure <code className="text-ink-primary">NEBIUS_API_KEY</code> in environment variables to enable live Nebius Token Factory inference.
                 </div>
               </div>
             </div>
@@ -112,50 +109,50 @@ export default function AIExplanationCard({ explanation, isLoading, onRefresh }:
         )}
 
         {/* 1. Observed Facts */}
-        <div className="space-y-2">
-          <span className="text-xs font-mono font-bold text-zinc-300 uppercase tracking-wider block">
-            1. Observed Differential Evidence
+        <div className="space-y-1">
+          <span className="text-[10px] font-mono font-bold text-ink-secondary uppercase tracking-wider block">
+            1. Observed Facts
           </span>
-          <p className="text-zinc-200 leading-relaxed text-sm bg-[#0d0e12] p-3.5 rounded-xl border border-zinc-800">
+          <p className="text-ink-primary leading-relaxed bg-bg p-3 rounded border border-line">
             {explanation.summary}
           </p>
         </div>
 
         {/* 2. Possible Implications & Root Cause */}
-        <div className="space-y-2">
-          <span className="text-xs font-mono font-bold text-zinc-300 uppercase tracking-wider block">
-            2. Root Cause & Architectural Blast Radius
+        <div className="space-y-1.5">
+          <span className="text-[10px] font-mono font-bold text-ink-secondary uppercase tracking-wider block">
+            2. Possible Implications & Root Cause
           </span>
-          <p className="text-zinc-300 leading-relaxed text-sm">
+          <p className="text-ink-secondary leading-relaxed">
             {explanation.rootCause}
           </p>
-          <div className="p-3.5 rounded-xl border border-zinc-750 bg-zinc-850 text-xs space-y-1">
-            <span className="font-bold text-white block uppercase tracking-wide">Blast Radius Assessment:</span>
-            <span className="text-zinc-300 block">{explanation.blastRadius}</span>
+          <div className="p-2.5 rounded border border-line bg-bg text-[11px]">
+            <span className="font-semibold text-ink-primary block mb-0.5">Blast Radius:</span>
+            <span className="text-ink-secondary">{explanation.blastRadius}</span>
           </div>
         </div>
 
         {/* 3. Migration Fix & Before/After Code Diff */}
-        <div className="space-y-3">
-          <span className="text-xs font-mono font-bold text-zinc-300 uppercase tracking-wider flex items-center gap-1.5">
-            <FileCode className="h-4 w-4 text-zinc-300" />
-            3. Recommended Code Migration Fix
+        <div className="space-y-2">
+          <span className="text-[10px] font-mono font-bold text-ink-secondary uppercase tracking-wider flex items-center gap-1">
+            <FileCode className="h-3.5 w-3.5 text-accent" />
+            3. Migration Fix & Follow-up Tests
           </span>
 
           {explanation.codeDiff && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 font-mono text-xs">
-              <div className="p-3.5 rounded-xl border border-rose-500/25 bg-rose-950/15 space-y-1.5">
-                <span className="text-rose-400 font-bold block">// Deprecated / Non-Compliant (v3 Syntax)</span>
-                <pre className="text-zinc-200 whitespace-pre-wrap leading-relaxed">{explanation.codeDiff.before}</pre>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 font-mono text-xs">
+              <div className="p-3 rounded border border-status-error/30 bg-status-error-bg/30 space-y-1">
+                <span className="text-status-error font-bold text-[11px] block">// Old Syntax (v3)</span>
+                <pre className="text-ink-primary whitespace-pre-wrap leading-relaxed">{explanation.codeDiff.before}</pre>
               </div>
-              <div className="p-3.5 rounded-xl border border-emerald-500/25 bg-emerald-950/15 space-y-1.5">
-                <span className="text-emerald-400 font-bold block">// Modern Compliant (v4 Syntax)</span>
-                <pre className="text-zinc-200 whitespace-pre-wrap leading-relaxed">{explanation.codeDiff.after}</pre>
+              <div className="p-3 rounded border border-status-success/30 bg-status-success-bg/30 space-y-1">
+                <span className="text-status-success font-bold text-[11px] block">// Modern Syntax (v4)</span>
+                <pre className="text-ink-primary whitespace-pre-wrap leading-relaxed">{explanation.codeDiff.after}</pre>
               </div>
             </div>
           )}
 
-          <p className="text-xs text-zinc-300 leading-relaxed bg-[#0d0e12] p-3.5 rounded-xl border border-zinc-800">
+          <p className="text-[11px] text-ink-secondary leading-relaxed bg-bg p-3 rounded border border-line">
             {explanation.recommendedFix}
           </p>
         </div>

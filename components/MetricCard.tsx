@@ -20,43 +20,33 @@ export default function MetricCard({
     switch (variant) {
       case 'match':
         return {
-          border: 'border-emerald-500/30 hover:border-emerald-500/50',
-          gradient: 'from-emerald-950/15 via-zinc-850 to-zinc-900',
-          text: 'text-emerald-400',
-          iconBg: 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30',
-          glow: 'hover:shadow-[0_0_20px_rgba(16,185,129,0.12)]'
+          border: 'border-line hover:border-status-success/40',
+          text: 'text-status-success',
+          iconBg: 'bg-status-success-bg text-status-success border border-status-success/20'
         };
       case 'diff':
         return {
-          border: 'border-amber-500/30 hover:border-amber-500/50',
-          gradient: 'from-amber-950/15 via-zinc-850 to-zinc-900',
-          text: 'text-amber-400',
-          iconBg: 'bg-amber-500/10 text-amber-400 border border-amber-500/30',
-          glow: 'hover:shadow-[0_0_20px_rgba(245,158,11,0.12)]'
+          border: 'border-line hover:border-status-warning/40',
+          text: 'text-status-warning',
+          iconBg: 'bg-status-warning-bg text-status-warning border border-status-warning/20'
         };
       case 'regression':
         return {
-          border: 'border-rose-500/40 hover:border-rose-500/60',
-          gradient: 'from-rose-950/15 via-zinc-850 to-zinc-900',
-          text: 'text-rose-400',
-          iconBg: 'bg-rose-500/10 text-rose-400 border border-rose-500/30',
-          glow: 'hover:shadow-[0_0_20px_rgba(244,63,94,0.18)]'
+          border: 'border-status-error/30 hover:border-status-error/50',
+          text: 'text-status-error',
+          iconBg: 'bg-status-error-bg text-status-error border border-status-error/20'
         };
       case 'brand':
         return {
-          border: 'border-zinc-650 hover:border-zinc-500',
-          gradient: 'from-zinc-800/70 via-zinc-850 to-zinc-900',
-          text: 'text-zinc-100',
-          iconBg: 'bg-zinc-800 text-zinc-300 border border-zinc-700',
-          glow: 'hover:shadow-glowSubtle'
+          border: 'border-line hover:border-accent/40',
+          text: 'text-accent',
+          iconBg: 'bg-accent-subtle text-accent border border-accent/20'
         };
       default:
         return {
-          border: 'border-zinc-750 hover:border-zinc-600',
-          gradient: 'from-zinc-850 via-zinc-900 to-zinc-950',
-          text: 'text-zinc-200',
-          iconBg: 'bg-zinc-800 text-zinc-400 border border-zinc-700',
-          glow: 'hover:shadow-card'
+          border: 'border-line hover:border-ink-secondary/40',
+          text: 'text-ink-primary',
+          iconBg: 'bg-hero text-ink-secondary border border-line'
         };
     }
   };
@@ -64,20 +54,20 @@ export default function MetricCard({
   const styles = getVariantStyles();
 
   return (
-    <div className={`p-4 sm:p-5 rounded-2xl border ${styles.border} bg-gradient-to-b ${styles.gradient} shadow-card transition-all ${styles.glow}`}>
+    <div className={`p-4 sm:p-5 rounded-card border ${styles.border} bg-card shadow-card transition-all`}>
       <div className="flex items-center justify-between mb-2">
-        <span className="text-xs font-mono font-bold text-zinc-400 uppercase tracking-wider">
+        <span className="text-[11px] font-mono font-bold text-ink-secondary uppercase tracking-wider">
           {label}
         </span>
-        <div className={`p-2 rounded-xl ${styles.iconBg}`}>
+        <div className={`p-2 rounded-button ${styles.iconBg}`}>
           <Icon className="h-4 w-4" />
         </div>
       </div>
-      <div className={`text-3xl sm:text-4xl font-extrabold font-mono tracking-tight ${styles.text}`}>
+      <div className={`text-2xl sm:text-3xl font-extrabold font-mono tracking-tight ${styles.text}`}>
         {value}
       </div>
       {subtext && (
-        <div className="text-xs text-zinc-400 mt-1.5 font-medium">
+        <div className="text-xs text-ink-secondary mt-1 font-sans">
           {subtext}
         </div>
       )}
