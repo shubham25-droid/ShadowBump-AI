@@ -1,8 +1,7 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Link from 'next/link';
-import DemoVideoModal from '@/components/DemoVideoModal';
 import WorkflowDiagram from '@/components/WorkflowDiagram';
 import { SCENARIOS } from '@/lib/engine/scenarios';
 import { 
@@ -25,18 +24,7 @@ import {
 } from 'lucide-react';
 
 export default function LandingPage() {
-  const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
 
-  useEffect(() => {
-    const handleHash = () => {
-      if (typeof window !== 'undefined' && window.location.hash === '#demo') {
-        setIsDemoModalOpen(true);
-      }
-    };
-    handleHash();
-    window.addEventListener('hashchange', handleHash);
-    return () => window.removeEventListener('hashchange', handleHash);
-  }, []);
   return (
     <div className="space-y-14 sm:space-y-16 pb-20">
       {/* 1. Hero Section */}
@@ -68,16 +56,6 @@ export default function LandingPage() {
                 <span>Analyze an Upgrade</span>
                 <ArrowRight className="h-4 w-4" />
               </Link>
-
-              <button
-                onClick={() => setIsDemoModalOpen(true)}
-                className="inline-flex items-center space-x-2 px-4 py-2.5 rounded-button border border-line bg-card hover:bg-panelHover text-ink-primary text-sm font-medium transition-colors shadow-card group cursor-pointer"
-              >
-                <div className="h-5 w-5 rounded-full bg-accent/10 border border-accent/20 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-white transition-colors">
-                  <Play className="h-2.5 w-2.5 fill-current ml-0.5" />
-                </div>
-                <span>Watch 2-Min Demo</span>
-              </button>
 
               <a
                 href="#guide"
@@ -372,11 +350,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Demo Video Modal */}
-      <DemoVideoModal
-        isOpen={isDemoModalOpen}
-        onClose={() => setIsDemoModalOpen(false)}
-      />
+
     </div>
   );
 }

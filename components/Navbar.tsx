@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import BrandLogo from '@/components/BrandLogo';
-import { Play, Cpu, Layers, BookOpen, ArrowRight, HelpCircle, Video } from 'lucide-react';
+import { Play, Cpu, Layers, BookOpen, ArrowRight, HelpCircle } from 'lucide-react';
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -21,7 +21,6 @@ export default function Navbar() {
 
   const navItems = [
     { href: '/', label: 'Overview', icon: Layers },
-    { href: '/#demo', label: 'Watch Demo', icon: Video },
     { href: '/#guide', label: 'How to Use', icon: HelpCircle },
     { href: '/workspace', label: 'Analysis Workspace', icon: Play },
     { href: '/methodology', label: 'Methodology & Soundness', icon: BookOpen },
