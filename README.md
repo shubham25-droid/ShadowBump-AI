@@ -1,6 +1,8 @@
 # ShadowBump AI
 > **Catch Behavioral Changes Before Production.**
 
+[![Live Demo](https://img.shields.io/badge/Live_Demo-shadowbump--ai.onrender.com-0064d2.svg?style=for-the-badge&logo=render&logoColor=white)](https://shadowbump-ai.onrender.com)
+
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Hackathon: Nebius x NVIDIA](https://img.shields.io/badge/Nebius_x_NVIDIA-Global_AI_Hackathon-76b900.svg)](https://nebiusglobalaihackathon.devpost.com/)
 [![Track: Coding & Agentic Engineering](https://img.shields.io/badge/Track-Coding_%26_Agentic_Engineering-0284c7.svg)](https://nebiusglobalaihackathon.devpost.com/)
