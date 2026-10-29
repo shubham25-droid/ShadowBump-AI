@@ -36,7 +36,6 @@ USER nextjs
 
 EXPOSE 3000
 
-ENV PORT 3000
 ENV HOSTNAME "0.0.0.0"
 
-CMD ["npm", "start", "--", "-p", "3000"]
+CMD ["sh", "-c", "npm start -- -p ${PORT:-3000} -H 0.0.0.0"]
