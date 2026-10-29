@@ -5,8 +5,8 @@
 @tailwind utilities;
 
 :root {
-  --background: #F7F5F0;
-  --foreground: #292824;
+  --background: #0c1d2e;
+  --foreground: #ffffff;
   --font-manrope: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-inter: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', 'SF Mono', Consolas, Monaco, monospace;
@@ -29,27 +29,27 @@ pre, code {
   font-family: var(--font-mono);
 }
 
-/* Warm Neutral Scrollbar */
+/* Deep Slate Navy Scrollbar */
 ::-webkit-scrollbar {
   width: 7px;
   height: 7px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #F7F5F0;
+  background: #0c1d2e;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #D8D2C7;
+  background: #23425e;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #C2BBB0;
+  background: #2d5578;
 }
 
-/* Restrained selection highlight */
+/* Cobalt selection highlight */
 ::selection {
-  background: #F6EAE4;
-  color: #A94825;
+  background: rgba(0, 102, 204, 0.4);
+  color: #ffffff;
 }

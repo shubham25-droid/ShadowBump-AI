@@ -34,7 +34,7 @@ export default function Navbar() {
         </Link>
 
         {/* Navigation Links */}
-        <nav className="hidden md:flex items-center space-x-1">
+        <nav className="hidden md:flex items-center space-x-1.5">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = pathname === item.href;
@@ -42,13 +42,13 @@ export default function Navbar() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-button text-xs font-medium transition-colors ${
+                className={`flex items-center space-x-2 px-3.5 py-1.5 rounded-button text-xs font-medium transition-colors ${
                   isActive
-                    ? 'bg-hero text-ink-primary font-semibold'
-                    : 'text-ink-secondary hover:text-ink-primary hover:bg-hero/50'
+                    ? 'bg-card text-white font-semibold border border-line'
+                    : 'text-ink-secondary hover:text-white hover:bg-card/50'
                 }`}
               >
-                <Icon className="h-3.5 w-3.5 text-ink-secondary" />
+                <Icon className="h-3.5 w-3.5 text-tech" />
                 <span>{item.label}</span>
               </Link>
             );
@@ -57,7 +57,7 @@ export default function Navbar() {
 
         {/* Status Pill & Primary CTA */}
         <div className="flex items-center space-x-3">
-          <div className="hidden lg:flex items-center space-x-2 text-xs text-ink-secondary px-3 py-1.5 rounded-full border border-line bg-card shadow-card">
+          <div className="hidden lg:flex items-center space-x-2 text-xs text-ink-secondary px-3.5 py-1.5 rounded-full border border-line bg-hero shadow-card">
             <Cpu className="h-3.5 w-3.5 text-tech" />
             <span className="text-[11px]">NVIDIA Nemotron:</span>
             <span
@@ -67,14 +67,14 @@ export default function Navbar() {
                   : 'bg-tech'
               }`}
             />
-            <span className="font-mono text-ink-primary text-[11px]">
+            <span className="font-mono text-white text-[11px]">
               {hasNebiusKey === true ? 'Nebius Active' : 'Deterministic Mode'}
             </span>
           </div>
 
           <Link
             href="/workspace"
-            className="inline-flex items-center space-x-1.5 px-4 py-2 rounded-button bg-accent hover:bg-accent-hover text-white text-xs font-semibold transition-colors shadow-card"
+            className="inline-flex items-center space-x-2 px-4 py-2 rounded-button bg-accent hover:bg-accent-hover text-white text-xs font-bold transition-all shadow-glowBlue"
           >
             <span>Analyze an Upgrade</span>
             <ArrowRight className="h-3.5 w-3.5" />

@@ -9,34 +9,42 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Warm Neutral Light Mode Palette
-        bg: '#F7F5F0',
-        hero: '#EEEAE2',
-        card: '#FFFFFF',
-        panel: '#FFFFFF',
-        line: '#E5E0D7',
-        lineSubtle: '#EFECE6',
+        // Deep Slate Navy & Vivid Cobalt Blue Palette (from reference image)
+        bg: '#0c1d2e',
+        canvas: '#0c1d2e',
+        hero: '#11253a',
+        card: '#152c44',
+        panel: '#152c44',
+        panelHover: '#1c3854',
+        line: '#23425e',
+        lineSubtle: '#1a344d',
         ink: {
-          primary: '#292824',
-          secondary: '#77746D',
-          muted: '#9E9A90',
+          primary: '#ffffff',
+          secondary: '#9fb7cd',
+          muted: '#6986a3',
         },
         accent: {
-          DEFAULT: '#C65D32', // Burnt orange / Terracotta
-          hover: '#A94825',
-          subtle: '#F6EAE4',
+          DEFAULT: '#0066cc', // Reference image primary blue button
+          hover: '#0055b3',
+          subtle: 'rgba(0, 102, 204, 0.18)',
+        },
+        cobalt: {
+          DEFAULT: '#0066cc',
+          hover: '#0055b3',
+          dark: '#084b96',
+          shelf: '#0055a5',
         },
         tech: {
-          DEFAULT: '#B9A58A', // Warm sand gold
-          subtle: '#F4EFEA',
+          DEFAULT: '#38bdf8',
+          subtle: 'rgba(56, 189, 248, 0.12)',
         },
         status: {
-          success: '#38734D',
-          successBg: '#EBF3ED',
-          error: '#B33A32',
-          errorBg: '#FDF2F0',
-          warning: '#A66A16',
-          warningBg: '#FDF8EE',
+          success: '#10b981',
+          successBg: 'rgba(16, 185, 129, 0.14)',
+          error: '#ef4444',
+          errorBg: 'rgba(239, 68, 68, 0.14)',
+          warning: '#f59e0b',
+          warningBg: 'rgba(245, 158, 11, 0.14)',
         },
       },
       fontFamily: {
@@ -45,12 +53,12 @@ const config: Config = {
         mono: ['var(--font-mono)', 'JetBrains Mono', 'monospace'],
       },
       boxShadow: {
-        card: '0 1px 3px rgba(41, 40, 36, 0.05), 0 1px 2px rgba(41, 40, 36, 0.03)',
-        panel: '0 4px 12px rgba(41, 40, 36, 0.06)',
-        elevated: '0 12px 28px rgba(41, 40, 36, 0.08)',
+        card: '0 4px 20px rgba(4, 11, 18, 0.45)',
+        panel: '0 8px 30px rgba(4, 11, 18, 0.55)',
+        glowBlue: '0 0 25px -4px rgba(0, 102, 204, 0.4)',
       },
       borderRadius: {
-        'card': '10px',
+        'card': '12px',
         'button': '8px',
       },
     },

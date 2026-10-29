@@ -20,32 +20,32 @@ export default function MetricCard({
     switch (variant) {
       case 'match':
         return {
-          border: 'border-line hover:border-status-success/40',
+          border: 'border-status-success/30 hover:border-status-success/50',
           text: 'text-status-success',
-          iconBg: 'bg-status-success-bg text-status-success border border-status-success/20'
+          iconBg: 'bg-status-successBg text-status-success border border-status-success/30'
         };
       case 'diff':
         return {
-          border: 'border-line hover:border-status-warning/40',
+          border: 'border-status-warning/30 hover:border-status-warning/50',
           text: 'text-status-warning',
-          iconBg: 'bg-status-warning-bg text-status-warning border border-status-warning/20'
+          iconBg: 'bg-status-warningBg text-status-warning border border-status-warning/30'
         };
       case 'regression':
         return {
-          border: 'border-status-error/30 hover:border-status-error/50',
+          border: 'border-status-error/40 hover:border-status-error/60',
           text: 'text-status-error',
-          iconBg: 'bg-status-error-bg text-status-error border border-status-error/20'
+          iconBg: 'bg-status-errorBg text-status-error border border-status-error/40'
         };
       case 'brand':
         return {
-          border: 'border-line hover:border-accent/40',
-          text: 'text-accent',
-          iconBg: 'bg-accent-subtle text-accent border border-accent/20'
+          border: 'border-line hover:border-accent',
+          text: 'text-tech',
+          iconBg: 'bg-accent/20 text-tech border border-accent/30'
         };
       default:
         return {
-          border: 'border-line hover:border-ink-secondary/40',
-          text: 'text-ink-primary',
+          border: 'border-line hover:border-lineSubtle',
+          text: 'text-white',
           iconBg: 'bg-hero text-ink-secondary border border-line'
         };
     }

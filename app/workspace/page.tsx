@@ -108,7 +108,7 @@ export default function WorkspacePage() {
       {/* Workspace Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-line gap-3">
         <div>
-          <h1 className="font-heading text-xl sm:text-2xl font-bold text-ink-primary">
+          <h1 className="font-heading text-xl sm:text-2xl font-bold text-white">
             Analysis Workspace
           </h1>
           <p className="text-xs text-ink-secondary mt-0.5">
@@ -118,14 +118,14 @@ export default function WorkspacePage() {
 
         {/* Runtime Target Pill */}
         <div className="flex items-center space-x-2 text-xs font-mono">
-          <span className="px-2.5 py-1 rounded border border-line bg-card text-ink-primary">
+          <span className="px-2.5 py-1 rounded border border-line bg-card text-white">
             Target: <strong>zod</strong>
           </span>
-          <span className="px-2.5 py-1 rounded border border-status-success/30 bg-status-success-bg text-status-success font-semibold">
+          <span className="px-2.5 py-1 rounded border border-status-success/30 bg-status-successBg text-status-success font-semibold">
             v3.23.8 (Baseline)
           </span>
           <span className="text-ink-secondary">→</span>
-          <span className="px-2.5 py-1 rounded border border-status-error/30 bg-status-error-bg text-status-error font-semibold">
+          <span className="px-2.5 py-1 rounded border border-status-error/30 bg-status-errorBg text-status-error font-semibold">
             v4.6.7 (Candidate)
           </span>
         </div>
@@ -133,7 +133,7 @@ export default function WorkspacePage() {
 
       {/* Step 1: Scenario Selector Tabs */}
       <div className="space-y-2">
-        <label className="text-[11px] font-mono font-bold uppercase tracking-wider text-ink-secondary block">
+        <label className="text-[11px] font-mono font-bold uppercase tracking-wider text-tech block">
           Step 1: Select Verified Test Scenario
         </label>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
@@ -146,11 +146,11 @@ export default function WorkspacePage() {
                 onClick={() => setSelectedScenarioId(sc.id)}
                 className={`text-left p-3.5 rounded-card border transition-colors ${
                   isSelected
-                    ? 'border-accent bg-card text-ink-primary shadow-card ring-1 ring-accent'
+                    ? 'border-accent bg-card text-white shadow-glowBlue ring-1 ring-accent'
                     : 'border-line bg-card hover:bg-hero text-ink-secondary'
                 }`}
               >
-                <div className={`font-heading font-bold text-xs leading-snug ${isSelected ? 'text-accent' : 'text-ink-primary'}`}>
+                <div className={`font-heading font-bold text-xs leading-snug ${isSelected ? 'text-tech' : 'text-white'}`}>
                   {sc.title}
                 </div>
                 <div className="text-[11px] text-ink-secondary font-mono truncate mt-1">
@@ -168,14 +168,14 @@ export default function WorkspacePage() {
         <div className="lg:col-span-5 rounded-card border border-line bg-card p-4 shadow-card space-y-3 flex flex-col justify-between">
           <div className="space-y-3">
             <div className="flex items-center justify-between pb-2 border-b border-line">
-              <span className="text-xs font-heading font-bold text-ink-primary uppercase tracking-wider flex items-center gap-1.5">
-                <FileCode2 className="h-3.5 w-3.5 text-accent" />
+              <span className="text-xs font-heading font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
+                <FileCode2 className="h-3.5 w-3.5 text-tech" />
                 Target Schema Definition
               </span>
               <span className="text-[11px] font-mono text-ink-secondary">TypeScript</span>
             </div>
 
-            <div className="p-3 rounded border border-line bg-hero font-mono text-xs text-ink-primary overflow-x-auto max-h-72 leading-relaxed">
+            <div className="p-3 rounded border border-line bg-[#0a1826] font-mono text-xs text-tech overflow-x-auto max-h-72 leading-relaxed">
               <pre>{activeScenario.codeSnippet}</pre>
             </div>
           </div>
@@ -189,13 +189,13 @@ export default function WorkspacePage() {
         <div className="lg:col-span-7 rounded-card border border-line bg-card p-4 shadow-card space-y-4 flex flex-col justify-between">
           <div className="space-y-3">
             <div className="flex items-center justify-between pb-2 border-b border-line">
-              <span className="text-xs font-heading font-bold text-ink-primary uppercase tracking-wider">
+              <span className="text-xs font-heading font-bold text-white uppercase tracking-wider">
                 Step 2: Synchronized Test Corpus ({testCases.length})
               </span>
               <button
                 type="button"
                 onClick={() => setTestCases(activeScenario.testCases)}
-                className="text-xs text-accent hover:text-accent-hover font-medium transition-colors"
+                className="text-xs text-tech hover:text-white font-medium transition-colors"
               >
                 Reset Defaults
               </button>
@@ -206,14 +206,14 @@ export default function WorkspacePage() {
               {testCases.map((tc, idx) => (
                 <div
                   key={tc.id}
-                  className="p-3 rounded border border-line bg-bg flex items-start justify-between gap-3 text-xs"
+                  className="p-3 rounded border border-line bg-[#0a1826] flex items-start justify-between gap-3 text-xs"
                 >
                   <div className="space-y-1 flex-1 min-w-0">
                     <div className="flex items-center space-x-2">
-                      <span className="font-mono text-accent font-bold text-[11px]">
+                      <span className="font-mono text-tech font-bold text-[11px]">
                         #{idx + 1}
                       </span>
-                      <span className="font-semibold text-ink-primary">
+                      <span className="font-semibold text-white">
                         {tc.label}
                       </span>
                       {tc.expectedOutcome && (
@@ -253,14 +253,14 @@ export default function WorkspacePage() {
                 placeholder="Label"
                 value={customInputLabel}
                 onChange={(e) => setCustomInputLabel(e.target.value)}
-                className="px-2.5 py-1.5 rounded border border-line text-xs bg-bg text-ink-primary focus:outline-none focus:border-accent"
+                className="px-2.5 py-1.5 rounded border border-line text-xs bg-[#0a1826] text-white focus:outline-none focus:border-accent"
               />
               <input
                 type="text"
                 placeholder='JSON: {"username": "alex"}'
                 value={customInputJson}
                 onChange={(e) => setCustomInputJson(e.target.value)}
-                className="sm:col-span-2 px-2.5 py-1.5 rounded border border-line text-xs font-mono bg-bg text-ink-primary focus:outline-none focus:border-accent"
+                className="sm:col-span-2 px-2.5 py-1.5 rounded border border-line text-xs font-mono bg-[#0a1826] text-tech focus:outline-none focus:border-accent"
               />
             </div>
 
@@ -274,7 +274,7 @@ export default function WorkspacePage() {
             <button
               type="button"
               onClick={handleAddCustomTestCase}
-              className="px-3 py-1 rounded border border-line bg-card hover:bg-hero text-xs text-ink-primary font-medium transition-colors"
+              className="px-3 py-1 rounded border border-line bg-card hover:bg-hero text-xs text-white font-medium transition-colors"
             >
               Add Input
             </button>
@@ -283,9 +283,9 @@ export default function WorkspacePage() {
       </div>
 
       {/* Step 3: Execution Control Action Bar */}
-      <div className="rounded-card border border-line bg-card p-4 sm:p-5 shadow-card flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="rounded-card border border-line bg-card p-4 sm:p-5 shadow-panel flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <span className="font-heading text-xs font-bold text-ink-primary block uppercase tracking-wider">
+          <span className="font-heading text-xs font-bold text-white block uppercase tracking-wider">
             Step 3: Execute Differential Run
           </span>
           <p className="text-xs text-ink-secondary mt-0.5">
@@ -297,7 +297,7 @@ export default function WorkspacePage() {
           type="button"
           onClick={handleRunAnalysis}
           disabled={isRunning}
-          className={`inline-flex items-center justify-center space-x-2 px-5 py-2.5 rounded-button text-xs font-semibold transition-colors shadow-card ${
+          className={`inline-flex items-center justify-center space-x-2 px-5 py-2.5 rounded-button text-xs font-bold transition-all shadow-glowBlue ${
             isRunning
               ? 'bg-line text-ink-muted cursor-not-allowed'
               : 'bg-accent hover:bg-accent-hover text-white'

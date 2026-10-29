@@ -132,8 +132,8 @@ export default function ResultsPage() {
   if (isLoadingDefault) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-20 text-center space-y-3">
-        <RefreshCw className="h-6 w-6 text-accent animate-spin mx-auto" />
-        <h2 className="font-heading text-sm font-bold text-ink-primary">
+        <RefreshCw className="h-6 w-6 text-tech animate-spin mx-auto" />
+        <h2 className="font-heading text-sm font-bold text-white">
           Executing Differential Comparison...
         </h2>
         <p className="text-xs text-ink-secondary">
@@ -147,12 +147,12 @@ export default function ResultsPage() {
     return (
       <div className="max-w-4xl mx-auto px-4 py-20 text-center space-y-3">
         <AlertTriangle className="h-6 w-6 text-status-warning mx-auto" />
-        <h2 className="font-heading text-sm font-bold text-ink-primary">
+        <h2 className="font-heading text-sm font-bold text-white">
           No Active Analysis Session Found
         </h2>
         <Link
           href="/workspace"
-          className="inline-flex items-center space-x-1.5 px-4 py-2 rounded-button bg-accent hover:bg-accent-hover text-white text-xs font-semibold shadow-card"
+          className="inline-flex items-center space-x-1.5 px-4 py-2 rounded-button bg-accent hover:bg-accent-hover text-white text-xs font-semibold shadow-glowBlue"
         >
           <span>Open Analysis Workspace</span>
         </Link>
@@ -168,15 +168,15 @@ export default function ResultsPage() {
       return {
         label: 'Inconclusive Execution',
         description: 'One or more execution environments failed or timed out during the differential run.',
-        style: 'bg-hero border-line text-ink-primary',
-        badge: 'bg-card border-line text-ink-secondary'
+        style: 'bg-card border-line text-white',
+        badge: 'bg-hero border-line text-ink-secondary'
       };
     }
     if (summary.potentialRegressions > 0) {
       return {
         label: 'Potential Regression Detected',
         description: `${summary.potentialRegressions} input vector(s) broke existing behavioral contracts, dropped custom error options, or threw unexpected TypeErrors.`,
-        style: 'bg-status-error-bg text-status-error border-status-error/30',
+        style: 'bg-status-errorBg text-status-error border-status-error/40',
         badge: 'bg-status-error text-white'
       };
     }
@@ -184,14 +184,14 @@ export default function ResultsPage() {
       return {
         label: 'Behavioral Difference Detected',
         description: `${summary.behavioralDifferences} input vector(s) produced observable output differences without confirmed regression.`,
-        style: 'bg-status-warning-bg text-status-warning border-status-warning/30',
+        style: 'bg-status-warningBg text-status-warning border-status-warning/40',
         badge: 'bg-status-warning text-white'
       };
     }
     return {
       label: 'No Difference Observed in Tested Inputs',
       description: `All ${summary.totalInputs} test inputs produced identical outputs across both versions. Note: Does not establish full correctness on untested inputs.`,
-      style: 'bg-status-success-bg text-status-success border-status-success/30',
+      style: 'bg-status-successBg text-status-success border-status-success/40',
       badge: 'bg-status-success text-white'
     };
   };
@@ -210,18 +210,18 @@ export default function ResultsPage() {
         <div>
           <Link
             href="/workspace"
-            className="inline-flex items-center space-x-1 text-xs text-ink-secondary hover:text-ink-primary mb-1.5 font-medium transition-colors"
+            className="inline-flex items-center space-x-1 text-xs text-ink-secondary hover:text-white mb-1.5 font-medium transition-colors"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
             <span>Workspace</span>
           </Link>
 
-          <h1 className="font-heading text-xl sm:text-2xl font-bold text-ink-primary">
+          <h1 className="font-heading text-xl sm:text-2xl font-bold text-white">
             {summary.scenarioTitle}
           </h1>
 
           <div className="flex items-center space-x-2 text-xs font-mono text-ink-secondary mt-0.5">
-            <span>Dependency: <strong className="text-ink-primary">{summary.dependencyName}</strong></span>
+            <span>Dependency: <strong className="text-white">{summary.dependencyName}</strong></span>
             <span>•</span>
             <span className="text-status-success font-semibold">{summary.oldVersion}</span>
             <span>→</span>
@@ -232,30 +232,30 @@ export default function ResultsPage() {
         <button
           type="button"
           onClick={runDefaultAnalysis}
-          className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-button border border-line bg-card hover:bg-hero text-xs text-ink-primary font-medium shadow-card transition-colors"
+          className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-button border border-line bg-card hover:bg-hero text-xs text-white font-medium shadow-card transition-colors"
         >
-          <RefreshCw className="h-3.5 w-3.5 text-ink-secondary" />
+          <RefreshCw className="h-3.5 w-3.5 text-tech" />
           <span>Re-execute Sandboxes</span>
         </button>
       </div>
 
       {/* A. Overall Result State Banner */}
-      <div className={`p-4 sm:p-5 rounded-card border ${overallState.style} shadow-card`}>
+      <div className={`p-4 sm:p-5 rounded-card border ${overallState.style} shadow-panel`}>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
             <div className="flex items-center space-x-2">
               <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded ${overallState.badge}`}>
                 VERDICT
               </span>
-              <h2 className="font-heading text-base font-bold">
+              <h2 className="font-heading text-base font-bold text-white">
                 {overallState.label}
               </h2>
             </div>
-            <p className="text-xs opacity-90 mt-1 leading-relaxed">
+            <p className="text-xs text-ink-secondary mt-1 leading-relaxed">
               {overallState.description}
             </p>
           </div>
-          <span className="text-xs font-mono opacity-80 whitespace-nowrap self-start sm:self-auto">
+          <span className="text-xs font-mono text-ink-muted whitespace-nowrap self-start sm:self-auto">
             {summary.totalInputs} inputs tested ({summary.totalExecutionTimeMs}ms)
           </span>
         </div>
@@ -306,7 +306,7 @@ export default function ResultsPage() {
         <div className="lg:col-span-7 space-y-3">
           {/* Filter Bar */}
           <div className="flex items-center justify-between pb-2 border-b border-line">
-            <span className="font-heading text-xs font-bold text-ink-primary uppercase tracking-wider">
+            <span className="font-heading text-xs font-bold text-white uppercase tracking-wider">
               Empirical Evidence ({filteredDifferences.length})
             </span>
 
@@ -316,8 +316,8 @@ export default function ResultsPage() {
                 onClick={() => setSelectedFilter('ALL')}
                 className={`px-2.5 py-1 rounded text-xs font-medium transition-colors ${
                   selectedFilter === 'ALL'
-                    ? 'bg-hero text-ink-primary font-bold border border-line'
-                    : 'text-ink-secondary hover:text-ink-primary'
+                    ? 'bg-accent/30 text-white font-bold border border-accent'
+                    : 'text-ink-secondary hover:text-white'
                 }`}
               >
                 All ({differences.length})
@@ -327,7 +327,7 @@ export default function ResultsPage() {
                 onClick={() => setSelectedFilter('POTENTIAL_REGRESSION')}
                 className={`px-2.5 py-1 rounded text-xs font-medium transition-colors ${
                   selectedFilter === 'POTENTIAL_REGRESSION'
-                    ? 'bg-status-error-bg text-status-error font-bold border border-status-error/30'
+                    ? 'bg-status-errorBg text-status-error font-bold border border-status-error/40'
                     : 'text-ink-secondary hover:text-status-error'
                 }`}
               >
@@ -338,7 +338,7 @@ export default function ResultsPage() {
                 onClick={() => setSelectedFilter('MATCH')}
                 className={`px-2.5 py-1 rounded text-xs font-medium transition-colors ${
                   selectedFilter === 'MATCH'
-                    ? 'bg-status-success-bg text-status-success font-bold border border-status-success/30'
+                    ? 'bg-status-successBg text-status-success font-bold border border-status-success/40'
                     : 'text-ink-secondary hover:text-status-success'
                 }`}
               >
@@ -365,11 +365,11 @@ export default function ResultsPage() {
                         onClick={() => handleSelectDiffForAi(item)}
                         className={`text-[11px] font-mono px-2.5 py-1 rounded border transition-colors flex items-center space-x-1.5 ${
                           isSelectedForAi
-                            ? 'bg-accent-subtle border-accent text-accent font-bold'
-                            : 'border-line bg-card text-ink-secondary hover:text-ink-primary hover:bg-hero'
+                            ? 'bg-accent/30 border-accent text-white font-bold shadow-glowBlue'
+                            : 'border-line bg-card text-ink-secondary hover:text-white hover:bg-hero'
                         }`}
                       >
-                        <Cpu className="h-3 w-3 text-accent" />
+                        <Cpu className="h-3 w-3 text-tech" />
                         <span>{isSelectedForAi ? 'Selected for NVIDIA AI' : 'Explain with NVIDIA Nemotron'}</span>
                       </button>
                     </div>
@@ -390,22 +390,22 @@ export default function ResultsPage() {
             />
 
             {/* Developer Checklist */}
-            <div className="rounded-card border border-line bg-card p-4 sm:p-5 shadow-card space-y-2.5">
-              <span className="font-heading text-xs font-bold text-ink-primary uppercase tracking-wider flex items-center gap-1.5">
+            <div className="rounded-card border border-line bg-card p-4 sm:p-5 shadow-panel space-y-2.5">
+              <span className="font-heading text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
                 <ShieldCheck className="h-4 w-4 text-status-success" />
                 Developer Review Checklist
               </span>
               <ul className="space-y-2 text-xs text-ink-secondary">
                 <li className="flex items-start space-x-2">
-                  <span className="font-mono text-accent font-bold">1.</span>
+                  <span className="font-mono text-tech font-bold">1.</span>
                   <span>Migrate any <code className="text-status-error font-mono font-semibold">error.errors</code> property access to <code className="text-status-success font-mono font-semibold">error.issues</code>.</span>
                 </li>
                 <li className="flex items-start space-x-2">
-                  <span className="font-mono text-accent font-bold">2.</span>
+                  <span className="font-mono text-tech font-bold">2.</span>
                   <span>Replace <code className="font-mono text-status-warning font-semibold">required_error</code> with the unified error function callback in Zod v4.</span>
                 </li>
                 <li className="flex items-start space-x-2">
-                  <span className="font-mono text-accent font-bold">3.</span>
+                  <span className="font-mono text-tech font-bold">3.</span>
                   <span>Run the generated reproduction code locally in your terminal to verify fixes.</span>
                 </li>
               </ul>

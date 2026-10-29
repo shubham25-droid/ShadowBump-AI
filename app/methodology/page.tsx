@@ -20,7 +20,7 @@ export default function MethodologyPage() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10 space-y-8">
       {/* Page Title */}
       <div className="border-b border-line pb-4">
-        <h1 className="font-heading text-2xl sm:text-3xl font-bold text-ink-primary">
+        <h1 className="font-heading text-2xl sm:text-3xl font-bold text-white">
           Methodology & Soundness
         </h1>
         <p className="text-xs sm:text-sm text-ink-secondary mt-1 max-w-xl leading-relaxed">
@@ -30,8 +30,8 @@ export default function MethodologyPage() {
 
       {/* 1. The Core Problem */}
       <section className="space-y-3">
-        <h2 className="font-heading text-sm sm:text-base font-bold text-ink-primary flex items-center gap-2">
-          <ShieldAlert className="h-4 w-4 text-accent" />
+        <h2 className="font-heading text-sm sm:text-base font-bold text-white flex items-center gap-2">
+          <ShieldAlert className="h-4 w-4 text-tech" />
           1. The Silent Regression Problem
         </h2>
         <p className="text-xs sm:text-sm text-ink-secondary leading-relaxed">
@@ -39,21 +39,21 @@ export default function MethodologyPage() {
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
           <div className="p-3.5 rounded-card border border-line bg-card shadow-card">
-            <span className="font-heading font-bold text-ink-primary block mb-1">Option Deprecation</span>
+            <span className="font-heading font-bold text-white block mb-1">Option Deprecation</span>
             <p className="text-ink-secondary text-[11px] leading-relaxed">
               <code className="text-status-warning font-mono font-semibold">required_error</code> is discarded in v4 without throwing compile errors, falling back to generic phrasing.
             </p>
           </div>
           <div className="p-3.5 rounded-card border border-line bg-card shadow-card">
-            <span className="font-heading font-bold text-ink-primary block mb-1">Property Removal</span>
+            <span className="font-heading font-bold text-white block mb-1">Property Removal</span>
             <p className="text-ink-secondary text-[11px] leading-relaxed">
               <code className="text-status-error font-mono font-semibold">error.errors</code> is replaced by <code className="text-status-success font-mono font-semibold">.issues</code>, causing downstream runtime TypeErrors.
             </p>
           </div>
           <div className="p-3.5 rounded-card border border-line bg-card shadow-card">
-            <span className="font-heading font-bold text-ink-primary block mb-1">Coercion Semantics</span>
+            <span className="font-heading font-bold text-white block mb-1">Coercion Semantics</span>
             <p className="text-ink-secondary text-[11px] leading-relaxed">
-              Date and NaN parsing format issue strings differently (<code className="font-mono text-ink-primary">&quot;nan&quot;</code> vs <code className="font-mono text-ink-primary">&quot;NaN&quot;</code>).
+              Date and NaN parsing format issue strings differently (<code className="font-mono text-white">&quot;nan&quot;</code> vs <code className="font-mono text-white">&quot;NaN&quot;</code>).
             </p>
           </div>
         </div>
@@ -61,7 +61,7 @@ export default function MethodologyPage() {
 
       {/* 2. Difference vs Defect */}
       <section className="space-y-3">
-        <h2 className="font-heading text-sm sm:text-base font-bold text-ink-primary flex items-center gap-2">
+        <h2 className="font-heading text-sm sm:text-base font-bold text-white flex items-center gap-2">
           <GitCompare className="h-4 w-4 text-status-success" />
           2. Difference vs Defect (The Oracle Problem)
         </h2>
@@ -70,20 +70,20 @@ export default function MethodologyPage() {
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
-          <div className="p-3 rounded-card border border-status-success/30 bg-status-success-bg/40">
+          <div className="p-3 rounded-card border border-status-success/30 bg-status-successBg">
             <span className="font-bold text-status-success block mb-0.5 font-mono">● MATCH</span>
-            <p className="text-ink-primary text-[11px]">Identical output values, validation status, and issue codes across both versions.</p>
+            <p className="text-white text-[11px]">Identical output values, validation status, and issue codes across both versions.</p>
           </div>
-          <div className="p-3 rounded-card border border-status-warning/30 bg-status-warning-bg/40">
+          <div className="p-3 rounded-card border border-status-warning/30 bg-status-warningBg">
             <span className="font-bold text-status-warning block mb-0.5 font-mono">● BEHAVIORAL DIFFERENCE</span>
-            <p className="text-ink-primary text-[11px]">Observable changes in error phrasing or output structure that do not violate an explicit contract.</p>
+            <p className="text-white text-[11px]">Observable changes in error phrasing or output structure that do not violate an explicit contract.</p>
           </div>
-          <div className="p-3 rounded-card border border-status-error/30 bg-status-error-bg/40">
+          <div className="p-3 rounded-card border border-status-error/30 bg-status-errorBg">
             <span className="font-bold text-status-error block mb-0.5 font-mono">● POTENTIAL REGRESSION</span>
-            <p className="text-ink-primary text-[11px]">Validation status flipped, missing properties (<code className="font-mono font-semibold">error.errors</code>), or dropped custom messages.</p>
+            <p className="text-white text-[11px]">Validation status flipped, missing properties (<code className="font-mono font-semibold">error.errors</code>), or dropped custom messages.</p>
           </div>
           <div className="p-3 rounded-card border border-line bg-hero">
-            <span className="font-bold text-ink-primary block mb-0.5 font-mono">● EXECUTION ERROR</span>
+            <span className="font-bold text-white block mb-0.5 font-mono">● EXECUTION ERROR</span>
             <p className="text-ink-secondary text-[11px]">Subprocess crashed, timed out (5,000ms limit), or threw an unhandled internal exception.</p>
           </div>
         </div>
@@ -91,21 +91,21 @@ export default function MethodologyPage() {
 
       {/* 3. Sandbox Isolation */}
       <section className="space-y-3">
-        <h2 className="font-heading text-sm sm:text-base font-bold text-ink-primary flex items-center gap-2">
-          <Lock className="h-4 w-4 text-accent" />
+        <h2 className="font-heading text-sm sm:text-base font-bold text-white flex items-center gap-2">
+          <Lock className="h-4 w-4 text-tech" />
           3. Twin Sandbox Isolation Boundary
         </h2>
         <div className="p-4 rounded-card border border-line bg-card shadow-card space-y-2 text-xs text-ink-secondary">
           <div className="flex items-start gap-2">
-            <span className="font-mono text-accent font-bold">•</span>
+            <span className="font-mono text-tech font-bold">•</span>
             <span><strong>Separate Directories:</strong> Baseline (<code className="text-status-success font-mono font-semibold">zod@3.23.8</code>) and candidate (<code className="text-status-error font-mono font-semibold">zod@4.6.7</code>) are installed in independent folders with isolated <code className="font-mono">node_modules</code>.</span>
           </div>
           <div className="flex items-start gap-2">
-            <span className="font-mono text-accent font-bold">•</span>
+            <span className="font-mono text-tech font-bold">•</span>
             <span><strong>Sanitized Environment:</strong> Subprocesses are spawned without host credentials or forwarded API keys (<code className="font-mono">NODE_ENV: &apos;test&apos;</code>).</span>
           </div>
           <div className="flex items-start gap-2">
-            <span className="font-mono text-accent font-bold">•</span>
+            <span className="font-mono text-tech font-bold">•</span>
             <span><strong>Execution Timeouts:</strong> Subprocesses are forcefully terminated after 5,000ms to eliminate infinite loop risks.</span>
           </div>
         </div>
@@ -113,8 +113,8 @@ export default function MethodologyPage() {
 
       {/* 4. Nebius & NVIDIA */}
       <section className="space-y-3">
-        <h2 className="font-heading text-sm sm:text-base font-bold text-ink-primary flex items-center gap-2">
-          <Cpu className="h-4 w-4 text-accent" />
+        <h2 className="font-heading text-sm sm:text-base font-bold text-white flex items-center gap-2">
+          <Cpu className="h-4 w-4 text-tech" />
           4. NVIDIA Nemotron & Nebius Token Factory
         </h2>
         <div className="p-4 rounded-card border border-line bg-card shadow-card space-y-1.5 text-xs text-ink-secondary">
@@ -129,7 +129,7 @@ export default function MethodologyPage() {
 
       {/* 5. Scientific Limitations */}
       <section className="space-y-3 border-t border-line pt-6">
-        <h2 className="font-heading text-sm sm:text-base font-bold text-ink-primary">
+        <h2 className="font-heading text-sm sm:text-base font-bold text-white">
           5. Soundness & Scientific Limitations
         </h2>
         <div className="p-4 rounded-card border border-line bg-card shadow-card space-y-2 text-xs text-ink-secondary">
@@ -146,7 +146,7 @@ export default function MethodologyPage() {
       <div className="pt-2 flex items-center justify-between">
         <Link
           href="/workspace"
-          className="inline-flex items-center space-x-1.5 px-4 py-2 rounded-button bg-accent hover:bg-accent-hover text-white text-xs font-semibold transition-colors shadow-card"
+          className="inline-flex items-center space-x-1.5 px-4 py-2 rounded-button bg-accent hover:bg-accent-hover text-white text-xs font-semibold transition-all shadow-glowBlue"
         >
           <span>Open Analysis Workspace</span>
           <ArrowRight className="h-3.5 w-3.5" />
