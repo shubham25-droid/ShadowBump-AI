@@ -149,7 +149,7 @@ export default function ResultsPage() {
         </h2>
         <Link
           href="/workspace"
-          className="inline-flex items-center space-x-1.5 px-4 py-2 rounded-button bg-accent hover:bg-accent-hover text-white text-xs font-semibold shadow-sm transition-colors"
+          className="inline-flex items-center space-x-1.5 px-4 py-2 rounded-button bg-accent hover:bg-accent-hover text-white text-xs font-semibold shadow-subtle transition-colors"
         >
           <span>Open Analysis Workspace</span>
         </Link>
@@ -159,7 +159,7 @@ export default function ResultsPage() {
 
   const { summary, differences } = analysisData;
 
-  // Determine Overall Result State (Section 7A)
+  // Determine Overall Result State
   const getOverallState = () => {
     if (summary.executionErrors > 0) {
       return {
@@ -173,7 +173,7 @@ export default function ResultsPage() {
       return {
         label: 'Potential Regression Detected',
         description: `${summary.potentialRegressions} input vector(s) broke existing behavioral contracts, dropped custom error options, or threw unexpected TypeErrors.`,
-        style: 'bg-[#FDEDEC] text-[#B33A32] border-[#F5C6CB]',
+        style: 'bg-status-errorBg text-status-error border-status-error/40',
         badge: 'bg-status-error text-white'
       };
     }
@@ -181,14 +181,14 @@ export default function ResultsPage() {
       return {
         label: 'Behavioral Difference Detected',
         description: `${summary.behavioralDifferences} input vector(s) produced observable output differences without confirmed regression.`,
-        style: 'bg-[#FEF9E7] text-[#A66A16] border-[#FAD7A0]',
+        style: 'bg-status-warningBg text-status-warning border-status-warning/40',
         badge: 'bg-status-warning text-white'
       };
     }
     return {
       label: 'No Difference Observed in Tested Inputs',
       description: `All ${summary.totalInputs} test inputs produced identical outputs across both versions. Note: Does not establish full correctness on untested inputs.`,
-      style: 'bg-[#EAF5EC] text-[#38734D] border-[#C3E6CB]',
+      style: 'bg-status-successBg text-status-success border-status-success/40',
       badge: 'bg-status-success text-white'
     };
   };
@@ -324,7 +324,7 @@ export default function ResultsPage() {
                 onClick={() => setSelectedFilter('POTENTIAL_REGRESSION')}
                 className={`px-2.5 py-1 rounded text-xs font-medium transition-colors ${
                   selectedFilter === 'POTENTIAL_REGRESSION'
-                    ? 'bg-[#FDEDEC] text-status-error font-bold border border-[#F5C6CB]'
+                    ? 'bg-status-errorBg text-status-error font-bold border border-status-error/40'
                     : 'text-ink-secondary hover:text-status-error'
                 }`}
               >
@@ -335,7 +335,7 @@ export default function ResultsPage() {
                 onClick={() => setSelectedFilter('MATCH')}
                 className={`px-2.5 py-1 rounded text-xs font-medium transition-colors ${
                   selectedFilter === 'MATCH'
-                    ? 'bg-[#EAF5EC] text-status-success font-bold border border-[#C3E6CB]'
+                    ? 'bg-status-successBg text-status-success font-bold border border-status-success/30'
                     : 'text-ink-secondary hover:text-status-success'
                 }`}
               >
@@ -394,15 +394,15 @@ export default function ResultsPage() {
               </span>
               <ul className="space-y-2 text-xs text-ink-secondary">
                 <li className="flex items-start space-x-2">
-                  <span className="font-mono text-tech font-bold">1.</span>
+                  <span className="font-mono text-accent font-bold">1.</span>
                   <span>Migrate any <code className="text-status-error font-mono font-semibold">error.errors</code> property access to <code className="text-status-success font-mono font-semibold">error.issues</code>.</span>
                 </li>
                 <li className="flex items-start space-x-2">
-                  <span className="font-mono text-tech font-bold">2.</span>
+                  <span className="font-mono text-accent font-bold">2.</span>
                   <span>Replace <code className="font-mono text-status-warning font-semibold">required_error</code> with the unified error function callback in Zod v4.</span>
                 </li>
                 <li className="flex items-start space-x-2">
-                  <span className="font-mono text-tech font-bold">3.</span>
+                  <span className="font-mono text-accent font-bold">3.</span>
                   <span>Run the generated reproduction code locally in your terminal to verify fixes.</span>
                 </li>
               </ul>

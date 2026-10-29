@@ -23,16 +23,20 @@ export default function LandingPage() {
   return (
     <div className="space-y-12 sm:space-y-16 pb-20">
       {/* 1. Restrained Left-Aligned Hero Section */}
-      <section className="bg-hero border-b border-line pt-14 pb-14 px-4 sm:px-6 lg:px-8">
+      <section className="bg-hero/40 border-b border-line pt-14 pb-14 px-4 sm:px-6 lg:px-8 backdrop-blur-[2px]">
         <div className="max-w-7xl mx-auto space-y-10">
           <div className="max-w-3xl space-y-5">
-            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded border border-line bg-card text-xs font-mono text-ink-secondary">
-              <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full border border-line bg-card/90 text-xs font-mono text-ink-secondary shadow-card">
+              <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
               <span>Nebius Token Factory × NVIDIA Nemotron • Differential Testing Harness</span>
             </div>
 
             <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-ink-primary leading-[1.12]">
-              Catch Behavioral Changes Before Production.
+              Catch{' '}
+              <span className="inline-block px-3.5 py-0.5 mx-1 rounded-full bg-white shadow-card border border-line text-accent font-extrabold">
+                Behavioral
+              </span>{' '}
+              Changes Before Production.
             </h1>
 
             <p className="text-base sm:text-lg text-ink-secondary leading-relaxed max-w-2xl">
@@ -50,7 +54,7 @@ export default function LandingPage() {
 
               <a
                 href="#pipeline"
-                className="inline-flex items-center space-x-2 px-4 py-2.5 rounded-button border border-line bg-card hover:bg-panelHover text-ink-primary text-sm font-medium transition-colors"
+                className="inline-flex items-center space-x-2 px-4 py-2.5 rounded-button border border-line bg-card hover:bg-panelHover text-ink-primary text-sm font-medium transition-colors shadow-card"
               >
                 <Layers className="h-4 w-4 text-tech" />
                 <span>View Comparison Pipeline</span>
@@ -58,9 +62,9 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* 3 Core Architectural Pillars (Linear / Stryker inspired cards) */}
+          {/* 3 Core Architectural Pillars */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5">
-            <div className="p-4 rounded-card border border-line bg-card space-y-1.5 shadow-card">
+            <div className="p-4 rounded-card border border-line bg-card/95 space-y-1.5 shadow-card">
               <span className="text-[10px] font-mono text-tech uppercase tracking-wider font-bold block">
                 Pillar 01
               </span>
@@ -72,7 +76,7 @@ export default function LandingPage() {
               </p>
             </div>
 
-            <div className="p-4 rounded-card border border-line bg-card space-y-1.5 shadow-card">
+            <div className="p-4 rounded-card border border-line bg-card/95 space-y-1.5 shadow-card">
               <span className="text-[10px] font-mono text-tech uppercase tracking-wider font-bold block">
                 Pillar 02
               </span>
@@ -84,7 +88,7 @@ export default function LandingPage() {
               </p>
             </div>
 
-            <div className="p-4 rounded-card border border-line bg-card space-y-1.5 shadow-card">
+            <div className="p-4 rounded-card border border-line bg-card/95 space-y-1.5 shadow-card">
               <span className="text-[10px] font-mono text-tech uppercase tracking-wider font-bold block">
                 Pillar 03
               </span>
@@ -106,7 +110,7 @@ export default function LandingPage() {
 
       {/* 2. Real Empirical Breaking Change Demonstration */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="rounded-card border border-line bg-card p-6 sm:p-8 shadow-card space-y-6">
+        <div className="rounded-card border border-line bg-card/95 p-6 sm:p-8 shadow-card space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-line gap-2">
             <div>
               <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-accent block">
@@ -130,7 +134,7 @@ export default function LandingPage() {
             <span className="text-xs font-mono text-ink-secondary block">
               Synchronized Input (Missing required <code className="text-ink-primary font-bold">username</code> field):
             </span>
-            <pre className="p-3.5 rounded border border-line bg-hero font-mono text-xs text-ink-primary overflow-x-auto">
+            <pre className="p-3.5 rounded border border-line bg-hero/60 font-mono text-xs text-ink-primary overflow-x-auto">
               <code>{JSON.stringify({ email: "alex@company.org", age: 28 }, null, 2)}</code>
             </pre>
           </div>
@@ -177,7 +181,7 @@ export default function LandingPage() {
           </div>
 
           {/* NVIDIA Synthesis Summary */}
-          <div className="p-4 rounded-card border border-line bg-hero text-xs space-y-1.5">
+          <div className="p-4 rounded-card border border-line bg-hero/60 text-xs space-y-1.5">
             <div className="flex items-center space-x-1.5 text-accent font-semibold text-xs">
               <AlertTriangle className="h-4 w-4" />
               <span>NVIDIA Nemotron Synthesis (Nebius Token Factory):</span>
@@ -208,11 +212,11 @@ export default function LandingPage() {
             <Link
               key={sc.id}
               href="/workspace"
-              className="group p-5 rounded-card border border-line bg-card hover:border-accent hover:shadow-card transition-all flex flex-col justify-between"
+              className="group p-5 rounded-card border border-line bg-card/95 hover:border-accent hover:shadow-card transition-all flex flex-col justify-between"
             >
               <div className="space-y-2.5">
                 <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded bg-hero text-ink-primary border border-line">
+                  <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded bg-hero/60 text-ink-primary border border-line">
                     Scenario 0{idx + 1} • {sc.breakingCategory}
                   </span>
                   <span className="text-xs font-mono text-ink-muted">

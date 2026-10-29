@@ -5,8 +5,8 @@
 @tailwind utilities;
 
 :root {
-  --background: #F7F5F0;
-  --foreground: #292824;
+  --background: #EAF7FB;
+  --foreground: #142638;
   --font-manrope: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-inter: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', 'SF Mono', Consolas, Monaco, monospace;
@@ -14,11 +14,14 @@
 
 body {
   color: var(--foreground);
-  background: var(--background);
+  background-color: #EAF7FB;
+  background-image: linear-gradient(135deg, #A6EBFE 0%, #C0F0FD 25%, #DCF6FD 55%, #F0FAFD 85%, #FFFFFF 100%);
+  background-attachment: fixed;
   font-family: var(--font-inter);
   font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  min-height: 100vh;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -36,20 +39,20 @@ pre, code {
 }
 
 ::-webkit-scrollbar-track {
-  background: #F7F5F0;
+  background: #EAF7FB;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #D8D2C6;
+  background: #B4E2EE;
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #B9AF9F;
+  background: #8ED3E5;
 }
 
-/* Burnt orange selection highlight */
+/* Cyan selection highlight */
 ::selection {
-  background: rgba(198, 93, 50, 0.2);
-  color: #292824;
+  background: rgba(2, 132, 199, 0.2);
+  color: #142638;
 }
