@@ -39,13 +39,13 @@ export default function MetricCard({
       case 'brand':
         return {
           border: 'border-line hover:border-accent',
-          text: 'text-tech',
-          iconBg: 'bg-accent/20 text-tech border border-accent/30'
+          text: 'text-accent',
+          iconBg: 'bg-accent/10 text-accent border border-accent/25'
         };
       default:
         return {
           border: 'border-line hover:border-lineSubtle',
-          text: 'text-white',
+          text: 'text-ink-primary',
           iconBg: 'bg-hero text-ink-secondary border border-line'
         };
     }
@@ -59,15 +59,17 @@ export default function MetricCard({
         <span className="text-[11px] font-mono font-bold text-ink-secondary uppercase tracking-wider">
           {label}
         </span>
-        <div className={`p-2 rounded-button ${styles.iconBg}`}>
+        <div className={`p-2 rounded ${styles.iconBg}`}>
           <Icon className="h-4 w-4" />
         </div>
       </div>
-      <div className={`text-2xl sm:text-3xl font-extrabold font-mono tracking-tight ${styles.text}`}>
+
+      <div className={`font-heading text-2xl sm:text-3xl font-extrabold ${styles.text}`}>
         {value}
       </div>
+
       {subtext && (
-        <div className="text-xs text-ink-secondary mt-1 font-sans">
+        <div className="text-[11px] text-ink-muted mt-1 font-mono truncate">
           {subtext}
         </div>
       )}

@@ -8,8 +8,7 @@ import {
   FileCode, 
   RefreshCw,
   CheckCircle2,
-  Sparkles,
-  ShieldAlert,
+  ShieldCheck,
   ArrowRight
 } from 'lucide-react';
 
@@ -23,21 +22,21 @@ export default function AIExplanationCard({ explanation, isLoading, onRefresh }:
   const getRiskBadge = (level: RiskLevel) => {
     switch (level) {
       case 'LOW':
-        return <span className="px-2.5 py-0.5 rounded text-[10px] font-mono font-bold bg-status-successBg text-status-success border border-status-success/30">LOW RISK</span>;
+        return <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-status-successBg text-status-success border border-status-success/30">LOW RISK</span>;
       case 'MEDIUM':
-        return <span className="px-2.5 py-0.5 rounded text-[10px] font-mono font-bold bg-status-warningBg text-status-warning border border-status-warning/30">MEDIUM RISK</span>;
+        return <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-status-warningBg text-status-warning border border-status-warning/30">MEDIUM RISK</span>;
       case 'HIGH':
-        return <span className="px-2.5 py-0.5 rounded text-[10px] font-mono font-bold bg-status-errorBg text-status-error border border-status-error/40 animate-pulse">HIGH RISK</span>;
+        return <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-status-errorBg text-status-error border border-status-error/40">HIGH RISK</span>;
       case 'CRITICAL':
-        return <span className="px-2.5 py-0.5 rounded text-[10px] font-mono font-bold bg-status-error text-white shadow-sm animate-pulse">CRITICAL RISK</span>;
+        return <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-status-error text-white shadow-subtle">CRITICAL RISK</span>;
     }
   };
 
   if (isLoading) {
     return (
       <div className="rounded-card border border-line bg-card p-5 shadow-card space-y-2">
-        <div className="flex items-center space-x-2.5 text-xs text-white">
-          <RefreshCw className="h-4 w-4 animate-spin text-tech" />
+        <div className="flex items-center space-x-2.5 text-xs text-ink-primary">
+          <RefreshCw className="h-4 w-4 animate-spin text-accent" />
           <span className="font-semibold">Querying NVIDIA Nemotron-70B on Nebius...</span>
         </div>
         <p className="text-xs text-ink-secondary">
@@ -51,7 +50,7 @@ export default function AIExplanationCard({ explanation, isLoading, onRefresh }:
     return (
       <div className="rounded-card border border-line bg-card p-6 text-center shadow-card space-y-1.5">
         <Cpu className="h-6 w-6 text-ink-muted mx-auto" />
-        <div className="font-heading font-bold text-xs text-white">
+        <div className="font-heading font-bold text-xs text-ink-primary">
           NVIDIA AI Explanation
         </div>
         <p className="text-[11px] text-ink-secondary max-w-xs mx-auto">
@@ -67,7 +66,7 @@ export default function AIExplanationCard({ explanation, isLoading, onRefresh }:
       <div className="flex flex-wrap items-center justify-between p-4 bg-hero border-b border-line gap-2">
         <div className="space-y-0.5">
           <div className="flex items-center space-x-2">
-            <span className="font-heading font-bold text-white text-xs">
+            <span className="font-heading font-bold text-ink-primary text-xs">
               NVIDIA Nemotron Analysis
             </span>
             {getRiskBadge(explanation.riskLevel)}
@@ -81,9 +80,9 @@ export default function AIExplanationCard({ explanation, isLoading, onRefresh }:
           <button
             type="button"
             onClick={onRefresh}
-            className="flex items-center space-x-1 px-2.5 py-1 text-xs font-mono rounded border border-line bg-card hover:bg-panelHover text-ink-secondary hover:text-white transition-colors"
+            className="flex items-center space-x-1 px-2.5 py-1 text-xs font-mono rounded border border-line bg-card hover:bg-panelHover text-ink-secondary hover:text-ink-primary transition-colors"
           >
-            <RefreshCw className="h-3 w-3 text-tech" />
+            <RefreshCw className="h-3 w-3 text-accent" />
             <span>Re-analyze</span>
           </button>
         )}
@@ -92,7 +91,7 @@ export default function AIExplanationCard({ explanation, isLoading, onRefresh }:
       <div className="p-4 sm:p-5 space-y-4">
         {/* Offline / Unavailable Notice */}
         {explanation.status !== 'SUCCESS' && (
-          <div className="p-3.5 rounded border border-status-warning/40 bg-status-warningBg text-white text-xs space-y-1">
+          <div className="p-3.5 rounded border border-status-warning/40 bg-status-warningBg text-ink-primary text-xs space-y-1">
             <div className="flex items-start space-x-2">
               <AlertCircle className="h-4 w-4 shrink-0 mt-0.5 text-status-warning" />
               <div>
@@ -101,7 +100,7 @@ export default function AIExplanationCard({ explanation, isLoading, onRefresh }:
                   {explanation.errorNotice || explanation.rootCause}
                 </p>
                 <div className="mt-1 font-mono text-[10px] text-ink-muted">
-                  Configure <code className="text-white">NEBIUS_API_KEY</code> in environment variables to enable live Nebius Token Factory inference.
+                  Configure <code className="text-ink-primary font-bold">NEBIUS_API_KEY</code> in environment variables to enable live Nebius Token Factory inference.
                 </div>
               </div>
             </div>
@@ -110,32 +109,32 @@ export default function AIExplanationCard({ explanation, isLoading, onRefresh }:
 
         {/* 1. Observed Facts */}
         <div className="space-y-1">
-          <span className="text-[10px] font-mono font-bold text-tech uppercase tracking-wider block">
+          <span className="text-[10px] font-mono font-bold text-accent uppercase tracking-wider block">
             1. Observed Facts
           </span>
-          <p className="text-ink-primary leading-relaxed bg-[#0a1826] p-3 rounded border border-line">
+          <p className="text-ink-primary leading-relaxed bg-hero p-3 rounded border border-line">
             {explanation.summary}
           </p>
         </div>
 
         {/* 2. Possible Implications & Root Cause */}
         <div className="space-y-1.5">
-          <span className="text-[10px] font-mono font-bold text-tech uppercase tracking-wider block">
+          <span className="text-[10px] font-mono font-bold text-accent uppercase tracking-wider block">
             2. Possible Implications & Root Cause
           </span>
           <p className="text-ink-secondary leading-relaxed">
             {explanation.rootCause}
           </p>
-          <div className="p-2.5 rounded border border-line bg-[#0a1826] text-[11px]">
-            <span className="font-semibold text-white block mb-0.5">Blast Radius:</span>
+          <div className="p-2.5 rounded border border-line bg-hero text-[11px]">
+            <span className="font-semibold text-ink-primary block mb-0.5">Blast Radius:</span>
             <span className="text-ink-secondary">{explanation.blastRadius}</span>
           </div>
         </div>
 
         {/* 3. Migration Fix & Before/After Code Diff */}
         <div className="space-y-2">
-          <span className="text-[10px] font-mono font-bold text-tech uppercase tracking-wider flex items-center gap-1">
-            <FileCode className="h-3.5 w-3.5 text-tech" />
+          <span className="text-[10px] font-mono font-bold text-accent uppercase tracking-wider flex items-center gap-1">
+            <FileCode className="h-3.5 w-3.5 text-accent" />
             3. Migration Fix & Follow-up Tests
           </span>
 
@@ -152,7 +151,7 @@ export default function AIExplanationCard({ explanation, isLoading, onRefresh }:
             </div>
           )}
 
-          <p className="text-[11px] text-ink-secondary leading-relaxed bg-[#0a1826] p-3 rounded border border-line">
+          <p className="text-[11px] text-ink-secondary leading-relaxed bg-hero p-3 rounded border border-line">
             {explanation.recommendedFix}
           </p>
         </div>

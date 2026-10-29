@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import InsaneTopology3D from '@/components/InsaneTopology3D';
+import WorkflowDiagram from '@/components/WorkflowDiagram';
 import { SCENARIOS } from '@/lib/engine/scenarios';
 import { 
   ArrowRight, 
@@ -12,7 +12,6 @@ import {
   ShieldAlert, 
   Layers, 
   Cpu, 
-  Sparkles, 
   GitCompare, 
   Zap, 
   Code2,
@@ -22,37 +21,36 @@ import {
 
 export default function LandingPage() {
   return (
-    <div className="space-y-16 pb-20">
-      {/* 1. Immersive Hero Section (Exact Match to Clinical Atmospheric Reference) */}
-      <section className="hero-clinical-bg border-b border-line pt-16 pb-14 px-4 sm:px-6 lg:px-8">
+    <div className="space-y-12 sm:space-y-16 pb-20">
+      {/* 1. Restrained Left-Aligned Hero Section */}
+      <section className="bg-hero border-b border-line pt-14 pb-14 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto space-y-10">
-          {/* Left-Aligned Headline Block with Generous Whitespace */}
-          <div className="max-w-3xl space-y-6">
-            <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full border border-line bg-card/80 backdrop-blur-md text-xs font-mono font-medium text-ink-secondary">
-              <span className="h-1.5 w-1.5 rounded-full bg-tech animate-pulse" />
+          <div className="max-w-3xl space-y-5">
+            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded border border-line bg-card text-xs font-mono text-ink-secondary">
+              <span className="h-1.5 w-1.5 rounded-full bg-accent" />
               <span>Nebius Token Factory × NVIDIA Nemotron • Differential Testing Harness</span>
             </div>
 
-            <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-normal text-white tracking-tight leading-[1.14]">
-              Catch Behavioral Changes<br className="hidden sm:inline" /> Before Production.
+            <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-ink-primary leading-[1.12]">
+              Catch Behavioral Changes Before Production.
             </h1>
 
-            <p className="text-base sm:text-lg text-ink-secondary leading-relaxed font-light max-w-2xl">
+            <p className="text-base sm:text-lg text-ink-secondary leading-relaxed max-w-2xl">
               Compare dependency behaviour across versions. Investigate differences with reproducible evidence.
             </p>
 
             <div className="pt-2 flex flex-wrap items-center gap-3">
               <Link
                 href="/workspace"
-                className="inline-flex items-center space-x-2.5 px-6 py-3 rounded-[5px] bg-accent hover:bg-accent-hover text-white text-sm font-semibold transition-all shadow-glowBlue"
+                className="inline-flex items-center space-x-2 px-5 py-2.5 rounded-button bg-accent hover:bg-accent-hover text-white text-sm font-semibold transition-colors shadow-subtle"
               >
                 <span>Analyze an Upgrade</span>
                 <ArrowRight className="h-4 w-4" />
               </Link>
 
               <a
-                href="#topology"
-                className="inline-flex items-center space-x-2 px-5 py-3 rounded-[5px] border border-line bg-card/70 hover:bg-panelHover text-white text-sm font-medium transition-colors backdrop-blur-sm"
+                href="#pipeline"
+                className="inline-flex items-center space-x-2 px-4 py-2.5 rounded-button border border-line bg-card hover:bg-panelHover text-ink-primary text-sm font-medium transition-colors"
               >
                 <Layers className="h-4 w-4 text-tech" />
                 <span>View Comparison Pipeline</span>
@@ -60,86 +58,67 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* 3D Physical Architecture Visualization */}
-          <div id="topology" className="space-y-3 pt-2">
-            <div className="flex items-center justify-between text-xs text-ink-secondary">
-              <span className="font-mono uppercase tracking-wider font-semibold text-tech flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-tech" />
-                Technical Visualization: Twin Runtime Comparison
+          {/* 3 Core Architectural Pillars (Linear / Stryker inspired cards) */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5">
+            <div className="p-4 rounded-card border border-line bg-card space-y-1.5 shadow-card">
+              <span className="text-[10px] font-mono text-tech uppercase tracking-wider font-bold block">
+                Pillar 01
               </span>
-              <span className="font-mono text-[11px] text-ink-muted">
-                zod@3.23.8 (Baseline) vs zod@4.6.7 (Candidate)
-              </span>
-            </div>
-            
-            <InsaneTopology3D />
-          </div>
-
-          {/* Pagination Dots (Matching Reference Center Indicator) */}
-          <div className="flex items-center justify-center space-x-2 pt-2">
-            <span className="h-4 w-4 rounded-full border-2 border-tech/80 flex items-center justify-center">
-              <span className="h-1.5 w-1.5 rounded-full bg-tech" />
-            </span>
-            <span className="h-2 w-2 rounded-full bg-white/30" />
-            <span className="h-2 w-2 rounded-full bg-white/30" />
-          </div>
-
-          {/* Docked Solid Vibrant Blue Shelf Cards (Exact match to bottom shelf of reference) */}
-          <div className="grid grid-cols-1 md:grid-cols-3 rounded-card overflow-hidden shadow-panel border border-accent/30">
-            <div className="p-6 bg-shelf-blue1 hover:bg-[#005298] transition-colors text-white space-y-2 border-b md:border-b-0 md:border-r border-white/10">
-              <span className="text-[10px] font-mono uppercase tracking-widest text-blue-200 font-bold block">
-                Feature 01 • Sandbox Isolation
-              </span>
-              <h3 className="font-heading text-lg font-bold text-white">
+              <h3 className="font-heading font-bold text-ink-primary text-sm">
                 Twin Sandbox Isolation
               </h3>
-              <p className="text-xs text-blue-100/90 leading-relaxed">
-                Parallel Node.js child processes for <code className="bg-black/25 px-1 py-0.5 rounded text-white font-mono">zod@3.23.8</code> vs <code className="bg-black/25 px-1 py-0.5 rounded text-white font-mono">zod@4.6.7</code> with strict 5s watchdog limits.
+              <p className="text-xs text-ink-secondary leading-relaxed">
+                Parallel Node.js child processes for <code className="text-status-success font-mono font-medium">zod@3.23.8</code> vs <code className="text-status-error font-mono font-medium">zod@4.6.7</code> with 5s watchdog timers.
               </p>
             </div>
 
-            <div className="p-6 bg-shelf-blue2 hover:bg-[#0058a6] transition-colors text-white space-y-2 border-b md:border-b-0 md:border-r border-white/10">
-              <span className="text-[10px] font-mono uppercase tracking-widest text-blue-200 font-bold block">
-                Feature 02 • AST Comparator
+            <div className="p-4 rounded-card border border-line bg-card space-y-1.5 shadow-card">
+              <span className="text-[10px] font-mono text-tech uppercase tracking-wider font-bold block">
+                Pillar 02
               </span>
-              <h3 className="font-heading text-lg font-bold text-white">
+              <h3 className="font-heading font-bold text-ink-primary text-sm">
                 Deterministic AST Comparator
               </h3>
-              <p className="text-xs text-blue-100/90 leading-relaxed">
-                Zero-AI mathematical comparison categorizes outputs into 4 deterministic tiers before any model inference is dispatched.
+              <p className="text-xs text-ink-secondary leading-relaxed">
+                Zero-AI mathematical comparison categorizes outputs into 4 deterministic tiers before any model inference.
               </p>
             </div>
 
-            <div className="p-6 bg-shelf-blue3 hover:bg-[#004787] transition-colors text-white space-y-2">
-              <span className="text-[10px] font-mono uppercase tracking-widest text-blue-200 font-bold block">
-                Feature 03 • AI Synthesis
+            <div className="p-4 rounded-card border border-line bg-card space-y-1.5 shadow-card">
+              <span className="text-[10px] font-mono text-tech uppercase tracking-wider font-bold block">
+                Pillar 03
               </span>
-              <h3 className="font-heading text-lg font-bold text-white">
+              <h3 className="font-heading font-bold text-ink-primary text-sm">
                 NVIDIA Nemotron on Nebius
               </h3>
-              <p className="text-xs text-blue-100/90 leading-relaxed">
-                Synthesizes observable AST diffs into root causes, blast radius estimates, and concrete before/after migration code.
+              <p className="text-xs text-ink-secondary leading-relaxed">
+                Synthesizes observable AST diffs into root causes, blast radius estimates, and before/after migration code.
               </p>
             </div>
+          </div>
+
+          {/* 2D Interactive Execution Flow Diagram */}
+          <div id="pipeline" className="pt-2">
+            <WorkflowDiagram />
           </div>
         </div>
       </section>
 
-      {/* 2. Real Empirical Difference Preview */}
+      {/* 2. Real Empirical Breaking Change Demonstration */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="rounded-card border border-line bg-card p-6 sm:p-8 shadow-panel space-y-6">
+        <div className="rounded-card border border-line bg-card p-6 sm:p-8 shadow-card space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-line gap-2">
             <div>
-              <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-tech block">
+              <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-accent block">
                 Empirical Demonstration
               </span>
-              <h2 className="font-heading text-lg sm:text-xl font-bold text-white mt-0.5">
+              <h2 className="font-heading text-lg sm:text-xl font-bold text-ink-primary mt-0.5">
                 Zod v3 to v4 Breaking Change Detected
               </h2>
             </div>
             <Link
               href="/workspace"
-              className="text-xs text-tech hover:text-white font-medium inline-flex items-center gap-1 self-start sm:self-auto transition-colors"
+              className="text-xs text-accent hover:text-accent-hover font-semibold inline-flex items-center gap-1 self-start sm:self-auto transition-colors"
             >
               <span>Execute in Workspace</span>
               <ArrowRight className="h-3 w-3" />
@@ -149,9 +128,9 @@ export default function LandingPage() {
           {/* Test Input */}
           <div className="space-y-1.5">
             <span className="text-xs font-mono text-ink-secondary block">
-              Synchronized Input (Missing required <code className="text-white font-bold">username</code> field):
+              Synchronized Input (Missing required <code className="text-ink-primary font-bold">username</code> field):
             </span>
-            <pre className="p-3.5 rounded border border-line bg-[#17212b] font-mono text-xs text-tech overflow-x-auto">
+            <pre className="p-3.5 rounded border border-line bg-hero font-mono text-xs text-ink-primary overflow-x-auto">
               <code>{JSON.stringify({ email: "alex@company.org", age: 28 }, null, 2)}</code>
             </pre>
           </div>
@@ -159,12 +138,12 @@ export default function LandingPage() {
           {/* Twin Output Comparison */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono">
             {/* Baseline v3 */}
-            <div className="p-4 rounded-card border border-status-success/30 bg-[#17212b] space-y-2.5">
-              <div className="flex items-center justify-between pb-2 border-b border-line">
+            <div className="p-4 rounded-card border border-status-success/30 bg-status-successBg space-y-2.5">
+              <div className="flex items-center justify-between pb-2 border-b border-status-success/20">
                 <span className="font-bold text-status-success">
                   Baseline (zod@3.23.8)
                 </span>
-                <span className="text-[10px] px-2 py-0.5 rounded bg-status-successBg text-status-success font-semibold">
+                <span className="text-[10px] px-2 py-0.5 rounded bg-card text-status-success font-semibold border border-status-success/30">
                   CUSTOM ERROR HONORED
                 </span>
               </div>
@@ -178,7 +157,7 @@ export default function LandingPage() {
             </div>
 
             {/* Candidate v4 */}
-            <div className="p-4 rounded-card border border-status-error/30 bg-[#17212b] space-y-2.5">
+            <div className="p-4 rounded-card border border-status-error/30 bg-status-errorBg space-y-2.5">
               <div className="flex items-center justify-between pb-2 border-b border-status-error/20">
                 <span className="font-bold text-status-error">
                   Candidate (zod@4.6.7)
@@ -199,24 +178,24 @@ export default function LandingPage() {
 
           {/* NVIDIA Synthesis Summary */}
           <div className="p-4 rounded-card border border-line bg-hero text-xs space-y-1.5">
-            <div className="flex items-center space-x-1.5 text-tech font-semibold text-xs">
+            <div className="flex items-center space-x-1.5 text-accent font-semibold text-xs">
               <AlertTriangle className="h-4 w-4" />
               <span>NVIDIA Nemotron Synthesis (Nebius Token Factory):</span>
             </div>
             <p className="text-ink-secondary leading-relaxed">
-              Zod 4 consolidated error options into a single parameter and deprecated <code className="font-mono text-white">error.errors</code> in favor of <code className="font-mono text-white">error.issues</code>. Downstream code calling <code className="font-mono text-white">error.errors.map()</code> will crash with an unhandled TypeError.
+              Zod 4 consolidated error options into a single parameter and deprecated <code className="font-mono text-ink-primary font-medium">error.errors</code> in favor of <code className="font-mono text-ink-primary font-medium">error.issues</code>. Downstream code calling <code className="font-mono text-ink-primary font-medium">error.errors.map()</code> will crash with an unhandled TypeError in production.
             </p>
           </div>
         </div>
       </section>
 
-      {/* 3. 4 Pre-configured Scenarios */}
+      {/* 3. 4 Pre-configured Scenarios Available in Workspace */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-5">
         <div>
-          <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-tech">
+          <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-accent block">
             Verified Scenarios
           </span>
-          <h2 className="font-heading text-xl sm:text-2xl font-bold text-white mt-0.5">
+          <h2 className="font-heading text-xl sm:text-2xl font-bold text-ink-primary mt-0.5">
             Test Scenarios Available in Workspace
           </h2>
           <p className="text-sm text-ink-secondary mt-1">
@@ -229,11 +208,11 @@ export default function LandingPage() {
             <Link
               key={sc.id}
               href="/workspace"
-              className="group p-5 rounded-card border border-line bg-card hover:border-accent hover:shadow-panel transition-all flex flex-col justify-between"
+              className="group p-5 rounded-card border border-line bg-card hover:border-accent hover:shadow-card transition-all flex flex-col justify-between"
             >
               <div className="space-y-2.5">
                 <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded bg-hero text-tech border border-line">
+                  <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded bg-hero text-ink-primary border border-line">
                     Scenario 0{idx + 1} • {sc.breakingCategory}
                   </span>
                   <span className="text-xs font-mono text-ink-muted">
@@ -241,9 +220,9 @@ export default function LandingPage() {
                   </span>
                 </div>
 
-                <h3 className="font-heading text-base font-bold text-white group-hover:text-tech transition-colors flex items-center justify-between">
+                <h3 className="font-heading text-base font-bold text-ink-primary group-hover:text-accent transition-colors flex items-center justify-between">
                   <span>{sc.title}</span>
-                  <ArrowUpRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity text-tech" />
+                  <ArrowUpRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity text-accent" />
                 </h3>
 
                 <p className="text-xs text-ink-secondary leading-relaxed">
@@ -252,8 +231,8 @@ export default function LandingPage() {
               </div>
 
               <div className="pt-3 mt-4 border-t border-line flex items-center justify-between text-xs font-mono text-ink-secondary">
-                <span>Baseline: <strong className="text-status-success font-semibold">zod@3.23.8</strong></span>
-                <span>Candidate: <strong className="text-status-error font-semibold">zod@4.6.7</strong></span>
+                <span>Baseline: <strong className="text-status-success font-medium">zod@3.23.8</strong></span>
+                <span>Candidate: <strong className="text-status-error font-medium">zod@4.6.7</strong></span>
               </div>
             </Link>
           ))}

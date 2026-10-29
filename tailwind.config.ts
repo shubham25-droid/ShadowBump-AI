@@ -9,41 +9,36 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Clinical Slate-Grey & Royal Blue Palette (From Reference Image)
-        bg: '#17212b',
-        canvas: '#17212b',
-        hero: '#1c2834',
-        card: '#202e3b',
-        panel: '#202e3b',
-        panelHover: '#283949',
-        line: '#2e4153',
-        lineSubtle: '#243443',
+        // Refined Warm-Neutral Visual Identity (Linear / Vercel / Stryker inspired)
+        bg: '#F7F5F0',
+        canvas: '#F7F5F0',
+        hero: '#EEEAE2',
+        card: '#FFFFFF',
+        panel: '#FFFFFF',
+        panelHover: '#FAF8F4',
+        line: '#E5E0D7',
+        lineSubtle: '#ECE7DF',
         ink: {
-          primary: '#ffffff',
-          secondary: '#a7b9c9',
-          muted: '#6f8496',
+          primary: '#292824',
+          secondary: '#77746D',
+          muted: '#9E9A90',
         },
         accent: {
-          DEFAULT: '#0064d2', // Exact "Plan your visit" vibrant blue button
-          hover: '#0053b3',
-          subtle: 'rgba(0, 100, 210, 0.2)',
-        },
-        shelf: {
-          blue1: '#005ba8', // Bottom shelf card 1 in reference
-          blue2: '#0062b8', // Bottom shelf card 2 in reference
-          blue3: '#005096', // Bottom shelf card 3 in reference
+          DEFAULT: '#C65D32', // Burnt Orange
+          hover: '#A94825',
+          subtle: 'rgba(198, 93, 50, 0.08)',
         },
         tech: {
-          DEFAULT: '#38bdf8',
-          subtle: 'rgba(56, 189, 248, 0.15)',
+          DEFAULT: '#B9A58A',
+          subtle: 'rgba(185, 165, 138, 0.15)',
         },
         status: {
-          success: '#10b981',
-          successBg: 'rgba(16, 185, 129, 0.16)',
-          error: '#ef4444',
-          errorBg: 'rgba(239, 68, 68, 0.16)',
-          warning: '#f59e0b',
-          warningBg: 'rgba(245, 158, 11, 0.16)',
+          success: '#38734D',
+          successBg: 'rgba(56, 115, 77, 0.08)',
+          error: '#B33A32',
+          errorBg: 'rgba(179, 58, 50, 0.08)',
+          warning: '#A66A16',
+          warningBg: 'rgba(166, 106, 22, 0.08)',
         },
       },
       fontFamily: {
@@ -52,13 +47,13 @@ const config: Config = {
         mono: ['var(--font-mono)', 'JetBrains Mono', 'monospace'],
       },
       boxShadow: {
-        card: '0 4px 20px rgba(3, 10, 18, 0.5)',
-        panel: '0 8px 30px rgba(3, 10, 18, 0.65)',
-        glowBlue: '0 0 30px -3px rgba(0, 100, 210, 0.55)',
+        card: '0 1px 3px rgba(41, 40, 36, 0.06), 0 1px 2px rgba(41, 40, 36, 0.04)',
+        panel: '0 4px 12px rgba(41, 40, 36, 0.06)',
+        subtle: '0 1px 2px rgba(41, 40, 36, 0.05)',
       },
       borderRadius: {
-        'card': '12px',
-        'button': '8px',
+        'card': '8px',
+        'button': '6px',
       },
     },
   },
