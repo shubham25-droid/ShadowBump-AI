@@ -13,109 +13,145 @@ import {
   ShieldCheck,
   CheckCircle,
   XCircle,
-  Code
+  Box
 } from 'lucide-react';
 
 interface StationTelemetry {
   id: string;
-  stepNumber: string;
-  name: string;
-  versionTag: string;
+  step: string;
+  oneWord: string;
+  subword: string;
   pos: [number, number, number];
-  color: number;
-  hex: string;
-  badgeStyle: string;
-  tagline: string;
-  codeSnippet: string;
-  verdict: string;
+  primaryColor: string;
+  colorHex: number;
+  bgHex: string;
+  borderHex: string;
+  textColor: string;
 }
 
 const STATIONS: StationTelemetry[] = [
   {
     id: 'inputs',
-    stepNumber: '01',
-    name: 'Input Dispatcher',
-    versionTag: 'Identical JSON Stream',
-    pos: [-6.8, 0, 0],
-    color: 0x0284c7,
-    hex: '#0284c7',
-    badgeStyle: 'border-accent text-accent bg-card',
-    tagline: 'Feeds identical input to both versions',
-    codeSnippet: '{"age": 28, "email": "dev@co"}',
-    verdict: 'Dispatched to twin runtimes'
+    step: 'STEP 01',
+    oneWord: 'INPUT',
+    subword: 'Identical JSON Vectors',
+    pos: [-6.4, 0, 0],
+    primaryColor: '#0284c7',
+    colorHex: 0x0284c7,
+    bgHex: '#ffffff',
+    borderHex: '#0284c7',
+    textColor: '#142638'
   },
   {
     id: 'v3',
-    stepNumber: '02A',
-    name: 'Baseline Runtime',
-    versionTag: 'zod@3.23.8 (Oracle)',
-    pos: [-2.4, 2.5, -1.2],
-    color: 0x059669,
-    hex: '#059669',
-    badgeStyle: 'border-status-success text-status-success bg-[#E6F7F3]',
-    tagline: 'Ground-truth established outcome',
-    codeSnippet: 'error: "Username is required"',
-    verdict: 'error.errors: Array(1) ✓'
+    step: 'BASELINE',
+    oneWord: 'ZOD v3',
+    subword: 'v3.23.8 (Oracle)',
+    pos: [-2.1, 2.2, -1.0],
+    primaryColor: '#059669',
+    colorHex: 0x059669,
+    bgHex: '#ffffff',
+    borderHex: '#059669',
+    textColor: '#142638'
   },
   {
     id: 'v4',
-    stepNumber: '02B',
-    name: 'Candidate Runtime',
-    versionTag: 'zod@4.6.7 (Target)',
-    pos: [-2.4, -2.5, 1.2],
-    color: 0xdc2626,
-    hex: '#dc2626',
-    badgeStyle: 'border-status-error text-status-error bg-[#FEE2E2]',
-    tagline: 'Altered behavioral response',
-    codeSnippet: 'error: "Invalid input: expected..."',
-    verdict: 'error.errors: undefined ✗'
+    step: 'CANDIDATE',
+    oneWord: 'ZOD v4',
+    subword: 'v4.6.7 (Target)',
+    pos: [-2.1, -2.2, 1.0],
+    primaryColor: '#dc2626',
+    colorHex: 0xdc2626,
+    bgHex: '#ffffff',
+    borderHex: '#dc2626',
+    textColor: '#142638'
   },
   {
     id: 'comparator',
-    stepNumber: '03',
-    name: 'AST Comparison Core',
-    versionTag: 'Deterministic Diff',
-    pos: [1.8, 0, 0],
-    color: 0x0284c7,
-    hex: '#0284c7',
-    badgeStyle: 'border-accent text-accent bg-card',
-    tagline: 'Deep structural equality assertions',
-    codeSnippet: 'diff: custom_msg_dropped',
-    verdict: 'POTENTIAL REGRESSION'
+    step: 'STEP 03',
+    oneWord: 'DIFF',
+    subword: 'AST Comparator Core',
+    pos: [2.1, 0, 0],
+    primaryColor: '#0284c7',
+    colorHex: 0x0284c7,
+    bgHex: '#ffffff',
+    borderHex: '#0284c7',
+    textColor: '#142638'
   },
   {
     id: 'differences',
-    stepNumber: '04',
-    name: 'Observed Differences',
-    versionTag: 'Empirical Evidence',
-    pos: [5.4, 0, 0],
-    color: 0x0ea5e9,
-    hex: '#0ea5e9',
-    badgeStyle: 'border-line text-ink-primary bg-card',
-    tagline: 'Evidence package with reproduction',
-    codeSnippet: 'corpus: 3 regressions / 2 matches',
-    verdict: 'Evidence Locked'
+    step: 'STEP 04',
+    oneWord: 'EVIDENCE',
+    subword: 'Deterministic Proof',
+    pos: [5.6, 0, 0],
+    primaryColor: '#0ea5e9',
+    colorHex: 0x0ea5e9,
+    bgHex: '#ffffff',
+    borderHex: '#0ea5e9',
+    textColor: '#142638'
   },
   {
     id: 'ai',
-    stepNumber: '05',
-    name: 'NVIDIA Nemotron AI',
-    versionTag: 'Nebius Token Factory',
+    step: 'STEP 05',
+    oneWord: 'AI FIX',
+    subword: 'NVIDIA Nemotron 70B',
     pos: [9.0, 0, 0],
-    color: 0x142638,
-    hex: '#142638',
-    badgeStyle: 'border-accent text-white bg-accent',
-    tagline: 'Evidence-grounded root-cause analysis',
-    codeSnippet: 'fix: error.issues.map(...)',
-    verdict: 'Migration Diff Ready'
+    primaryColor: '#142638',
+    colorHex: 0x142638,
+    bgHex: '#142638',
+    borderHex: '#0284c7',
+    textColor: '#ffffff'
   }
 ];
 
-interface ScreenPosition {
-  id: string;
-  x: number;
-  y: number;
-  visible: boolean;
+function createTileTexture(st: StationTelemetry) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 512;
+  canvas.height = 256;
+  const ctx = canvas.getContext('2d')!;
+
+  const isDark = st.id === 'ai';
+
+  // 1. Tile Base Canvas
+  ctx.fillStyle = isDark ? '#142638' : '#ffffff';
+  ctx.beginPath();
+  ctx.roundRect(12, 12, 488, 232, 28);
+  ctx.fill();
+
+  // 2. Crisp Border
+  ctx.lineWidth = 10;
+  ctx.strokeStyle = st.primaryColor;
+  ctx.stroke();
+
+  // 3. Step Badge Pill
+  ctx.fillStyle = isDark ? '#0284c7' : `${st.primaryColor}18`;
+  ctx.beginPath();
+  ctx.roundRect(36, 32, 140, 36, 10);
+  ctx.fill();
+
+  ctx.font = 'bold 20px "JetBrains Mono", monospace';
+  ctx.fillStyle = isDark ? '#ffffff' : st.primaryColor;
+  ctx.fillText(st.step, 48, 57);
+
+  // 4. BIG BOLD ONE WORD
+  ctx.font = '800 68px "Plus Jakarta Sans", sans-serif';
+  ctx.fillStyle = isDark ? '#ffffff' : '#142638';
+  ctx.fillText(st.oneWord, 36, 142);
+
+  // 5. Subtitle Tag
+  ctx.font = '600 24px "Plus Jakarta Sans", sans-serif';
+  ctx.fillStyle = isDark ? '#93c5fd' : '#45647e';
+  ctx.fillText(st.subword, 38, 195);
+
+  // 6. Active status indicator dot
+  ctx.beginPath();
+  ctx.arc(456, 50, 10, 0, Math.PI * 2);
+  ctx.fillStyle = st.primaryColor;
+  ctx.fill();
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.anisotropy = 8;
+  return texture;
 }
 
 interface Pipeline3DTopologyProps {
@@ -125,21 +161,20 @@ interface Pipeline3DTopologyProps {
 
 export default function Pipeline3DTopology({ selectedNodeId, onSelectNode }: Pipeline3DTopologyProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [screenPositions, setScreenPositions] = useState<Record<string, { x: number; y: number }>>({});
 
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
 
     const width = container.clientWidth;
-    const height = 450;
+    const height = 400;
 
     // 1. Scene, Camera, Renderer
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0xeaf7fb);
 
     const camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 1000);
-    camera.position.set(0, 12, 21);
+    camera.position.set(0, 9.5, 18.5);
     camera.lookAt(1.0, 0, 0);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
@@ -150,167 +185,138 @@ export default function Pipeline3DTopology({ selectedNodeId, onSelectNode }: Pip
     container.replaceChildren(renderer.domElement);
 
     // 2. Lights
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.3);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.4);
     scene.add(ambientLight);
 
-    const dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
-    dirLight.position.set(10, 22, 16);
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1.3);
+    dirLight.position.set(10, 20, 16);
     dirLight.castShadow = true;
-    dirLight.shadow.mapSize.width = 1024;
-    dirLight.shadow.mapSize.height = 1024;
     scene.add(dirLight);
 
     const fillLight = new THREE.DirectionalLight(0xbfe9f7, 0.6);
     fillLight.position.set(-15, 10, -10);
     scene.add(fillLight);
 
-    // 3. Subtle Isometric Floor Grid
+    // 3. Isometric Floor Grid
     const gridHelper = new THREE.GridHelper(36, 36, 0xb8e2ef, 0xd4f0f8);
     gridHelper.position.y = -3.2;
     scene.add(gridHelper);
 
-    // 4. Stations Group
+    // 4. Stations Group (3D Server Blade Tiles with One-Word Labels)
     const stationsGroup = new THREE.Group();
     scene.add(stationsGroup);
 
-    const stationMeshes: { id: string; group: THREE.Group; halo: THREE.Mesh; core: THREE.Mesh }[] = [];
+    const tileMeshes: { id: string; group: THREE.Group; box: THREE.Mesh; halo: THREE.Mesh }[] = [];
 
     STATIONS.forEach((st) => {
       const group = new THREE.Group();
       group.position.set(...st.pos);
 
-      // A. Layered Pedestal (Glossy White Base)
-      const baseGeo = new THREE.CylinderGeometry(1.1, 1.25, 0.45, 32);
+      // A. Ground Shadow Pedestal
+      const baseGeo = new THREE.CylinderGeometry(1.35, 1.5, 0.35, 32);
       const baseMat = new THREE.MeshStandardMaterial({
         color: 0xffffff,
-        roughness: 0.2,
+        roughness: 0.25,
         metalness: 0.1,
       });
       const baseMesh = new THREE.Mesh(baseGeo, baseMat);
-      baseMesh.position.y = -0.22;
+      baseMesh.position.y = -0.4;
       baseMesh.receiveShadow = true;
       group.add(baseMesh);
 
-      // B. Beveled Colored Status Rim
-      const rimGeo = new THREE.TorusGeometry(1.15, 0.055, 16, 64);
+      // B. Beveled Colored Activity Ring
+      const rimGeo = new THREE.TorusGeometry(1.4, 0.05, 16, 64);
       rimGeo.rotateX(Math.PI / 2);
-      const rimMat = new THREE.MeshBasicMaterial({ color: st.color });
+      const rimMat = new THREE.MeshBasicMaterial({ color: st.colorHex });
       const rimMesh = new THREE.Mesh(rimGeo, rimMat);
-      rimMesh.position.y = 0.02;
+      rimMesh.position.y = -0.2;
       group.add(rimMesh);
 
-      // C. Central Server / Processing Module Shape
-      let coreMesh: THREE.Mesh;
-      if (st.id === 'inputs') {
-        const geo = new THREE.SphereGeometry(0.55, 24, 24);
-        const mat = new THREE.MeshStandardMaterial({ color: 0x0284c7, roughness: 0.2, metalness: 0.3 });
-        coreMesh = new THREE.Mesh(geo, mat);
-        coreMesh.position.y = 0.7;
-      } else if (st.id === 'v3') {
-        // Server Container Pod (Green)
-        const geo = new THREE.BoxGeometry(0.95, 0.95, 0.95);
-        const mat = new THREE.MeshStandardMaterial({ color: 0x059669, roughness: 0.2, metalness: 0.2 });
-        coreMesh = new THREE.Mesh(geo, mat);
-        coreMesh.position.y = 0.7;
-      } else if (st.id === 'v4') {
-        // Server Container Pod (Red)
-        const geo = new THREE.BoxGeometry(0.95, 0.95, 0.95);
-        const mat = new THREE.MeshStandardMaterial({ color: 0xdc2626, roughness: 0.2, metalness: 0.2 });
-        coreMesh = new THREE.Mesh(geo, mat);
-        coreMesh.position.y = 0.7;
-      } else if (st.id === 'comparator') {
-        // Dual-Lens AST Comparator Prism
-        const geo = new THREE.OctahedronGeometry(0.72, 0);
-        const mat = new THREE.MeshStandardMaterial({ color: 0x0284c7, roughness: 0.15, metalness: 0.4 });
-        coreMesh = new THREE.Mesh(geo, mat);
-        coreMesh.position.y = 0.8;
-      } else if (st.id === 'differences') {
-        // Evidence Vault Block
-        const geo = new THREE.CylinderGeometry(0.6, 0.6, 0.85, 6);
-        const mat = new THREE.MeshStandardMaterial({ color: 0x0ea5e9, roughness: 0.2, metalness: 0.2 });
-        coreMesh = new THREE.Mesh(geo, mat);
-        coreMesh.position.y = 0.7;
-      } else {
-        // NVIDIA Neural Core
-        const geo = new THREE.IcosahedronGeometry(0.75, 0);
-        const mat = new THREE.MeshStandardMaterial({ color: 0x142638, roughness: 0.25, metalness: 0.5 });
-        coreMesh = new THREE.Mesh(geo, mat);
-        coreMesh.position.y = 0.8;
-      }
+      // C. 3D Architectural Tile Block (with CanvasTexture printed on front)
+      const tileTexture = createTileTexture(st);
+      const tileGeo = new THREE.BoxGeometry(2.3, 1.25, 0.22);
 
-      coreMesh.castShadow = true;
-      group.add(coreMesh);
+      const frontMat = new THREE.MeshStandardMaterial({
+        map: tileTexture,
+        roughness: 0.2,
+        metalness: 0.1,
+      });
+      const sideMat = new THREE.MeshStandardMaterial({
+        color: st.id === 'ai' ? 0x0f1d2d : 0xffffff,
+        roughness: 0.3,
+        metalness: 0.15,
+      });
 
-      // D. Floating Vertical Pin Connector pointing up to HUD
-      const pinGeo = new THREE.CylinderGeometry(0.015, 0.015, 1.4, 8);
-      const pinMat = new THREE.MeshBasicMaterial({ color: st.color, transparent: true, opacity: 0.5 });
-      const pinMesh = new THREE.Mesh(pinGeo, pinMat);
-      pinMesh.position.y = 1.4;
-      group.add(pinMesh);
+      // Assign texture to front face (+Z), side color to other 5 faces
+      const materials = [sideMat, sideMat, sideMat, sideMat, frontMat, sideMat];
+      const boxMesh = new THREE.Mesh(tileGeo, materials);
+      boxMesh.position.y = 0.5;
+      boxMesh.castShadow = true;
+      group.add(boxMesh);
 
-      // E. Rotating Gyroscope Halo
-      const haloGeo = new THREE.TorusGeometry(1.3, 0.025, 12, 48);
-      const haloMat = new THREE.MeshBasicMaterial({ color: st.color, transparent: true, opacity: 0.6 });
+      // D. Selection Halo Indicator
+      const haloGeo = new THREE.TorusGeometry(1.5, 0.03, 12, 48);
+      const haloMat = new THREE.MeshBasicMaterial({ color: st.colorHex, transparent: true, opacity: 0.4 });
       const haloMesh = new THREE.Mesh(haloGeo, haloMat);
-      haloMesh.position.y = 0.7;
+      haloMesh.position.y = 0.5;
       group.add(haloMesh);
 
       (group as any).stationId = st.id;
-      (coreMesh as any).stationId = st.id;
+      (boxMesh as any).stationId = st.id;
       stationsGroup.add(group);
 
-      stationMeshes.push({
+      tileMeshes.push({
         id: st.id,
         group,
+        box: boxMesh,
         halo: haloMesh,
-        core: coreMesh
       });
     });
 
-    // 5. 3D Connecting Pipelines
+    // 5. Connecting 3D Pipelines
     const curveInputToV3 = new THREE.CatmullRomCurve3([
-      new THREE.Vector3(-6.8, 0.7, 0),
-      new THREE.Vector3(-4.8, 1.6, -0.6),
-      new THREE.Vector3(-2.4, 3.2, -1.2)
+      new THREE.Vector3(-5.2, 0.5, 0),
+      new THREE.Vector3(-3.8, 1.5, -0.5),
+      new THREE.Vector3(-3.2, 2.2, -1.0)
     ]);
 
     const curveInputToV4 = new THREE.CatmullRomCurve3([
-      new THREE.Vector3(-6.8, 0.7, 0),
-      new THREE.Vector3(-4.8, -1.6, 0.6),
-      new THREE.Vector3(-2.4, -1.8, 1.2)
+      new THREE.Vector3(-5.2, 0.5, 0),
+      new THREE.Vector3(-3.8, -1.5, 0.5),
+      new THREE.Vector3(-3.2, -2.2, 1.0)
     ]);
 
     const curveV3ToComp = new THREE.CatmullRomCurve3([
-      new THREE.Vector3(-2.4, 3.2, -1.2),
-      new THREE.Vector3(-0.2, 1.4, -0.6),
-      new THREE.Vector3(1.8, 0.8, 0)
+      new THREE.Vector3(-1.0, 2.2, -1.0),
+      new THREE.Vector3(0.4, 1.2, -0.4),
+      new THREE.Vector3(0.9, 0.5, 0)
     ]);
 
     const curveV4ToComp = new THREE.CatmullRomCurve3([
-      new THREE.Vector3(-2.4, -1.8, 1.2),
-      new THREE.Vector3(-0.2, -1.4, 0.6),
-      new THREE.Vector3(1.8, 0.8, 0)
+      new THREE.Vector3(-1.0, -2.2, 1.0),
+      new THREE.Vector3(0.4, -1.2, 0.4),
+      new THREE.Vector3(0.9, 0.5, 0)
     ]);
 
     const curveCompToDiff = new THREE.CatmullRomCurve3([
-      new THREE.Vector3(1.8, 0.8, 0),
-      new THREE.Vector3(3.6, 0.75, 0),
-      new THREE.Vector3(5.4, 0.7, 0)
+      new THREE.Vector3(3.2, 0.5, 0),
+      new THREE.Vector3(3.8, 0.5, 0),
+      new THREE.Vector3(4.4, 0.5, 0)
     ]);
 
     const curveDiffToAI = new THREE.CatmullRomCurve3([
-      new THREE.Vector3(5.4, 0.7, 0),
-      new THREE.Vector3(7.2, 0.8, 0),
-      new THREE.Vector3(9.0, 0.8, 0)
+      new THREE.Vector3(6.8, 0.5, 0),
+      new THREE.Vector3(7.3, 0.5, 0),
+      new THREE.Vector3(7.8, 0.5, 0)
     ]);
 
     const allCurves = [
-      { curve: curveInputToV3, color: 0x93c5fd, label: 'Identical Input A' },
-      { curve: curveInputToV4, color: 0x93c5fd, label: 'Identical Input B' },
-      { curve: curveV3ToComp, color: 0x6ee7b7, label: 'Baseline Output' },
-      { curve: curveV4ToComp, color: 0xfca5a5, label: 'Candidate Output' },
-      { curve: curveCompToDiff, color: 0x7dd3fc, label: 'Diff Vector' },
-      { curve: curveDiffToAI, color: 0x38bdf8, label: 'Evidence Package' }
+      { curve: curveInputToV3, color: 0x93c5fd },
+      { curve: curveInputToV4, color: 0x93c5fd },
+      { curve: curveV3ToComp, color: 0x6ee7b7 },
+      { curve: curveV4ToComp, color: 0xfca5a5 },
+      { curve: curveCompToDiff, color: 0x7dd3fc },
+      { curve: curveDiffToAI, color: 0x38bdf8 }
     ];
 
     allCurves.forEach(({ curve, color }) => {
@@ -320,13 +326,13 @@ export default function Pipeline3DTopology({ selectedNodeId, onSelectNode }: Pip
         roughness: 0.3,
         metalness: 0.1,
         transparent: true,
-        opacity: 0.85
+        opacity: 0.9
       });
       const tubeMesh = new THREE.Mesh(tubeGeo, tubeMat);
       scene.add(tubeMesh);
     });
 
-    // 6. Traveling Luminous Data Packets
+    // 6. Traveling Data Packets
     const packets = allCurves.map(({ curve, color }) => {
       const geo = new THREE.SphereGeometry(0.18, 16, 16);
       const mat = new THREE.MeshBasicMaterial({ color });
@@ -335,7 +341,7 @@ export default function Pipeline3DTopology({ selectedNodeId, onSelectNode }: Pip
       return { mesh, curve, progress: Math.random() };
     });
 
-    // 7. Raycasting & Interactive Clicking
+    // 7. Raycasting & Click Interactivity
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
 
@@ -361,7 +367,7 @@ export default function Pipeline3DTopology({ selectedNodeId, onSelectNode }: Pip
     const domElement = renderer.domElement;
     domElement.addEventListener('pointerdown', onPointerDown);
 
-    // Mouse drag rotation handling (clamped safely)
+    // Mouse drag rotation handling (safely clamped)
     let isDragging = false;
     let prevMouseX = 0;
     let targetRotationY = 0;
@@ -375,7 +381,7 @@ export default function Pipeline3DTopology({ selectedNodeId, onSelectNode }: Pip
       if (isDragging) {
         const deltaX = e.clientX - prevMouseX;
         targetRotationY += deltaX * 0.005;
-        targetRotationY = Math.max(-0.45, Math.min(0.45, targetRotationY));
+        targetRotationY = Math.max(-0.4, Math.min(0.4, targetRotationY));
         prevMouseX = e.clientX;
       }
     };
@@ -387,34 +393,32 @@ export default function Pipeline3DTopology({ selectedNodeId, onSelectNode }: Pip
     window.addEventListener('mousemove', onMouseMove);
     window.addEventListener('mouseup', onMouseUp);
 
-    // 8. Animation & Screen Coordinate Projection Loop
+    // 8. Animation Loop
     let animationFrameId: number;
     const clock = new THREE.Clock();
-    const tempVec = new THREE.Vector3();
 
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
       const delta = clock.getDelta();
       const time = clock.getElapsedTime();
 
-      // Smooth damped rotation
+      // Smooth rotation
       currentRotationY += (targetRotationY - currentRotationY) * 0.08;
       stationsGroup.rotation.y = currentRotationY;
 
-      // Animate core shapes & halos
-      stationMeshes.forEach(({ id, halo, core }) => {
+      // Pulse selected tile halo
+      tileMeshes.forEach(({ id, box, halo }) => {
         const isSelected = id === selectedNodeId;
-        halo.rotation.z += delta * 1.2;
-        halo.rotation.x = Math.sin(time * 2) * 0.2;
-
-        core.rotation.y += delta * 0.5;
 
         if (isSelected) {
+          halo.rotation.z += delta * 1.5;
           halo.scale.setScalar(1.0 + Math.sin(time * 5) * 0.08);
           (halo.material as THREE.MeshBasicMaterial).opacity = 0.95;
+          box.position.y = 0.5 + Math.sin(time * 3) * 0.05;
         } else {
           halo.scale.setScalar(1.0);
-          (halo.material as THREE.MeshBasicMaterial).opacity = 0.45;
+          (halo.material as THREE.MeshBasicMaterial).opacity = 0.35;
+          box.position.y = 0.5;
         }
       });
 
@@ -426,20 +430,6 @@ export default function Pipeline3DTopology({ selectedNodeId, onSelectNode }: Pip
       });
 
       renderer.render(scene, camera);
-
-      // 9. Project 3D station coordinates to 2D HTML screen space
-      const newCoords: Record<string, { x: number; y: number }> = {};
-      STATIONS.forEach((st) => {
-        tempVec.set(st.pos[0], st.pos[1] + 2.1, st.pos[2]);
-        tempVec.applyEuler(stationsGroup.rotation);
-        tempVec.project(camera);
-
-        const screenX = (tempVec.x * 0.5 + 0.5) * container.clientWidth;
-        const screenY = (-(tempVec.y * 0.5) + 0.5) * 450;
-        newCoords[st.id] = { x: screenX, y: screenY };
-      });
-
-      setScreenPositions(newCoords);
     };
 
     animate();
@@ -470,101 +460,57 @@ export default function Pipeline3DTopology({ selectedNodeId, onSelectNode }: Pip
       {/* 3D WebGL Canvas */}
       <div 
         ref={containerRef} 
-        className="w-full h-[450px] cursor-grab active:cursor-grabbing select-none"
+        className="w-full h-[400px] cursor-grab active:cursor-grabbing select-none"
       />
 
       {/* Top Banner Explaining the 3D Meaning */}
       <div className="absolute top-3 left-3 right-3 flex flex-wrap items-center justify-between pointer-events-none gap-2">
         <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-white/95 backdrop-blur-sm border border-line shadow-card text-[11px] font-mono text-ink-primary">
           <span className="h-2 w-2 rounded-full bg-accent animate-ping" />
-          <strong className="font-heading font-bold text-ink-primary">Differential Testing Topology:</strong>
-          <span className="text-ink-secondary">Identical payload splits into twin sandboxes, then AST engine surfaces breaks</span>
+          <strong className="font-heading font-bold text-ink-primary">3D Execution Pipeline:</strong>
+          <span className="text-ink-secondary">Click any 3D node to inspect technical details</span>
         </div>
 
-        <div className="bg-white/95 px-3 py-1 rounded-full border border-line shadow-card text-[11px] font-mono text-ink-secondary hidden md:inline-block">
-          Click any 3D node to inspect empirical data
+        {/* Node Buttons Bar */}
+        <div className="pointer-events-auto flex items-center space-x-1">
+          {STATIONS.map((st) => {
+            const isSelected = st.id === selectedNodeId;
+            return (
+              <button
+                key={st.id}
+                type="button"
+                onClick={() => onSelectNode(st.id)}
+                className={`text-[10px] font-mono px-2 py-0.5 rounded-full transition-all border ${
+                  isSelected
+                    ? 'border-accent bg-accent text-white font-bold shadow-subtle'
+                    : 'border-line bg-white/90 text-ink-secondary hover:text-ink-primary hover:bg-white'
+                }`}
+              >
+                {st.oneWord}
+              </button>
+            );
+          })}
         </div>
       </div>
-
-      {/* 3D Position-Anchored Spatial HUD Cards */}
-      {STATIONS.map((st) => {
-        const coord = screenPositions[st.id];
-        if (!coord) return null;
-        const isSelected = st.id === selectedNodeId;
-
-        return (
-          <div
-            key={st.id}
-            onClick={() => onSelectNode(st.id)}
-            style={{
-              position: 'absolute',
-              left: `${coord.x}px`,
-              top: `${coord.y}px`,
-              transform: 'translate(-50%, -100%)',
-              pointerEvents: 'auto',
-            }}
-            className={`cursor-pointer transition-all duration-150 group ${
-              isSelected ? 'scale-105 z-20' : 'hover:scale-102 z-10 opacity-95'
-            }`}
-          >
-            <div
-              className={`p-2.5 rounded-card border shadow-panel bg-white/95 backdrop-blur-sm transition-all max-w-[175px] sm:max-w-[195px] space-y-1 ${
-                isSelected
-                  ? 'border-accent ring-2 ring-accent/30 shadow-card'
-                  : 'border-line hover:border-accent/60'
-              }`}
-            >
-              <div className="flex items-center justify-between gap-1">
-                <span className="text-[10px] font-mono font-bold text-accent">
-                  STEP {st.stepNumber}
-                </span>
-                <span className={`text-[9px] font-mono px-1.5 py-0.2 rounded border font-semibold truncate ${st.badgeStyle}`}>
-                  {st.versionTag}
-                </span>
-              </div>
-
-              <div className="font-heading font-bold text-[11px] text-ink-primary truncate">
-                {st.name}
-              </div>
-
-              {/* Real Code Preview Pill */}
-              <div className="p-1 rounded bg-hero/70 border border-line font-mono text-[9px] text-ink-primary truncate">
-                <code>{st.codeSnippet}</code>
-              </div>
-
-              {/* Status Outcome */}
-              <div className="text-[9px] font-mono font-semibold text-ink-secondary flex items-center justify-between pt-0.5">
-                <span>{st.verdict}</span>
-              </div>
-            </div>
-
-            {/* Pin Pointer Arrow down to 3D Pedestal */}
-            <div className="w-0 h-0 mx-auto border-l-4 border-l-transparent border-r-4 border-r-transparent border-t-4 border-t-white/95" />
-          </div>
-        );
-      })}
 
       {/* Bottom Pipeline Legend */}
       <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-[11px] font-mono text-ink-secondary pointer-events-none">
         <div className="flex items-center space-x-2 bg-white/90 px-3 py-1 rounded-full border border-line backdrop-blur-sm pointer-events-auto">
-          <span className="inline-block w-2 h-2 rounded-full bg-accent" />
-          <span>Input Vector</span>
+          <span className="font-bold text-accent">INPUT</span>
           <span className="text-ink-muted">→</span>
-          <span className="inline-block w-2 h-2 rounded-full bg-status-success" />
-          <span>v3 Oracle</span>
+          <span className="font-bold text-status-success">ZOD v3</span>
           <span className="text-ink-muted">&amp;</span>
-          <span className="inline-block w-2 h-2 rounded-full bg-status-error" />
-          <span>v4 Target</span>
+          <span className="font-bold text-status-error">ZOD v4</span>
           <span className="text-ink-muted">→</span>
-          <span className="inline-block w-2 h-2 rounded-full bg-accent" />
-          <span>AST Core</span>
+          <span className="font-bold text-accent">DIFF</span>
           <span className="text-ink-muted">→</span>
-          <span className="inline-block w-2 h-2 rounded-full bg-ink-primary" />
-          <span>NVIDIA AI</span>
+          <span className="font-bold text-ink-primary">EVIDENCE</span>
+          <span className="text-ink-muted">→</span>
+          <span className="font-bold text-ink-primary">AI FIX</span>
         </div>
 
         <span className="bg-white/90 px-2.5 py-1 rounded-full border border-line backdrop-blur-sm hidden sm:inline-block">
-          Drag to rotate 3D view
+          Drag horizontally to rotate 3D angle
         </span>
       </div>
     </div>
