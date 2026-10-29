@@ -72,7 +72,7 @@ export default function AIExplanationCard({ explanation, isLoading, onRefresh }:
             {getRiskBadge(explanation.riskLevel)}
           </div>
           <div className="text-[10px] text-ink-secondary font-mono">
-            Nebius Token Factory • {explanation.modelUsed}
+            Nebius Token Factory - {explanation.modelUsed}
           </div>
         </div>
 

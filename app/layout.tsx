@@ -4,7 +4,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
-  title: 'ShadowBump AI — Catch Behavioral Changes Before Production',
+  title: 'ShadowBump AI - Catch Behavioral Changes Before Production',
   description: 'Compare dependency behavior across versions. Investigate differences with reproducible evidence using twin runtime sandboxes and NVIDIA Nemotron via Nebius.',
   icons: {
     icon: [

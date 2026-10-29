@@ -9,7 +9,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Modern Sky-Cyan Light Visual Identity (matching user reference)
+        // Modern Sky-Cyan Light Visual Identity
         bg: '#EAF7FB',
         canvas: '#EAF7FB',
         hero: '#D6F3FB',
@@ -19,12 +19,12 @@ const config: Config = {
         line: '#C8E7F2',
         lineSubtle: '#D8EFF6',
         ink: {
-          primary: '#142638',   // Deep navy charcoal from reference image
+          primary: '#142638',   // Deep navy charcoal from reference
           secondary: '#45647E', // Crisp slate-blue
           muted: '#7596AF',
         },
         accent: {
-          DEFAULT: '#0284C7', // Sky Azure / Cyan
+          DEFAULT: '#0284C7', // Sky Azure
           hover: '#0369A1',
           subtle: 'rgba(2, 132, 199, 0.08)',
         },
@@ -42,7 +42,7 @@ const config: Config = {
         },
       },
       fontFamily: {
-        heading: ['var(--font-manrope)', 'Manrope', 'sans-serif'],
+        heading: ['var(--font-heading)', 'Plus Jakarta Sans', 'sans-serif'],
         sans: ['var(--font-inter)', 'Inter', 'sans-serif'],
         mono: ['var(--font-mono)', 'JetBrains Mono', 'monospace'],
       },
@@ -53,8 +53,8 @@ const config: Config = {
         pill: '0 2px 8px rgba(166, 235, 254, 0.35)',
       },
       borderRadius: {
-        'card': '8px',
-        'button': '6px',
+        'card': '10px',
+        'button': '7px',
       },
     },
   },

@@ -16,19 +16,23 @@ import {
   Zap, 
   Code2,
   Lock,
-  ArrowUpRight
+  ArrowUpRight,
+  HelpCircle,
+  Play,
+  FileCheck,
+  Sparkles
 } from 'lucide-react';
 
 export default function LandingPage() {
   return (
-    <div className="space-y-12 sm:space-y-16 pb-20">
-      {/* 1. Restrained Left-Aligned Hero Section */}
+    <div className="space-y-14 sm:space-y-16 pb-20">
+      {/* 1. Hero Section */}
       <section className="bg-hero/40 border-b border-line pt-14 pb-14 px-4 sm:px-6 lg:px-8 backdrop-blur-[2px]">
         <div className="max-w-7xl mx-auto space-y-10">
           <div className="max-w-3xl space-y-5">
             <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full border border-line bg-card/90 text-xs font-mono text-ink-secondary shadow-card">
               <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
-              <span>Nebius Token Factory × NVIDIA Nemotron • Differential Testing Harness</span>
+              <span>Nebius Token Factory × NVIDIA Nemotron - Differential Testing Harness</span>
             </div>
 
             <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-ink-primary leading-[1.12]">
@@ -40,7 +44,7 @@ export default function LandingPage() {
             </h1>
 
             <p className="text-base sm:text-lg text-ink-secondary leading-relaxed max-w-2xl">
-              Compare dependency behaviour across versions. Investigate differences with reproducible evidence.
+              Compare dependency behavior across versions. Investigate differences with reproducible evidence before bumping versions in production.
             </p>
 
             <div className="pt-2 flex flex-wrap items-center gap-3">
@@ -53,20 +57,28 @@ export default function LandingPage() {
               </Link>
 
               <a
+                href="#guide"
+                className="inline-flex items-center space-x-2 px-4 py-2.5 rounded-button border border-line bg-card hover:bg-panelHover text-ink-primary text-sm font-medium transition-colors shadow-card"
+              >
+                <HelpCircle className="h-4 w-4 text-accent" />
+                <span>How to Use Guide</span>
+              </a>
+
+              <a
                 href="#pipeline"
                 className="inline-flex items-center space-x-2 px-4 py-2.5 rounded-button border border-line bg-card hover:bg-panelHover text-ink-primary text-sm font-medium transition-colors shadow-card"
               >
                 <Layers className="h-4 w-4 text-tech" />
-                <span>View Comparison Pipeline</span>
+                <span>View Pipeline</span>
               </a>
             </div>
           </div>
 
           {/* 3 Core Architectural Pillars */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5">
-            <div className="p-4 rounded-card border border-line bg-card/95 space-y-1.5 shadow-card">
+            <div className="p-4 rounded-card border border-line bg-card/95 space-y-1.5 shadow-card hover:shadow-panel transition-all">
               <span className="text-[10px] font-mono text-tech uppercase tracking-wider font-bold block">
-                Pillar 01
+                Feature 01
               </span>
               <h3 className="font-heading font-bold text-ink-primary text-sm">
                 Twin Sandbox Isolation
@@ -76,9 +88,9 @@ export default function LandingPage() {
               </p>
             </div>
 
-            <div className="p-4 rounded-card border border-line bg-card/95 space-y-1.5 shadow-card">
+            <div className="p-4 rounded-card border border-line bg-card/95 space-y-1.5 shadow-card hover:shadow-panel transition-all">
               <span className="text-[10px] font-mono text-tech uppercase tracking-wider font-bold block">
-                Pillar 02
+                Feature 02
               </span>
               <h3 className="font-heading font-bold text-ink-primary text-sm">
                 Deterministic AST Comparator
@@ -88,9 +100,9 @@ export default function LandingPage() {
               </p>
             </div>
 
-            <div className="p-4 rounded-card border border-line bg-card/95 space-y-1.5 shadow-card">
+            <div className="p-4 rounded-card border border-line bg-card/95 space-y-1.5 shadow-card hover:shadow-panel transition-all">
               <span className="text-[10px] font-mono text-tech uppercase tracking-wider font-bold block">
-                Pillar 03
+                Feature 03
               </span>
               <h3 className="font-heading font-bold text-ink-primary text-sm">
                 NVIDIA Nemotron on Nebius
@@ -108,7 +120,101 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* 2. Real Empirical Breaking Change Demonstration */}
+      {/* 2. Interactive "How to Use" Step-by-Step Guide */}
+      <section id="guide" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-20 space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-line gap-2">
+          <div>
+            <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-accent block">
+              Step-by-Step Guide
+            </span>
+            <h2 className="font-heading text-xl sm:text-2xl font-bold text-ink-primary mt-0.5">
+              How to Use ShadowBump AI
+            </h2>
+            <p className="text-sm text-ink-secondary mt-1 max-w-xl">
+              Follow these simple steps to analyze, detect, and remediate dependency breaking changes in seconds.
+            </p>
+          </div>
+
+          <Link
+            href="/workspace"
+            className="inline-flex items-center space-x-1.5 px-4 py-2 rounded-button bg-accent hover:bg-accent-hover text-white text-xs font-semibold shadow-subtle transition-colors self-start sm:self-auto"
+          >
+            <span>Open Workspace</span>
+            <ArrowRight className="h-3.5 w-3.5" />
+          </Link>
+        </div>
+
+        {/* 3 Steps Visual Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {/* Step 1 */}
+          <div className="rounded-card border border-line bg-card/95 p-5 shadow-card space-y-3 relative overflow-hidden flex flex-col justify-between">
+            <div className="space-y-2.5">
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-xs font-extrabold px-2 py-0.5 rounded bg-hero text-accent border border-line">
+                  STEP 01
+                </span>
+                <span className="text-xs font-mono text-ink-muted">Configure</span>
+              </div>
+              <h3 className="font-heading text-base font-bold text-ink-primary">
+                Select or Add Test Vectors
+              </h3>
+              <p className="text-xs text-ink-secondary leading-relaxed">
+                Choose from 4 pre-configured real-world Zod migration scenarios (error maps, enum coercion, required fields) or input your own custom JSON payload.
+              </p>
+            </div>
+            <div className="pt-3 border-t border-line text-[11px] font-mono text-ink-muted bg-hero/40 -mx-5 -mb-5 p-3.5">
+              <span className="text-accent font-semibold block mb-0.5">Where in UI:</span>
+              Workspace &gt; Section A &gt; Test Corpus
+            </div>
+          </div>
+
+          {/* Step 2 */}
+          <div className="rounded-card border border-line bg-card/95 p-5 shadow-card space-y-3 relative overflow-hidden flex flex-col justify-between">
+            <div className="space-y-2.5">
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-xs font-extrabold px-2 py-0.5 rounded bg-hero text-accent border border-line">
+                  STEP 02
+                </span>
+                <span className="text-xs font-mono text-ink-muted">Execute</span>
+              </div>
+              <h3 className="font-heading text-base font-bold text-ink-primary">
+                Run Differential Analysis
+              </h3>
+              <p className="text-xs text-ink-secondary leading-relaxed">
+                Click &quot;Run Differential Analysis&quot;. ShadowBump spins up parallel Node.js child processes for <code className="font-mono text-status-success font-semibold">zod@3</code> and <code className="font-mono text-status-error font-semibold">zod@4</code>, feeding test inputs through stdin under a 5s watchdog limit.
+              </p>
+            </div>
+            <div className="pt-3 border-t border-line text-[11px] font-mono text-ink-muted bg-hero/40 -mx-5 -mb-5 p-3.5">
+              <span className="text-accent font-semibold block mb-0.5">Where in UI:</span>
+              Workspace &gt; Run Button &gt; Live Subprocess
+            </div>
+          </div>
+
+          {/* Step 3 */}
+          <div className="rounded-card border border-line bg-card/95 p-5 shadow-card space-y-3 relative overflow-hidden flex flex-col justify-between">
+            <div className="space-y-2.5">
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-xs font-extrabold px-2 py-0.5 rounded bg-hero text-accent border border-line">
+                  STEP 03
+                </span>
+                <span className="text-xs font-mono text-ink-muted">Inspect &amp; Fix</span>
+              </div>
+              <h3 className="font-heading text-base font-bold text-ink-primary">
+                Review Evidence &amp; AI Fix
+              </h3>
+              <p className="text-xs text-ink-secondary leading-relaxed">
+                Inspect side-by-side AST outputs to spot dropped properties (such as <code className="font-mono text-status-error font-semibold">error.errors</code> returning undefined). Copy the AI-generated before/after code migration fix directly.
+              </p>
+            </div>
+            <div className="pt-3 border-t border-line text-[11px] font-mono text-ink-muted bg-hero/40 -mx-5 -mb-5 p-3.5">
+              <span className="text-accent font-semibold block mb-0.5">Where in UI:</span>
+              Results Page &gt; Diff Viewer &gt; Nemotron Card
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 3. Real Empirical Breaking Change Demonstration */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="rounded-card border border-line bg-card/95 p-6 sm:p-8 shadow-card space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-line gap-2">
@@ -193,7 +299,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* 3. 4 Pre-configured Scenarios Available in Workspace */}
+      {/* 4. 4 Pre-configured Scenarios Available in Workspace */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-5">
         <div>
           <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-accent block">
@@ -217,7 +323,7 @@ export default function LandingPage() {
               <div className="space-y-2.5">
                 <div className="flex items-center justify-between">
                   <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded bg-hero/60 text-ink-primary border border-line">
-                    Scenario 0{idx + 1} • {sc.breakingCategory}
+                    Scenario 0{idx + 1} - {sc.breakingCategory}
                   </span>
                   <span className="text-xs font-mono text-ink-muted">
                     {sc.testCases.length} vectors

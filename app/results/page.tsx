@@ -219,9 +219,9 @@ export default function ResultsPage() {
 
           <div className="flex items-center space-x-2 text-xs font-mono text-ink-secondary mt-0.5">
             <span>Dependency: <strong className="text-ink-primary">{summary.dependencyName}</strong></span>
-            <span>•</span>
+            <span>-</span>
             <span className="text-status-success font-semibold">{summary.oldVersion}</span>
-            <span>→</span>
+            <span>-&gt;</span>
             <span className="text-status-error font-semibold">{summary.newVersion}</span>
           </div>
         </div>

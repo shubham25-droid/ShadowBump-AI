@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import BrandLogo from '@/components/BrandLogo';
-import { Play, Cpu, Layers, BookOpen, ArrowRight } from 'lucide-react';
+import { Play, Cpu, Layers, BookOpen, ArrowRight, HelpCircle } from 'lucide-react';
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -21,12 +21,13 @@ export default function Navbar() {
 
   const navItems = [
     { href: '/', label: 'Overview', icon: Layers },
+    { href: '/#guide', label: 'How to Use', icon: HelpCircle },
     { href: '/workspace', label: 'Analysis Workspace', icon: Play },
     { href: '/methodology', label: 'Methodology & Soundness', icon: BookOpen },
   ];
 
   return (
-    <header className="sticky top-0 z-50 border-b border-line bg-card/95 backdrop-blur-sm">
+    <header className="sticky top-0 z-50 border-b border-line bg-card/90 backdrop-blur-md">
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Brand Lockup */}
         <Link href="/" className="flex items-center group">
@@ -57,7 +58,7 @@ export default function Navbar() {
 
         {/* Status Pill & Primary CTA */}
         <div className="flex items-center space-x-3">
-          <div className="hidden lg:flex items-center space-x-2 text-xs text-ink-secondary px-3 py-1 rounded border border-line bg-hero">
+          <div className="hidden lg:flex items-center space-x-2 text-xs text-ink-secondary px-3 py-1 rounded-full border border-line bg-hero/70">
             <Cpu className="h-3.5 w-3.5 text-tech" />
             <span className="text-[11px] font-medium">NVIDIA Nemotron:</span>
             <span

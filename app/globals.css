@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Manrope:wght@300..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -7,7 +7,7 @@
 :root {
   --background: #EAF7FB;
   --foreground: #142638;
-  --font-manrope: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-heading: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-inter: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', 'SF Mono', Consolas, Monaco, monospace;
 }
@@ -18,24 +18,26 @@ body {
   background-image: linear-gradient(135deg, #A6EBFE 0%, #C0F0FD 25%, #DCF6FD 55%, #F0FAFD 85%, #FFFFFF 100%);
   background-attachment: fixed;
   font-family: var(--font-inter);
-  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  letter-spacing: -0.011em;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
   min-height: 100vh;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-manrope);
+  font-family: var(--font-heading);
+  letter-spacing: -0.03em;
 }
 
 pre, code {
   font-family: var(--font-mono);
 }
 
-/* Restrained Developer-Tool Scrollbar */
+/* Modern Minimalist Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {
@@ -44,15 +46,15 @@ pre, code {
 
 ::-webkit-scrollbar-thumb {
   background: #B4E2EE;
-  border-radius: 3px;
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: #8ED3E5;
 }
 
-/* Cyan selection highlight */
+/* Sky-cyan selection highlight */
 ::selection {
-  background: rgba(2, 132, 199, 0.2);
+  background: rgba(2, 132, 199, 0.22);
   color: #142638;
 }

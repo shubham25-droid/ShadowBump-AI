@@ -7,19 +7,22 @@ import { TestCase } from '@/lib/types';
 import { 
   Play, 
   Trash2, 
-  RefreshCw,
-  AlertCircle,
-  FileCode2,
-  CheckCircle2,
-  ArrowRight,
-  Plus,
-  Terminal,
-  Cpu,
-  Layers,
-  ShieldCheck,
-  Clock,
-  CheckCircle,
-  XCircle
+  RefreshCw, 
+  AlertCircle, 
+  FileCode2, 
+  CheckCircle2, 
+  ArrowRight, 
+  Plus, 
+  Terminal, 
+  Cpu, 
+  Layers, 
+  ShieldCheck, 
+  Clock, 
+  CheckCircle, 
+  XCircle,
+  HelpCircle,
+  ChevronDown,
+  ChevronUp
 } from 'lucide-react';
 
 type ExecutionState = 'READY' | 'RUNNING' | 'COMPLETED' | 'FAILED' | 'TIMED_OUT';
@@ -31,6 +34,7 @@ export default function WorkspacePage() {
   const [customInputJson, setCustomInputJson] = useState<string>('');
   const [customInputLabel, setCustomInputLabel] = useState<string>('');
   const [inputError, setInputError] = useState<string | null>(null);
+  const [showWorkspaceGuide, setShowWorkspaceGuide] = useState<boolean>(false);
   
   // Real Execution Status Management
   const [executionState, setExecutionState] = useState<ExecutionState>('READY');
@@ -77,7 +81,7 @@ export default function WorkspacePage() {
   const handleRunAnalysis = async () => {
     setExecutionState('RUNNING');
     setErrorMessage(null);
-    setStatusMessage('Spawning isolated Node.js child processes (v3 & v4)...');
+    setStatusMessage('Spawning isolated Node.js child processes (v3 and v4)...');
 
     const timeoutTimer = setTimeout(() => {
       setExecutionState('TIMED_OUT');
@@ -175,20 +179,63 @@ export default function WorkspacePage() {
           </p>
         </div>
 
-        {/* Runtime Target Pill */}
+        {/* Runtime Target Pill & Guide Button */}
         <div className="flex flex-wrap items-center gap-2 text-xs font-mono">
+          <button
+            type="button"
+            onClick={() => setShowWorkspaceGuide(!showWorkspaceGuide)}
+            className="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded border border-accent/40 bg-hero hover:bg-card text-accent font-sans font-semibold transition-colors"
+          >
+            <HelpCircle className="h-3.5 w-3.5" />
+            <span>How to Use Guide</span>
+            {showWorkspaceGuide ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
+          </button>
+
           <span className="px-2.5 py-1 rounded border border-line bg-card text-ink-primary">
             Target: <strong>zod</strong>
           </span>
           <span className="px-2.5 py-1 rounded border border-status-success/30 bg-status-successBg text-status-success font-semibold">
             v3.23.8 (Baseline)
           </span>
-          <span className="text-ink-secondary">→</span>
+          <span className="text-ink-secondary">-&gt;</span>
           <span className="px-2.5 py-1 rounded border border-status-error/30 bg-status-errorBg text-status-error font-semibold">
             v4.6.7 (Candidate)
           </span>
         </div>
       </div>
+
+      {/* Expandable How-To Guide Banner */}
+      {showWorkspaceGuide && (
+        <div className="rounded-card border border-accent/30 bg-card p-5 shadow-panel space-y-3">
+          <div className="flex items-center justify-between pb-2 border-b border-line">
+            <span className="font-heading text-xs font-bold text-ink-primary uppercase tracking-wider flex items-center gap-1.5">
+              <HelpCircle className="h-4 w-4 text-accent" />
+              Quick Workspace Guide: How to Test Dependencies
+            </span>
+            <span className="text-xs font-mono text-ink-muted">3 Quick Steps</span>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+            <div className="p-3 rounded bg-hero/60 border border-line space-y-1">
+              <strong className="font-heading font-bold text-ink-primary block">1. Pick a Scenario</strong>
+              <p className="text-ink-secondary leading-relaxed">
+                Click any of the 4 scenario cards below (e.g. &quot;Custom Error Messages&quot;) to load real schemas and edge cases.
+              </p>
+            </div>
+            <div className="p-3 rounded bg-hero/60 border border-line space-y-1">
+              <strong className="font-heading font-bold text-ink-primary block">2. Add Inputs (Optional)</strong>
+              <p className="text-ink-secondary leading-relaxed">
+                Review the test corpus or add your own custom JSON payload using the inline form.
+              </p>
+            </div>
+            <div className="p-3 rounded bg-hero/60 border border-line space-y-1">
+              <strong className="font-heading font-bold text-ink-primary block">3. Click &quot;Run Analysis&quot;</strong>
+              <p className="text-ink-secondary leading-relaxed">
+                Watch the sandboxes execute in parallel and get automatically forwarded to the evidence results page.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Section A: Scenario Selector Tabs */}
       <div className="space-y-2">
@@ -234,7 +281,7 @@ export default function WorkspacePage() {
               <span className="text-[11px] font-mono text-ink-secondary">TypeScript</span>
             </div>
 
-            <div className="p-3 rounded border border-line bg-hero font-mono text-xs text-ink-primary overflow-x-auto max-h-72 leading-relaxed">
+            <div className="p-3 rounded border border-line bg-hero/60 font-mono text-xs text-ink-primary overflow-x-auto max-h-72 leading-relaxed">
               <pre>{activeScenario.codeSnippet}</pre>
             </div>
           </div>
@@ -265,7 +312,7 @@ export default function WorkspacePage() {
               {testCases.map((tc, idx) => (
                 <div
                   key={tc.id}
-                  className="p-3 rounded border border-line bg-hero flex items-start justify-between gap-3 text-xs"
+                  className="p-3 rounded border border-line bg-hero/60 flex items-start justify-between gap-3 text-xs"
                 >
                   <div className="space-y-1 flex-1 min-w-0">
                     <div className="flex items-center space-x-2">
@@ -312,14 +359,14 @@ export default function WorkspacePage() {
                 placeholder="Label"
                 value={customInputLabel}
                 onChange={(e) => setCustomInputLabel(e.target.value)}
-                className="px-2.5 py-1.5 rounded border border-line text-xs bg-hero text-ink-primary placeholder:text-ink-muted focus:outline-none focus:border-accent"
+                className="px-2.5 py-1.5 rounded border border-line text-xs bg-hero/60 text-ink-primary placeholder:text-ink-muted focus:outline-none focus:border-accent"
               />
               <input
                 type="text"
                 placeholder='JSON: {"username": "alex"}'
                 value={customInputJson}
                 onChange={(e) => setCustomInputJson(e.target.value)}
-                className="sm:col-span-2 px-2.5 py-1.5 rounded border border-line text-xs font-mono bg-hero text-ink-primary placeholder:text-ink-muted focus:outline-none focus:border-accent"
+                className="sm:col-span-2 px-2.5 py-1.5 rounded border border-line text-xs font-mono bg-hero/60 text-ink-primary placeholder:text-ink-muted focus:outline-none focus:border-accent"
               />
             </div>
 
@@ -346,7 +393,7 @@ export default function WorkspacePage() {
         <div className="space-y-1">
           <div className="flex items-center space-x-2">
             <span className="font-heading text-xs font-bold text-ink-primary uppercase tracking-wider">
-              Execution Control & Status
+              Execution Control &amp; Status
             </span>
             {getStatusBadge()}
           </div>
